@@ -13,13 +13,10 @@ If you have a Monstera that you want to grow and this Monstera needs a temperatu
 For any issues contact: 
 gushumfe@student.gu.se
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
 ## Authors and acknowledgment
-Felix Humleby
-Vilmer Hedin 
-Cornelia Olofsson Larsson 
-Lucas Carlsson Holter 
-Rasmus Nygren
-Erik Nisbet 
+- Felix Humleby
+- Vilmer Hedin 
+- Cornelia Olofsson Larsson 
+- Lucas Carlsson Holter 
+- Rasmus Nygren
+- Erik Nisbet 
