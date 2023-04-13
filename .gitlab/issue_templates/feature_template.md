@@ -5,7 +5,7 @@
 
 Relates to requirment: 
 
-[Related to: #<issue number>]
+[Related to: #<issue number>(Dependent/Non-dependent)]
 
 ## Acceptance criteria
 
