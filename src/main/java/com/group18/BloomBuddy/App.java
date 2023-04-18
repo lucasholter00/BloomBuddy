@@ -1,7 +1,5 @@
 package com.group18.BloomBuddy;
 
-import java.util.Scanner;
-
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 /**
@@ -12,10 +10,9 @@ public class App {
     
     public static void main( String[] args ){
         try{
-
             MQTTHandler client = new MQTTHandler();
-            client.subscribe("hej");
-            
+            client.publish("hej", "bla4123bla");
+            client.close(); 
         }
         catch(MqttException e){
             e.printStackTrace();

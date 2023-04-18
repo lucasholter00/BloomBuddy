@@ -18,6 +18,9 @@ public class MQTTHandler {
         initiateMQTTClient();
     }
 
+
+
+
     public void initiateMQTTClient() throws MqttException{
         this.client = new MqttClient(BROKERURL, CLIENTID);
             
