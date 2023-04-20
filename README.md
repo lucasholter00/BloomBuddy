@@ -11,13 +11,13 @@ If you have a Monstera that you want to grow and this Monstera needs a temperatu
 
 ## How to run BloomBuddy with Maven
 
-# Terminal
+### Terminal
 1. Navigate to the git repository.
 2. Make sure you are in the directory containing the pom.xml file.
 3. Run `mvn clean package assembly:assembly`
 4. Run `java -jar target/BloomBuddy-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
-# IntelliJ
+### IntelliJ
 1. If the project files doesn't show up in your explorer, click on the "Project" drop down menu at the very top.
 Choose project files, then navigate to pom.xml. Right click the pom file and click add as maven project.
 2. Hover over "Run" on the top bar and click edit configurations.
