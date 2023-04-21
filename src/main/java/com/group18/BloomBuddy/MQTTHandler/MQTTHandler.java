@@ -1,4 +1,4 @@
-package com.group18.BloomBuddy;
+package com.group18.BloomBuddy.MQTTHandler;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
@@ -7,12 +7,13 @@ public class MQTTHandler {
     
     private final String BROKERURL ="tcp://broker.hivemq.com:1883" ;
     private final String CLIENTID = "JavaMQTTClient";
-    private final int QOS = 0;
+    private final int QOS = 2;
     MqttClient client; 
     
     public MQTTHandler() throws MqttException{
         initiateMQTTClient();
     }
+
 
 
 

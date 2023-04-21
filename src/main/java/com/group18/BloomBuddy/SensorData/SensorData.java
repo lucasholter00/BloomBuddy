@@ -1,4 +1,4 @@
-package com.group18.BloomBuddy;
+package com.group18.BloomBuddy.SensorData;
 
 public abstract class SensorData<T> {
     private final T value;

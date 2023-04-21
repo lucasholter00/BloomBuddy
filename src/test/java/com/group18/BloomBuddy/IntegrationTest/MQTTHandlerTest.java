@@ -1,19 +1,20 @@
-package com.group18.BloomBuddy;
+package com.group18.BloomBuddy.IntegrationTest;
 
 
+import com.group18.BloomBuddy.MQTTHandler.MQTTHandler;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/***
+ * This class is an integration test that checks if the connection with the broker works properly.
+ * It is dependent on that the broker's connection is stable.
+ */
 public class MQTTHandlerTest {
     private MQTTHandler mqttHandler;
     private final String TOPIC = "javatest/topic";
