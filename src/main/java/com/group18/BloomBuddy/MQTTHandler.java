@@ -1,11 +1,6 @@
 package com.group18.BloomBuddy;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.*;
 
 public class MQTTHandler {
     
@@ -55,10 +50,10 @@ public class MQTTHandler {
         MqttMessage message = new MqttMessage(payload.getBytes());
         message.setQos(QOS);
         client.publish(topic, message);
-    } 
+    }
 
-    public void subscribe(String topic) throws MqttException{
-        this.client.subscribe(topic);
+    public void subscribe(String topic, IMqttMessageListener messageListener) throws MqttException {
+        this.client.subscribe(topic, messageListener);
     }
 
     public void close() throws MqttException{

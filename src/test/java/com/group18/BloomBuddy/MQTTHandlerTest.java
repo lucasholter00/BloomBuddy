@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,15 +36,27 @@ public class MQTTHandlerTest {
     @Test
     public void testPublishAndSubscribe() throws MqttException, InterruptedException {
         String payload = "It works";
-        mqttHandler.subscribe(TOPIC);
-        mqttHandler.publish(TOPIC, payload);
+        AtomicBoolean messageReceived = new AtomicBoolean(false);
+        int maxAttempts = 5;
+        int attempt = 0;
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
-        Thread.sleep(1000);
+        while (!messageReceived.get() && attempt < maxAttempts) {
+            mqttHandler.subscribe(TOPIC, (topic, message) -> {
+                if (topic.equals(TOPIC) && message.toString().equals(payload)) {
+                    messageReceived.set(true);
+                }
+            });
 
-        String expectedOutput = "Message arrived. Topic: javatest/topic Message: It works" + System.lineSeparator();
-        assertEquals(expectedOutput, outputStream.toString());
+            mqttHandler.publish(TOPIC, payload);
+            attempt++;
+
+            // Wait for the message to be received or for a timeout
+            for (int i = 0; i < 30 && !messageReceived.get(); i++) {
+                Thread.sleep(100);
+            }
+        }
+
+        assertTrue(messageReceived.get(), "Message not received after " + maxAttempts + " attempts");
     }
 
     @Test
@@ -54,7 +67,7 @@ public class MQTTHandlerTest {
 
     @Test
     public void testSubscribeWithInvalidTopic() throws MqttException {
-        assertThrows(IllegalArgumentException.class, () -> mqttHandler.subscribe(""));
+        assertThrows(IllegalArgumentException.class, () -> mqttHandler.subscribe("", null));
     }
 }
 

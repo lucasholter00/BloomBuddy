@@ -8,13 +8,13 @@ public class TemperatureInteractor {
 
     private TemperatureData latestData;
 
-    public TemperatureInteractor() {
+    public TemperatureInteractor(MQTTHandler mqttHandler) {
 
     }
 
 
 
     public double getLatestData(){
-        return latestData.getValue();
+        return -1;
     }
 }
