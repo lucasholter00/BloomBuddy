@@ -1,6 +1,7 @@
 package com.group18.BloomBuddy;
 
 import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class MQTTHandler {
     
@@ -17,7 +18,8 @@ public class MQTTHandler {
 
 
     public void initiateMQTTClient() throws MqttException{
-        this.client = new MqttClient(BROKERURL, CLIENTID);
+        MemoryPersistence persistence = new MemoryPersistence();
+        this.client = new MqttClient(BROKERURL, CLIENTID, persistence);
             
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
