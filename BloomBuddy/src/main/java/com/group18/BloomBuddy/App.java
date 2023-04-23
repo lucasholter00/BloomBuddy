@@ -10,12 +10,14 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  */
 public class App {
     
-    public static void main( String[] args ){
+    public static void main( String[] args) throws InterruptedException{
         try{
-
-            MQTTHandler client = new MQTTHandler();
-            client.subscribe("hej");
             
+            MQTTHandler client = new MQTTHandler();
+            while(true){
+                SensorData data = new SensorData(client.getMoistureReading(), 0, 0, 0);
+                Thread.sleep(1000);
+            }
         }
         catch(MqttException e){
             e.printStackTrace();
