@@ -35,7 +35,7 @@ public class MQTTHandler {
 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
-                if (topic.equals("BloomBuddy/Humidity/raw")){
+                if (topic.equals("BloomBuddy/Moisture/raw")){
                     moistureReading = Float.parseFloat(message.toString());         
                 }
                 else{
