@@ -16,7 +16,8 @@ public class App {
             MQTTHandler client = new MQTTHandler();
             while(true){
                 SensorData data = new SensorData(client.getMoistureReading(), 0, 0, 0);
-                Thread.sleep(1000);
+                Thread.sleep(100);
+                System.out.println(data);
             }
         }
         catch(MqttException e){
