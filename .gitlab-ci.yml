@@ -54,11 +54,14 @@ cache:
 # See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 .verify:
   stage: test
+  tags:
+    - docker
   script:
     - 'mvn $MAVEN_CLI_OPTS verify'
   except:
     variables:
       - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    
 
 # Verify merge requests using JDK11
 verify:jdk19:
