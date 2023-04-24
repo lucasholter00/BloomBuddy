@@ -18,7 +18,7 @@ variables:
   # `showDateTime` will show the passed time in milliseconds. You need to specify `--batch-mode` to make this work.
   MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
-    -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository/BloomBuddy
+    -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
     -Dorg.slf4j.simpleLogger.showDateTime=true
     -Djava.awt.headless=true
 
@@ -57,7 +57,7 @@ cache:
   tags:
     - docker
   script:
-    - 'mvn $MAVEN_CLI_OPTS verify'
+    - 'cd BloomBuddy; mvn $MAVEN_CLI_OPTS verify'
   except:
     variables:
       - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -78,7 +78,7 @@ deploy:jdk8:
     - if [ ! -f ci_settings.xml ]; then
         echo "CI settings missing! If deploying to GitLab Maven Repository, please see https://docs.gitlab.com/ee/user/packages/maven_repository/index.html#create-maven-packages-with-gitlab-cicd for instructions.";
       fi
-    - 'mvn $MAVEN_CLI_OPTS deploy --settings ci_settings.xml'
+    - 'cd BloomBuddy; mvn $MAVEN_CLI_OPTS deploy --settings ci_settings.xml'
   only:
     variables:
       - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
