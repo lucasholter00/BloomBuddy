@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 public class MockMQTTHandler extends MQTTHandler {
 
     private Map<String, IMqttMessageListener> topicListeners = new HashMap<>();
-    private ExecutorService executor = Executors.newCachedThreadPool();
+
 
     public MockMQTTHandler() throws MqttException {
         super();
@@ -28,18 +28,17 @@ public class MockMQTTHandler extends MQTTHandler {
         //do nothing
     }
 
+
     @Override
     public void publish(String topic, String payload) throws MqttException {
         IMqttMessageListener listener = topicListeners.get(topic);
         if (listener != null) {
             MqttMessage message = new MqttMessage(payload.getBytes());
-            executor.submit(() -> {
-                try {
-                    listener.messageArrived(topic, message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
+            try {
+                listener.messageArrived(topic, message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
