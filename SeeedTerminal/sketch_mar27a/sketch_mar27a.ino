@@ -205,6 +205,6 @@ void publishHumidityValues(){
  float h = dht.readHumidity();
  if (!isnan(h) { //Checks whether the readings are valid floating-point numbers.
  char buffer[40];
- sprintf(buffer, "{\"Humidity\":%0.2f}", t, h);
+ itoa(h, buffer, 10);
  client.publish("BloomBuddy/Humidity/raw", buffer);
 }
