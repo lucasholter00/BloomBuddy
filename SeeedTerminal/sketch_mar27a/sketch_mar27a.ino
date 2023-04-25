@@ -167,10 +167,9 @@ void loop() {
     Serial.println(val);
     publishMoistureValues();
     delay(200);
-     int val = analogRead(lightPin);
+     int valLight = analogRead(lightPin);
      Serial.println(val);
      publishLightValues();
-     delay(200);
 
     //publishMicValues();
 
@@ -201,7 +200,7 @@ void publishMoistureValues(){
 }
 
 void publishLightValues(){
-  int val = analogRead(lightPin);
+  int valLight = analogRead(lightPin);
   char msg[8];
   snprintf(msg, 8, "%d", val);
   client.publish("BloomBuddy/Light/raw", msg);
