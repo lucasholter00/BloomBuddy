@@ -30,6 +30,7 @@ const char* TOPIC_pub_connection = "klonk";
 
 
 TFT_eSPI tft;
+int moisturePin = A0;
 
 WiFiClient wioClient;
 PubSubClient client(wioClient);
@@ -160,10 +161,13 @@ void loop() {
   if (!client.connected()) {
     reconnect();
   }
-    int val = analogRead(WIO_MIC);
+    int val = analogRead(moisturePin);
+    //int val = analogRead(WIO_MIC);
     Serial.println(val);
+    publishMoistureValues();
     delay(200);
-    publishMicValues();
+
+    //publishMicValues();
 
 /*   Use to continuesly execute something in the loop.
      sensor data?! Hint hint  ヾ(o✪‿✪o)ｼ 
@@ -182,4 +186,11 @@ void publishMicValues(){
   itoa(val, buffer, 10);
   client.publish("hej", buffer);
 
+}
+
+void publishMoistureValues(){
+  char buffer[16];
+  int val = analogRead(moisturePin);
+  itoa(val, buffer, 10);
+  client.publish("BloomBuddy/Moisture/raw", buffer);
 }

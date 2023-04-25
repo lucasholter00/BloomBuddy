@@ -12,10 +12,12 @@ public class MQTTHandler {
     private final String BROKERURL ="tcp://broker.hivemq.com:1883" ;
     private final String CLIENTID = "JavaMQTTClient";
     private final int QOS = 0;
-    MqttClient client; 
+    private MqttClient client; 
+    private float moistureReading;
     
     public MQTTHandler() throws MqttException{
         initiateMQTTClient();
+        this.subscribe("BloomBuddy/Moisture/raw");
     }
 
     public void initiateMQTTClient() throws MqttException{
@@ -33,7 +35,12 @@ public class MQTTHandler {
 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
-                System.out.println("Message arrived. Topic: " + topic + " Message: " + message.toString());
+                if (topic.equals("BloomBuddy/Moisture/raw")){
+                    moistureReading = Float.parseFloat(message.toString());         
+                }
+                else{
+                    System.out.println("Message arrived. Topic: " + topic + " Message: " + message.toString());
+                }
             }
 
             @Override
@@ -61,6 +68,10 @@ public class MQTTHandler {
     public void close() throws MqttException{
         client.disconnect();
         client.close();
+    }
+
+    public float getMoistureReading(){
+        return this.moistureReading;
     }
 
 }
