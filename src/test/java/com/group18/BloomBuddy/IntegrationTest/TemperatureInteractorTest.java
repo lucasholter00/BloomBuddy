@@ -36,9 +36,9 @@ public class TemperatureInteractorTest {
 
     @Test
     public void shouldCreateTemperatureData() throws MqttException, InterruptedException {
-        double testTemperature = 30.0;
+        float testTemperature = 30.0F;
         mqttHandler.publish(TOPIC, String.valueOf(testTemperature));
         Thread.sleep(3000);
-        assertEquals(30.0, temperatureInteractor.getLatestData());
+        assertEquals(testTemperature, temperatureInteractor.getLatestData());
     }
 }

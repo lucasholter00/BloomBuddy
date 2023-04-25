@@ -31,9 +31,9 @@ public class UnitMoistureInteractorTest {
 
     @Test
     public void shouldCreateMoistureData() throws MqttException, InterruptedException {
-        double testMoisture = 50.0;
+        float testMoisture = 50.0F;
         mockMqttHandler.publish(TOPIC, String.valueOf(testMoisture));
         Thread.sleep(3000);
-        assertEquals(50.0, moistureInteractor.getLatestData(), 0.01);
+        assertEquals(testMoisture, moistureInteractor.getLatestData(), 0.01);
     }
 }

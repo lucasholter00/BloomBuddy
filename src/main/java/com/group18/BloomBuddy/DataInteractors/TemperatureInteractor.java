@@ -17,8 +17,8 @@ public class TemperatureInteractor {
     public TemperatureInteractor(MQTTHandler mqttHandler) throws MqttException {
     }
 
-    public double getLatestData() {
-        return -1.0;
+    public float getLatestData() {
+        return -1.0F;
     }
 
     public String getTOPIC(){

@@ -31,7 +31,7 @@ public class UnitHumidityInteractorTest {
 
     @Test
     public void shouldCreateHumidityData() throws MqttException, InterruptedException {
-        double testHumidity = 0.4;
+        float testHumidity = 0.4F;
         mockMqttHandler.publish(TOPIC, String.valueOf(testHumidity));
         Thread.sleep(3000);
         assertEquals(testHumidity, humidityInteractor.getLatestData(), 0.01);

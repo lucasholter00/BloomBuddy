@@ -7,7 +7,7 @@ public class MQTTHandler {
     
     private final String BROKERURL ="tcp://broker.hivemq.com:1883" ;
     private final String CLIENTID = "JavaMQTTClient";
-    private final int QOS = 2;
+    private final int QOS = 0;
     MqttClient client; 
     
     public MQTTHandler() throws MqttException{

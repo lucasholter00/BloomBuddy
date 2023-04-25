@@ -37,9 +37,9 @@ public class LightInteractorTest {
 
     @Test
     public void shouldCreateLightData() throws MqttException, InterruptedException {
-        double testLight = 500.0;
+        float testLight = 500.0F;
         mqttHandler.publish(TOPIC, String.valueOf(testLight));
         Thread.sleep(3000);
-        assertEquals(500.0, lightInteractor.getLatestData());
+        assertEquals(500.0F, lightInteractor.getLatestData());
     }
 }

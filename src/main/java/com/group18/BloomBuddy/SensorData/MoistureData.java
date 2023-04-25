@@ -1,7 +1,7 @@
 package com.group18.BloomBuddy.SensorData;
 
 public class MoistureData extends SensorData {
-    public MoistureData(Double value) {
+    public MoistureData(Float value) {
         super(value);
     }
 }
