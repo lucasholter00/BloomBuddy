@@ -31,6 +31,7 @@ const char* TOPIC_pub_connection = "klonk";
 
 TFT_eSPI tft;
 int moisturePin = A0;
+int lightPin = A0;
 
 WiFiClient wioClient;
 PubSubClient client(wioClient);
@@ -166,6 +167,10 @@ void loop() {
     Serial.println(val);
     publishMoistureValues();
     delay(200);
+     int val = analogRead(lightPin);
+     Serial.println(val);
+     publishLightValues();
+     delay(200);
 
     //publishMicValues();
 
@@ -193,4 +198,11 @@ void publishMoistureValues(){
   int val = analogRead(moisturePin);
   itoa(val, buffer, 10);
   client.publish("BloomBuddy/Moisture/raw", buffer);
+}
+
+void publishLightValues(){
+  int val = analogRead(lightPin);
+  char msg[8];
+  snprintf(msg, 8, "%d", val);
+  client.publish("BloomBuddy/Light/raw", msg);
 }
