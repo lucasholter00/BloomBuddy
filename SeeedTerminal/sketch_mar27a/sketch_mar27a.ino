@@ -31,6 +31,7 @@ const char* TOPIC_pub_connection = "klonk";
 
 
 TFT_eSPI tft;
+DHT dht (DHTPIN, DHT11);
 int moisturePin = A0;
 int temperaturePin = A0;
 
@@ -168,7 +169,7 @@ void loop() {
     Serial.println(val);
     publishMoistureValues();
     float h = dht.readHumidity();
-    Serial.println("Humidity: " + String(h) + " %\t Temperature: " + String(t) + " *C" );
+    Serial.println("Humidity: " + String(h) + " %");
     delay(200);
 
     //publishMicValues();
@@ -203,8 +204,9 @@ void publishMoistureValues(){
 
 void publishHumidityValues(){
  float h = dht.readHumidity();
- if (!isnan(h) { //Checks whether the readings are valid floating-point numbers.
+ if (!isnan(h)) { //Checks whether the readings are valid floating-point numbers.
  char buffer[40];
  itoa(h, buffer, 10);
  client.publish("BloomBuddy/Humidity/raw", buffer);
+ }
 }
