@@ -31,7 +31,7 @@ const char* TOPIC_pub_connection = "klonk";
 
 
 TFT_eSPI tft;
-DHT dht (DHTPIN, DHT11);
+DHT dht (DHTPIN, 11);
 int moisturePin = A0;
 int temperaturePin = A0;
 int lightPin = A0;
