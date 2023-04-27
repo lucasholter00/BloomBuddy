@@ -33,7 +33,7 @@ const char* TOPIC_pub_connection = "klonk";
 TFT_eSPI tft;
 DHT dht (DHTPIN, 11);
 int moisturePin = A0;
-int temperaturePin = A0;
+int humidityPin = A0;
 int lightPin = A0;
 
 WiFiClient wioClient;
