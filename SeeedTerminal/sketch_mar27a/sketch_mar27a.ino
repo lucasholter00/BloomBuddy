@@ -31,6 +31,7 @@ const char* TOPIC_pub_connection = "klonk";
 
 
 TFT_eSPI tft;
+DHT dht (DHTPIN, DHT11);
 int moisturePin = A0;
 int temperaturePin = A0;
 int lightPin = A0;
@@ -169,7 +170,7 @@ void loop() {
     Serial.println(val);
     publishMoistureValues();
     float h = dht.readHumidity();
-    Serial.println("Humidity: " + String(h) + " %\t Temperature: " + String(t) + " *C" );
+    Serial.println("Humidity: " + String(h) + " %");
     delay(200);
      int valLight = analogRead(lightPin);
      Serial.println(val);
