@@ -7,8 +7,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 /***
  * This class simlulates the behavior of the MQTTHandler class without connecting to a broker.

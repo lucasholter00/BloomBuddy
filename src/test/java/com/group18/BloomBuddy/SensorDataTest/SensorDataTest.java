@@ -1,46 +1,37 @@
 package com.group18.BloomBuddy.SensorDataTest;
-import com.group18.BloomBuddy.SensorData.HumidityData;
-import com.group18.BloomBuddy.SensorData.LightData;
-import com.group18.BloomBuddy.SensorData.MoistureData;
-import com.group18.BloomBuddy.SensorData.TemperatureData;
+
+import com.group18.BloomBuddy.SensorData.SensorData;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class SensorDataTest {
 
+    @Test
+    public void testTemperatureValue() {
+        SensorData sensorData = new SensorData();
+        sensorData.setTemperature(25.0f);
+        assertEquals(25.0f, sensorData.getTemperature());
+    }
 
+    @Test
+    public void testMoistureValue() {
+        SensorData sensorData = new SensorData();
+        sensorData.setMoisture(40.0f);
+        assertEquals(40.0f, sensorData.getMoisture());
+    }
 
+    @Test
+    public void testLightValue() {
+        SensorData sensorData = new SensorData();
+        sensorData.setLight(1000.0f);
+        assertEquals(1000.0f, sensorData.getLight());
+    }
 
-        @Test
-        public void testTemperatureValue() {
-            TemperatureData temperatureData = new TemperatureData(25.0F);
-            assertEquals(25.0, temperatureData.getValue());
-        }
-
-
-
-
-        @Test
-        public void testMoistureValue() {
-            MoistureData moistureData = new MoistureData(0.5F);
-            assertEquals(0.5F, moistureData.getValue());
-        }
-
-
-
-
-        @Test
-        public void testLightValue() {
-            LightData lightData = new LightData(1000.0F);
-            assertEquals(1000.0F, lightData.getValue());
-        }
-
-
-
-
-        @Test
-        public void testHumidityValue() {
-            HumidityData humidityData = new HumidityData(0.8F);
-            assertEquals(0.8F, humidityData.getValue());
-        }
-
+    @Test
+    public void testHumidityValue() {
+        SensorData sensorData = new SensorData();
+        sensorData.setHumidity(80.0f);
+        assertEquals(80.0f, sensorData.getHumidity());
+    }
 }
