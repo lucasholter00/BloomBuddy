@@ -12,14 +12,17 @@ public class MQTTHandler {
     private final String BROKERURL ="tcp://broker.hivemq.com:1883" ;
     private final String CLIENTID = "JavaMQTTClient";
     private final int QOS = 0;
-    private MqttClient client; 
+    private MqttClient client;
+    private float humidityReading;
     private float moistureReading;
     private float lightReading;
-    
+
+
     public MQTTHandler() throws MqttException{
         initiateMQTTClient();
         this.subscribe("BloomBuddy/Moisture/raw");
         this.subscribe("BloomBuddy/Light/raw");
+        this.subscribe("BloomBuddy/Humidity/raw");
     }
 
     public void initiateMQTTClient() throws MqttException{
@@ -38,8 +41,12 @@ public class MQTTHandler {
             @Override
             public void messageArrived(String topic, MqttMessage message) {
                 if (topic.equals("BloomBuddy/Moisture/raw")){
-                    moistureReading = Float.parseFloat(message.toString());         
-                } else if (topic.equals("BloomBuddy/Light/raw")) {
+                    moistureReading = Float.parseFloat(message.toString());
+                }
+                if (topic.equals("BloomBuddy/Humidity/raw")){
+                    humidityReading = Float.parseFloat(message.toString());
+                }
+                 else if (topic.equals("BloomBuddy/Light/raw")) {
                     lightReading = Float.parseFloat(message.toString());
                 } else{
                     System.out.println("Message arrived. Topic: " + topic + " Message: " + message.toString());
@@ -76,6 +83,10 @@ public class MQTTHandler {
     public float getMoistureReading(){
         return this.moistureReading;
     }
+    public float getHumidityReading() {
+        return this.humidityReading;
+    }
+
 
     public float getLightReading(){ return this.lightReading; }
 
