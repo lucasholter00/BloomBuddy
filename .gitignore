@@ -1,15 +1,26 @@
-#This gitignore configuration is taken from https://github.com/github/gitignore
+# IDE specific files
+.idea/
+*.iml
 
+# Maven wrapper
+.mvn/wrapper/
+
+# Build directories
 target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
+
+# Settings
+.settings/
+
+# System specific files
+.DS_Store
+
+# Release and build properties
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+
+# Maven Wrapper without binary JAR
 .mvn/wrapper/maven-wrapper.jar
 
 # Eclipse m2e generated files
