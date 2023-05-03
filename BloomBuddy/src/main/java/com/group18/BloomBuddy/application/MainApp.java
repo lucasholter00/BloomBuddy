@@ -8,7 +8,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         SceneSwitcher sceneSwitcher = new SceneSwitcher(primaryStage);
-        sceneSwitcher.setLoginScene();
+        sceneSwitcher.setStatScene();
 
     }
     public static void main(String[] args){

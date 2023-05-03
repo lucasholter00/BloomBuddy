@@ -15,8 +15,8 @@ private final Stage stage;
         this.stage = stage;
     }
 
-    public void setLoginScene() throws IOException {
-        URL fxmlResource = getClass().getResource("/LoginScene.fxml");
+    public void setStatScene() throws IOException {
+        URL fxmlResource = getClass().getResource("/statScene.fxml");
         FXMLLoader loader1 = new FXMLLoader();
         loader1.setLocation(fxmlResource);
         Parent root1 = loader1.load();
@@ -25,6 +25,7 @@ private final Stage stage;
         stage.setTitle("BloomBuddy");
         stage.setScene(loginScene);
         stage.setResizable(false);
+        stage.setFullScreen(true);
         stage.show();
     }
 }
