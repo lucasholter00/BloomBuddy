@@ -4,14 +4,18 @@ import java.util.Scanner;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.sql.*;
 /**
  * Hello world!
  *
  */
 public class App {
     
-    public static void main( String[] args) throws InterruptedException{
-        try{
+    public static void main( String[] args) throws InterruptedException, SQLException{
+        DatabaseConnection conn = new DatabaseConnection();
+        conn.getAllUsers();
+
+        /*try{
             
             MQTTHandler client = new MQTTHandler();
             while(true){
@@ -22,6 +26,6 @@ public class App {
         }
         catch(MqttException e){
             e.printStackTrace();
-        }
+        }*/
     }
 }
