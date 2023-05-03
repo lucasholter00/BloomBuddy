@@ -35,6 +35,7 @@ DHT dht (DHTPIN, 11);
 int moisturePin = A0;
 int humidityPin = A0;
 int lightPin = A0;
+int temperaturePin = A0;
 
 WiFiClient wioClient;
 PubSubClient client(wioClient);
@@ -170,6 +171,7 @@ void loop() {
     Serial.println(val);
     publishMoistureValues();
     float h = dht.readHumidity();
+    float t = dht.readTemperature();
     Serial.println("Humidity: " + String(h) + " %");
     delay(200);
      int valLight = analogRead(lightPin);
@@ -208,11 +210,21 @@ void publishMoistureValues(){
 
 void publishHumidityValues(){
  float h = dht.readHumidity();
- if (!isnan(h) { //Checks whether the readings are valid floating-point numbers.
+ if (!isnan(h)) { //Checks whether the readings are valid floating-point numbers.
  char buffer[40];
  itoa(h, buffer, 10);
  client.publish("BloomBuddy/Humidity/raw", buffer);
 }
+}
+void publishTemperatureValues(){
+float t = dht.readTemperature();
+if(!isnan(h)) {   //Checks whether the readings are valid floating-point numbers.
+char buffer[40];
+itoa(h, buffer, 10);
+client.publish("BloomBuddy/Temperature/raw", buffer);
+}
+}
+
 void publishLightValues(){
   int valLight = analogRead(lightPin);
   char msg[8];

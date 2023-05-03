@@ -16,6 +16,7 @@ public class MQTTHandler {
     private float humidityReading;
     private float moistureReading;
     private float lightReading;
+    private float temperatureReading;
 
 
     public MQTTHandler() throws MqttException{
@@ -23,6 +24,7 @@ public class MQTTHandler {
         this.subscribe("BloomBuddy/Moisture/raw");
         this.subscribe("BloomBuddy/Light/raw");
         this.subscribe("BloomBuddy/Humidity/raw");
+        this.subscribe("BloomBuddy/Temperature/raw");
     }
 
     public void initiateMQTTClient() throws MqttException{
@@ -48,6 +50,9 @@ public class MQTTHandler {
                 }
                  else if (topic.equals("BloomBuddy/Light/raw")) {
                     lightReading = Float.parseFloat(message.toString());
+                }
+                 else if(topic.equals("BloomBuddy/Temperature/raw")){
+                    temperatureReading = Float.parseFloat(message.toString());
                 } else{
                     System.out.println("Message arrived. Topic: " + topic + " Message: " + message.toString());
                 }
@@ -89,6 +94,9 @@ public class MQTTHandler {
 
 
     public float getLightReading(){ return this.lightReading; }
+    public float getTemperatureReading(){
+        return this.temperatureReading;
+    }
 
 }
 

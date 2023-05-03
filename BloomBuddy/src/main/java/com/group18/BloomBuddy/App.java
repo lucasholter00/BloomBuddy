@@ -12,7 +12,7 @@ public class App {
         try{
             MQTTHandler client = new MQTTHandler();
             while(true){
-                SensorData data = new SensorData(client.getMoistureReading(), 0, client.getLightReading(), 0);
+                SensorData data = new SensorData(client.getMoistureReading(), client.getHumidityReading(), client.getLightReading(), client.getTemperatureReading());
                 Thread.sleep(100);
                 System.out.println(data);
             }

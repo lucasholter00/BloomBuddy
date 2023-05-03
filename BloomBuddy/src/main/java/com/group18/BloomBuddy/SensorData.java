@@ -8,7 +8,7 @@ public class SensorData {
     
     public SensorData(float moisture_level, float temperature, float light_intensity, float humidity) {
         this.moisture_level = moisture_level;
-        this.temperature = 0;
+        this.temperature = temperature;
         this.light_intensity = light_intensity;
         this.humidity = humidity;
     }
