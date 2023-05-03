@@ -1,7 +1,6 @@
 package com.group18.BloomBuddy;
 
-import java.util.Scanner;
-
+import com.group18.BloomBuddy.application.MainApp;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 /**
@@ -10,7 +9,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  */
 public class App {
     
-    public static void main( String[] args) throws InterruptedException{
+    public static void main( String[] args) throws Exception {
+        MainApp mainApp = new MainApp();
         try{
             
             MQTTHandler client = new MQTTHandler();

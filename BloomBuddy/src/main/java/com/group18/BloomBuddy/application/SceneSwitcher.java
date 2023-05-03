@@ -15,7 +15,7 @@ private final Stage stage;
         this.stage = stage;
     }
 
-    public void setStatScene() throws IOException {
+    public void setLoginScene() throws IOException {
         URL fxmlResource = getClass().getResource("/statScene.fxml");
         FXMLLoader loader1 = new FXMLLoader();
         loader1.setLocation(fxmlResource);

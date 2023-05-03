@@ -5,13 +5,15 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        SceneSwitcher sceneSwitcher = new SceneSwitcher(primaryStage);
-        sceneSwitcher.setStatScene();
-
+    private Stage stage;
+    public MainApp () throws Exception {
+        this.stage = new Stage();
+        start(stage);
     }
-    public static void main(String[] args){
-        launch(args);
+    @Override
+    public void start(Stage stage) throws Exception {
+        SceneSwitcher sceneSwitcher = new SceneSwitcher(stage);
+        sceneSwitcher.setLoginScene();
+
     }
 }
