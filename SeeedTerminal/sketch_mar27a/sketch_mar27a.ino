@@ -31,6 +31,7 @@ const char* TOPIC_pub_connection = "klonk";
 
 
 TFT_eSPI tft;
+int DHTPIN = A0;
 DHT dht (DHTPIN, 11);
 int moisturePin = A0;
 int humidityPin = A0;
@@ -165,20 +166,13 @@ void loop() {
   if (!client.connected()) {
     reconnect();
   }
-    int val = analogRead(moisturePin);
-    //int val = analogRead(WIO_MIC);
-    Serial.println(val);
-    publishMoistureValues();
-    float h = dht.readHumidity();
-    Serial.println("Humidity: " + String(h) + " %");
-    delay(200);
-     int valLight = analogRead(lightPin);
-     Serial.println(val);
-     publishLightValues();
 
-    //publishMicValues();
+    publishMoistureValues();
+    publishLightValues();
     publishMicValues();
     publishHumidityValues();
+
+    delay(200);
 
 /*   Use to continuously execute something in the loop.
      sensor data?! Hint hint  ヾ(o✪‿✪o)ｼ 
@@ -208,14 +202,16 @@ void publishMoistureValues(){
 
 void publishHumidityValues(){
  float h = dht.readHumidity();
- if (!isnan(h) { //Checks whether the readings are valid floating-point numbers.
+ //if (!isnan(h)) { //Checks whether the readings are valid floating-point numbers.
  char buffer[40];
  itoa(h, buffer, 10);
  client.publish("BloomBuddy/Humidity/raw", buffer);
+//  }
 }
+
 void publishLightValues(){
   int valLight = analogRead(lightPin);
   char msg[8];
-  snprintf(msg, 8, "%d", val);
+  snprintf(msg, 8, "%d", valLight);
   client.publish("BloomBuddy/Light/raw", msg);
 }
