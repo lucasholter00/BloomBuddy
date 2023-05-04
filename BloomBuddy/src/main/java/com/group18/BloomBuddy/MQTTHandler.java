@@ -52,15 +52,5 @@ public class MQTTHandler {
         client.close();
     }
 
-    public float getMoistureReading(){
-        return this.moistureReading;
-    }
-    public float getHumidityReading() {
-        return this.humidityReading;
-    }
-
-
-    public float getLightReading(){ return this.lightReading; }
-
 }
 
