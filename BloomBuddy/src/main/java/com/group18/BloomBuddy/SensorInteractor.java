@@ -13,7 +13,7 @@ public class SensorInteractor {
 
     public SensorInteractor() throws MqttException{
         this.client = createMQTTHandler(); 
-        this.data = new SensorData(0,0,0,0);
+        this.data = new SensorData();
         this.client.subscribe("BloomBuddy/Moisture/raw");
         this.client.subscribe("BloomBuddy/Light/raw");
         this.client.subscribe("BloomBuddy/Humidity/raw");
@@ -26,8 +26,16 @@ public class SensorInteractor {
             }
 
             public void messageArrived(String topic, MqttMessage message) throws Exception {
-                System.out.println("Message received on topic " + topic + ": " + new String(message.getPayload()));
-                // process the message here
+                
+                if(topic.equals("BloomBuddy/Moisture/raw")){
+                    data.setMoistureLevel(Float.parseFloat(new String(message.getPayload())));
+                }
+                else if(topic.equals("BloomBuddy/Light/raw")){
+                    data.setLightIntensity(Float.parseFloat(new String(message.getPayload())));
+                }
+                else if(topic.equals("BloomBuddy/Humidity/raw")){
+                    data.setHumidity(Float.parseFloat(new String(message.getPayload())));
+                }
             }
 
             public void deliveryComplete(IMqttDeliveryToken token) {
