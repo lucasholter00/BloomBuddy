@@ -18,4 +18,19 @@ public class SensorData {
                 + light_intensity + ", humidity=" + humidity + "]";
     }
 
+    public float getTemperature() {
+        return this.temperature;
+    }
+
+    public float getMoistureLevel() {
+        return this.moisture_level;
+    }
+
+    public float getLightIntensity() {
+        return this.light_intensity;
+    }
+
+    public float getHumidity() {
+        return this.humidity;
+    }
 }
