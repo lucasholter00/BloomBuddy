@@ -10,7 +10,7 @@ public class SensorData {
         this.moisture_level = moisture_level;
         this.temperature = 0;
         this.light_intensity = light_intensity;
-        this.humidity = 0;
+        this.humidity = humidity;
     }
 
     public String toString() {

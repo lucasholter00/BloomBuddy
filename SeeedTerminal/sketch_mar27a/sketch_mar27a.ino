@@ -7,6 +7,7 @@
 #include <rpcWiFi.h>
 #include"TFT_eSPI.h"
 #include <PubSubClient.h>
+#include "DHT.h" //Include the DHT library
 
 
 // Update these with values suitable for your network.
@@ -30,7 +31,9 @@ const char* TOPIC_pub_connection = "klonk";
 
 
 TFT_eSPI tft;
+DHT dht (DHTPIN, 11);
 int moisturePin = A0;
+int humidityPin = A0;
 int lightPin = A0;
 
 WiFiClient wioClient;
@@ -146,7 +149,7 @@ void setup() {
   tft.begin();
   tft.fillScreen(TFT_BLACK);
   tft.setRotation(3);
-
+  dht.begin();
 
   Serial.println();
   Serial.begin(115200);
@@ -166,14 +169,18 @@ void loop() {
     //int val = analogRead(WIO_MIC);
     Serial.println(val);
     publishMoistureValues();
+    float h = dht.readHumidity();
+    Serial.println("Humidity: " + String(h) + " %");
     delay(200);
      int valLight = analogRead(lightPin);
      Serial.println(val);
      publishLightValues();
 
     //publishMicValues();
+    publishMicValues();
+    publishHumidityValues();
 
-/*   Use to continuesly execute something in the loop.
+/*   Use to continuously execute something in the loop.
      sensor data?! Hint hint  ヾ(o✪‿✪o)ｼ 
   
   long now = millis();
@@ -199,6 +206,13 @@ void publishMoistureValues(){
   client.publish("BloomBuddy/Moisture/raw", buffer);
 }
 
+void publishHumidityValues(){
+ float h = dht.readHumidity();
+ if (!isnan(h) { //Checks whether the readings are valid floating-point numbers.
+ char buffer[40];
+ itoa(h, buffer, 10);
+ client.publish("BloomBuddy/Humidity/raw", buffer);
+}
 void publishLightValues(){
   int valLight = analogRead(lightPin);
   char msg[8];
