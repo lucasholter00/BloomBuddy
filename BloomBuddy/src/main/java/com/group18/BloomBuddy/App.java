@@ -10,11 +10,10 @@ public class App {
     
     public static void main( String[] args) throws InterruptedException{
         try{
-            MQTTHandler client = new MQTTHandler();
+            SensorInteractor sensorInteractor = new SensorInteractor();
             while(true){
-                SensorData data = new SensorData(client.getMoistureReading(), 0, client.getLightReading(), 0);
-                Thread.sleep(100);
-                System.out.println(data);
+                Thread.sleep(1000);
+                System.out.println(sensorInteractor.getData());
             }
         }
         catch(MqttException e){
