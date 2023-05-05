@@ -19,50 +19,18 @@ public class MQTTHandler {
     private float temperatureReading;
 
 
-    public MQTTHandler() throws MqttException{
-        initiateMQTTClient();
-        this.subscribe("BloomBuddy/Moisture/raw");
-        this.subscribe("BloomBuddy/Light/raw");
-        this.subscribe("BloomBuddy/Humidity/raw");
-        this.subscribe("BloomBuddy/Temperature/raw");
+    public MQTTHandler(MqttCallback callback) throws MqttException{
+        initiateMQTTClient(callback);
     }
 
-    public void initiateMQTTClient() throws MqttException{
+    public void initiateMQTTClient(MqttCallback callback) throws MqttException{
         this.client = new MqttClient(BROKERURL, CLIENTID);
             
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
 
-        client.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable cause) {
-                System.out.println("Connection lost");
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage message) {
-                if (topic.equals("BloomBuddy/Moisture/raw")){
-                    moistureReading = Float.parseFloat(message.toString());
-                }
-                if (topic.equals("BloomBuddy/Humidity/raw")){
-                    humidityReading = Float.parseFloat(message.toString());
-                }
-                 else if (topic.equals("BloomBuddy/Light/raw")) {
-                    lightReading = Float.parseFloat(message.toString());
-                }
-                 else if(topic.equals("BloomBuddy/Temperature/raw")){
-                    temperatureReading = Float.parseFloat(message.toString());
-                } else{
-                    System.out.println("Message arrived. Topic: " + topic + " Message: " + message.toString());
-                }
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-                System.out.println("Delivery complete");
-            }
-        });   
+        client.setCallback(callback); 
         
         System.out.println("Connecting to broker: " + BROKERURL);
         client.connect(options);
@@ -83,19 +51,6 @@ public class MQTTHandler {
     public void close() throws MqttException{
         client.disconnect();
         client.close();
-    }
-
-    public float getMoistureReading(){
-        return this.moistureReading;
-    }
-    public float getHumidityReading() {
-        return this.humidityReading;
-    }
-
-
-    public float getLightReading(){ return this.lightReading; }
-    public float getTemperatureReading(){
-        return this.temperatureReading;
     }
 
 }
