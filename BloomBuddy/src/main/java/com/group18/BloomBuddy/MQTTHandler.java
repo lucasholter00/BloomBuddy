@@ -16,6 +16,7 @@ public class MQTTHandler {
     private float humidityReading;
     private float moistureReading;
     private float lightReading;
+    private float temperatureReading;
 
 
     public MQTTHandler(MqttCallback callback) throws MqttException{
