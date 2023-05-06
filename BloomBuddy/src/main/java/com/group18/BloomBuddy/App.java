@@ -13,7 +13,7 @@ public class App {
     
     public static void main( String[] args) throws InterruptedException, SQLException{
         DatabaseConnection conn = new DatabaseConnection();
-        conn.getAllUsers();
+//        conn.getAllUsers();
 
         /*try{
             
