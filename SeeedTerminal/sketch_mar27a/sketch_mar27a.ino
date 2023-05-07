@@ -168,12 +168,12 @@ void loop() {
     reconnect();
   }
 
-    publishMoistureValues();
-    publishLightValues();
-    publishMicValues();
+    //publishMoistureValues();
+    //publishLightValues();
+    publishTemperatureValues();
     publishHumidityValues();
 
-    delay(200);
+    delay(1000);
 
 /*   Use to continuously execute something in the loop.
      sensor data?! Hint hint  ヾ(o✪‿✪o)ｼ 
@@ -203,18 +203,19 @@ void publishMoistureValues(){
 
 void publishHumidityValues(){
  float h = dht.readHumidity();
+ Serial.println(h);
  //if (!isnan(h)) { //Checks whether the readings are valid floating-point numbers.
  char buffer[40];
  itoa(h, buffer, 10);
  client.publish("BloomBuddy/Humidity/raw", buffer);
 //  }
 }
-}
 void publishTemperatureValues(){
 float t = dht.readTemperature();
-if(!isnan(h)) {   //Checks whether the readings are valid floating-point numbers.
+Serial.println(t);
+if(!isnan(t)) {   //Checks whether the readings are valid floating-point numbers.
 char buffer[40];
-itoa(h, buffer, 10);
+itoa(t, buffer, 10);
 client.publish("BloomBuddy/Temperature/raw", buffer);
 }
 }
