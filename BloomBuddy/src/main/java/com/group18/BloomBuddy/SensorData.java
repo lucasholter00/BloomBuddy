@@ -3,9 +3,9 @@ package com.group18.BloomBuddy;
 import java.util.Random;
 
 public class SensorData {
-    private float moisture_level;
+    private float moistureLevel;
     private float temperature;
-    private float light_intensity;
+    private float lightIntensity;
     private float humidity;
     
     public SensorData(float moisture_level, float temperature, float light_intensity, float humidity) {
@@ -16,8 +16,23 @@ public class SensorData {
     }
 
     public String toString() {
-        return "SensorData [moisture_level=" + moisture_level + ", temperature=" + temperature + ", light_intensity="
-                + light_intensity + ", humidity=" + humidity + "]";
+        return "SensorData [moisture_level=" + moistureLevel + ", temperature=" + temperature + ", light_intensity="
+                + lightIntensity + ", humidity=" + humidity + "]";
+    }
+    public void setMoistureLevel(float moisture_level){
+        this.moistureLevel = moisture_level;
+    }
+    
+    public void setTemperature(float temperature){
+        this.temperature = temperature;
+    }
+
+    public void setLightIntensity(float light_intensity){
+        this.lightIntensity = light_intensity;
+    }
+
+    public void setHumidity(float humidity){
+        this.humidity = humidity;
     }
 
     public float getHumidity() {

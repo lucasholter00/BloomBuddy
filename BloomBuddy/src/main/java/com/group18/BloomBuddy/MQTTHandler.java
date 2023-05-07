@@ -12,45 +12,25 @@ public class MQTTHandler {
     private final String BROKERURL ="tcp://broker.hivemq.com:1883" ;
     private final String CLIENTID = "JavaMQTTClient";
     private final int QOS = 0;
-    private MqttClient client; 
+    private MqttClient client;
+    private float humidityReading;
     private float moistureReading;
     private float lightReading;
-    
-    public MQTTHandler() throws MqttException{
-        initiateMQTTClient();
-        this.subscribe("BloomBuddy/Moisture/raw");
-        this.subscribe("BloomBuddy/Light/raw");
+    private float temperatureReading;
+
+
+    public MQTTHandler(MqttCallback callback) throws MqttException{
+        initiateMQTTClient(callback);
     }
 
-    public void initiateMQTTClient() throws MqttException{
+    public void initiateMQTTClient(MqttCallback callback) throws MqttException{
         this.client = new MqttClient(BROKERURL, CLIENTID);
             
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
 
-        client.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable cause) {
-                System.out.println("Connection lost");
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage message) {
-                if (topic.equals("BloomBuddy/Moisture/raw")){
-                    moistureReading = Float.parseFloat(message.toString());         
-                } else if (topic.equals("BloomBuddy/Light/raw")) {
-                    lightReading = Float.parseFloat(message.toString());
-                } else{
-                    System.out.println("Message arrived. Topic: " + topic + " Message: " + message.toString());
-                }
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-                System.out.println("Delivery complete");
-            }
-        });   
+        client.setCallback(callback); 
         
         System.out.println("Connecting to broker: " + BROKERURL);
         client.connect(options);
@@ -72,12 +52,6 @@ public class MQTTHandler {
         client.disconnect();
         client.close();
     }
-
-    public float getMoistureReading(){
-        return this.moistureReading;
-    }
-
-    public float getLightReading(){ return this.lightReading; }
 
 }
 
