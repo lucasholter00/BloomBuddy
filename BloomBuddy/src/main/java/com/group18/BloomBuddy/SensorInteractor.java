@@ -17,6 +17,7 @@ public class SensorInteractor {
         this.client.subscribe("BloomBuddy/Moisture/raw");
         this.client.subscribe("BloomBuddy/Light/raw");
         this.client.subscribe("BloomBuddy/Humidity/raw");
+        this.client.subscribe("BloomBuddy/Temperature/raw");
     }
 
     private MQTTHandler createMQTTHandler() throws MqttException{
@@ -30,11 +31,14 @@ public class SensorInteractor {
                 if(topic.equals("BloomBuddy/Moisture/raw")){
                     data.setMoistureLevel(Float.parseFloat(new String(message.getPayload())));
                 }
-                else if(topic.equals("BloomBuddy/Light/raw")){
+                if(topic.equals("BloomBuddy/Light/raw")){
                     data.setLightIntensity(Float.parseFloat(new String(message.getPayload())));
                 }
-                else if(topic.equals("BloomBuddy/Humidity/raw")){
+                if(topic.equals("BloomBuddy/Humidity/raw")){
                     data.setHumidity(Float.parseFloat(new String(message.getPayload())));
+                }
+                if(topic.equals("BloomBuddy/Temperature/raw")){
+                    data.setTemperature(Float.parseFloat(new String(message.getPayload())));
                 }
             }
 
