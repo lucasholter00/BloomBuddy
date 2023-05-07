@@ -31,7 +31,7 @@ const char* TOPIC_pub_connection = "klonk";
 
 
 TFT_eSPI tft;
-int DHTPIN = A0;
+int DHTPIN = D0;
 DHT dht (DHTPIN, 11);
 int moisturePin = A0;
 int humidityPin = A0;
@@ -168,12 +168,12 @@ void loop() {
     reconnect();
   }
 
-    publishMoistureValues();
-    publishLightValues();
-    publishMicValues();
+    //publishMoistureValues();
+    //publishLightValues();
+    publishTemperatureValues();
     publishHumidityValues();
 
-    delay(200);
+    delay(2000);
 
 /*   Use to continuously execute something in the loop.
      sensor data?! Hint hint  ヾ(o✪‿✪o)ｼ 
@@ -197,30 +197,34 @@ void publishMicValues(){
 void publishMoistureValues(){
   char buffer[16];
   int val = analogRead(moisturePin);
+  Serial.println(val);
   itoa(val, buffer, 10);
   client.publish("BloomBuddy/Moisture/raw", buffer);
 }
 
 void publishHumidityValues(){
  float h = dht.readHumidity();
- //if (!isnan(h)) { //Checks whether the readings are valid floating-point numbers.
+ Serial.println(h);
+ if (!isnan(h)) { //Checks whether the readings are valid floating-point numbers.
  char buffer[40];
  itoa(h, buffer, 10);
  client.publish("BloomBuddy/Humidity/raw", buffer);
-//  }
+  }
 }
-}
+
 void publishTemperatureValues(){
 float t = dht.readTemperature();
-if(!isnan(h)) {   //Checks whether the readings are valid floating-point numbers.
+Serial.println(t);
+if(!isnan(t)) {   //Checks whether the readings are valid floating-point numbers.
 char buffer[40];
-itoa(h, buffer, 10);
+itoa(t, buffer, 10);
 client.publish("BloomBuddy/Temperature/raw", buffer);
 }
 }
 
 void publishLightValues(){
   int valLight = analogRead(lightPin);
+  Serial.println(valLight);
   char msg[8];
   snprintf(msg, 8, "%d", valLight);
   client.publish("BloomBuddy/Light/raw", msg);
