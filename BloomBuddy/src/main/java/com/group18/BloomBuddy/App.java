@@ -20,17 +20,19 @@ public class App extends Application {
         sceneSwitcher.setStatScene();
         Thread sensorThread = new Thread(() -> {
             try {
-                MQTTHandler client = new MQTTHandler();
+            SensorInteractor data = new SensorInteractor();
                 while (true) {
-                    SensorData data = new SensorData(client.getMoistureReading(), 0, client.getLightReading(), 0);
-                    sceneSwitcher.updateSensorData(data,LineChartDataType.MOISTURE);
-                    sceneSwitcher.updateSensorData(data,LineChartDataType.TEMPERATURE);
-                    sceneSwitcher.updateSensorData(data,LineChartDataType.HUMIDITY);
-                    sceneSwitcher.updateSensorData(data,LineChartDataType.LIGHT);
+                    sceneSwitcher.updateSensorData(data.getData(),LineChartDataType.MOISTURE);
+                    sceneSwitcher.updateSensorData(data.getData(),LineChartDataType.TEMPERATURE);
+                    sceneSwitcher.updateSensorData(data.getData(),LineChartDataType.HUMIDITY);
+                    sceneSwitcher.updateSensorData(data.getData(),LineChartDataType.LIGHT);
                     Thread.sleep(1000);
-                    System.out.println(data);
+                    System.out.println(data.getData());
                 }
-            } catch (MqttException | InterruptedException e) {
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            catch(MqttException e){
                 e.printStackTrace();
             }
         });
