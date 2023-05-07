@@ -13,7 +13,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         SceneSwitcher sceneSwitcher = new SceneSwitcher(stage);
-        sceneSwitcher.setLoginScene();
+//        sceneSwitcher.setLoginScene();
 
     }
 }
