@@ -8,11 +8,11 @@ public class SensorData {
     private float lightIntensity;
     private float humidity;
     
-    public SensorData(float moisture_level, float temperature, float light_intensity, float humidity) {
-        this.moisture_level = new Random().nextInt(100);
-        this.temperature = new Random().nextInt(100);
-        this.light_intensity = new Random().nextInt(100);
-        this.humidity = new Random().nextInt(100);
+    public SensorData() {
+        this.moistureLevel = new Random().nextInt(100);
+        this.temperature = 0;
+        this.lightIntensity = new Random().nextInt(100);
+        this.humidity = 0;
     }
 
     public String toString() {
@@ -39,10 +39,10 @@ public class SensorData {
         return this.humidity;
     }
     public float getLight_intensity() {
-        return this.light_intensity;
+        return this.lightIntensity;
     }
     public float getMoisture_level() {
-        return this.moisture_level;
+        return this.moistureLevel;
     }
     public float getTemperature() {
         return this.temperature;
