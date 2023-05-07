@@ -1,5 +1,7 @@
 package com.group18.BloomBuddy;
 
+import java.util.Random;
+
 public class SensorData {
     private float moistureLevel;
     private float temperature;
@@ -7,9 +9,9 @@ public class SensorData {
     private float humidity;
     
     public SensorData() {
-        this.moistureLevel = 0;
+        this.moistureLevel = new Random().nextInt(100);
         this.temperature = 0;
-        this.lightIntensity = 0;
+        this.lightIntensity = new Random().nextInt(100);
         this.humidity = 0;
     }
 
@@ -33,4 +35,16 @@ public class SensorData {
         this.humidity = humidity;
     }
 
+    public float getHumidity() {
+        return this.humidity;
+    }
+    public float getLight_intensity() {
+        return this.lightIntensity;
+    }
+    public float getMoisture_level() {
+        return this.moistureLevel;
+    }
+    public float getTemperature() {
+        return this.temperature;
+    }
 }
