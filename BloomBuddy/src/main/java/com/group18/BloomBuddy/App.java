@@ -19,5 +19,23 @@ public class App {
         catch(MqttException e){
             e.printStackTrace();
         }
+
+        //Test for thresholds:
+
+        /*SensorData test = new SensorData(30, 30, 30, 30);
+        SensorSettings sensorSettings = new SensorSettings(40, 50, 40, 70, 40, 800, 40, 60);
+        List<Boolean> outOfBounds = sensorSettings.checkSensorReadings(test);
+        if (outOfBounds.get(0)) {
+            System.out.println("Temperature out of bounds");
+        }
+        if (outOfBounds.get(1)) {
+            System.out.println("moisture out of bounds");
+        }
+        if (outOfBounds.get(2)) {
+            System.out.println("light intensity out of bounds");
+        }
+        if (outOfBounds.get(3)) {
+            System.out.println("Humidity out of bounds");
+        }*/
     }
 }
