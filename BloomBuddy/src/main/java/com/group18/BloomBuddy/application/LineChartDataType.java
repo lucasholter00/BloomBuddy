@@ -6,9 +6,9 @@ import java.util.function.Function;
 
 public enum LineChartDataType {
     TEMPERATURE("Temperature (°C)", SensorData::getTemperature),
-    MOISTURE("Moisture", SensorData::getMoisture_level),
+    MOISTURE("Moisture", SensorData::getMoistureLevel),
     HUMIDITY("Humidity (%)", SensorData::getHumidity),
-    LIGHT("Light Level", SensorData::getLight_intensity);
+    LIGHT("Light Level", SensorData::getLightIntensity);
 
     //The Y-axis label for the chart.
     private final String yAxisLabel;

@@ -38,10 +38,10 @@ public class SensorData {
     public float getHumidity() {
         return this.humidity;
     }
-    public float getLight_intensity() {
+    public float getLightIntensity() {
         return this.lightIntensity;
     }
-    public float getMoisture_level() {
+    public float getMoistureLevel() {
         return this.moistureLevel;
     }
     public float getTemperature() {
