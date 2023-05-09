@@ -20,6 +20,8 @@ public class App {
         else{
             System.out.println("Login failed");
         }
+
+        conn.insertHistoricalData(new HistoricalData(4, 3, 2, 1), "Lucasholter");
 //        conn.getAllUsers();
 
         /*try{
