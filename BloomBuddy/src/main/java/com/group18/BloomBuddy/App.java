@@ -12,7 +12,14 @@ import java.sql.*;
 public class App {
     
     public static void main( String[] args) throws InterruptedException, SQLException{
-        DatabaseConnection conn = new DatabaseConnection();
+        DataBaseConnection conn = new DataBaseConnection();
+        
+        if(conn.verifyLogin("Lucasholter", "admin") == true){
+            System.out.println("Login successful");
+        }
+        else{
+            System.out.println("Login failed");
+        }
 //        conn.getAllUsers();
 
         /*try{
