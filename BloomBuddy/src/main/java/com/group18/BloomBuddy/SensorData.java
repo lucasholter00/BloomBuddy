@@ -9,10 +9,10 @@ public class SensorData {
     private float humidity;
     
     public SensorData() {
-        this.moistureLevel = 30;
-        this.temperature = 30;
-        this.lightIntensity = 30;
-        this.humidity = 30;
+        this.moistureLevel = 0;
+        this.temperature = 0;
+        this.lightIntensity = 0;
+        this.humidity = 0;
     }
 
     public String toString() {
