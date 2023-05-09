@@ -13,7 +13,10 @@
 // Update these with values suitable for your network.
 const char* ssid = "TP-Link_7460"; // WiFi Name
 const char* password = "13401115";  // WiFi Password
-
+String getThresholdColorTemperature = "TFT_GREEN";
+String getThresholdColorHumidity = "TFT_GREEN";
+String getThresholdColorLight = "TFT_GREEN";
+String getThresholdColorMoisture = "TFT_GREEN";
 
 /**********  HOW TO FIND YOUR MOSQUITTO BROKER ADDRESS*******************
   In Windows command prompt, use the command:   ipconfig
@@ -92,6 +95,18 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println();
   buff_p[length] = '\0';
   String message = String(buff_p);
+  if(topic = "thresholdColorTemperature"){
+    thresholdColorTemperature = String(buff_p);
+  }
+  if(topic = "thresholdColorHumidity"){
+    thresholdColorHumidity = String(buff_p);
+   }
+  if(topic = "thresholdColorLight"){
+    thresholdColorLight = String(buff_p);
+  }
+  if(topic = "thresholdColorMoisture"){
+    thresholdColorMoisture = String(buff_p);
+  }
 // end of conversion
   /***************  Action with topic and messages ***********/
   setColorAndPrintMessage(message);
@@ -225,4 +240,56 @@ void publishLightValues(){
   char msg[8];
   snprintf(msg, 8, "%d", valLight);
   client.publish("BloomBuddy/Light/raw", msg);
+}
+
+void ThresholdIndication(){
+  // Calculate the height of each screen quadrant
+  int quadrantHeight = tft.height() / 4;
+
+  // Clear the display
+  tft.fillScreen(TFT_BLACK);
+
+  // Draw text and fill color for the first quadrant
+  tft.setCursor(0, 0);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(2);
+  tft.setTextWrap(true);
+  tft.fillRoundRect(0, 0, tft.width(), quadrantHeight, 5, thresholdColorTemperature);
+  tft.println("TEMP");
+
+  // Draw text and fill color for the second quadrant
+  tft.setCursor(0, quadrantHeight);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(2);
+  tft.setTextWrap(true);
+  tft.fillRoundRect(0, quadrantHeight, tft.width(), quadrantHeight, 5, thresholdColorMoisture);
+  tft.println("HUMIDITY");
+
+  // Draw text and fill color for the third quadrant
+  tft.setCursor(0, 2 * quadrantHeight);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(2);
+  tft.setTextWrap(true);
+  tft.fillRoundRect(0, 2 * quadrantHeight, tft.width(), quadrantHeight, 5, thresholdColorHumidity);
+  tft.println("MOISTURE");
+
+  // Draw text and fill color for the fourth quadrant
+  tft.setCursor(0, 3 * quadrantHeight);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(2);
+  tft.setTextWrap(true);
+  tft.fillRoundRect(0, 3 * quadrantHeight, tft.width(), quadrantHeight, 5, thresholdColorLight);
+  tft.println("LIGHT");
+}
+
+void getThresholdColor(){
+    client.subscribe("thresholdColorTemperature");
+
+    client.subscribe("thresholdColorHumidity");
+
+    client.subscribe("thresholdColorLight");
+
+    client.subscribe("thresholdColorMoisture");
+
+
 }
