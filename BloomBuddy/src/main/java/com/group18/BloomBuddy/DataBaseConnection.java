@@ -80,5 +80,18 @@ public class DataBaseConnection {
         }
         return false;
     }
+
+    public void insertHistoricalData(HistoricalData data, String username){
+        MongoCollection<Document> collection = database.getCollection("sys_user");
+        Document filter = new Document("username", username);
+        Document update = new Document("$push", new Document("historicalData", new Document("moisture", data.getMoisture())
+                .append("temperature", data.getTemperature())
+                .append("humidity", data.getHumidity())
+                .append("light", data.getLight())
+                .append("time", data.getTime())));
+        collection.updateOne(filter, update);
+    }
+
+
 }
 
