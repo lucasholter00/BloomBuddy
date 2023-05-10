@@ -49,7 +49,7 @@ public class SensorInteractor {
                 // not used in this example
             }
         };
-        return new MQTTHandler(mqttCallback);
+        return new MQTTHandler(mqttCallback, "BloomBuddySensorInteractor");
     }
 
     public SensorData getData(){
