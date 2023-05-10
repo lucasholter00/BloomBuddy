@@ -77,7 +77,7 @@ public class App extends Application {
         for(int i= 0; i < 4; i++){
                 if(i == 0) {
                     if(thresholdValues.get(i) == TRUE) {
-                        mqttHandler.publish("hej", "red" );
+                        mqttHandler.publish("thresholdColorTemperature", "red" );
                         System.out.println("Temp bad");
                     }else{
                         mqttHandler.publish("thresholdColorTemperature", "green" );
