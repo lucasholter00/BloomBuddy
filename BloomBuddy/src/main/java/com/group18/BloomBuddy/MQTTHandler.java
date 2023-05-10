@@ -10,7 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class MQTTHandler {
     
     private final String BROKERURL ="tcp://broker.hivemq.com:1883" ;
-    private final String CLIENTID = "JavaMQTTClient";
+    private final String CLIENTID;
     private final int QOS = 0;
     private MqttClient client;
     private float humidityReading;
@@ -19,7 +19,8 @@ public class MQTTHandler {
     private float temperatureReading;
 
 
-    public MQTTHandler(MqttCallback callback) throws MqttException{
+    public MQTTHandler(MqttCallback callback, String CLIENTID) throws MqttException{
+        this.CLIENTID = CLIENTID;
         initiateMQTTClient(callback);
     }
 
