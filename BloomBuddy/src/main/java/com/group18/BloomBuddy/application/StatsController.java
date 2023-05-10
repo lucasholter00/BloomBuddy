@@ -1,22 +1,30 @@
 package com.group18.BloomBuddy.application;
 
 import com.group18.BloomBuddy.SensorData;
+import com.group18.BloomBuddy.SensorInteractor;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class StatsController {
     @FXML
-    public LineChart<String, Number> tempLineChart;
+    private LineChart<String, Number> tempLineChart;
     @FXML
-    public LineChart<String, Number> moistLineChart;
+    private LineChart<String, Number> moistLineChart;
     @FXML
-    public LineChart<String, Number> humLineChart;
+    private LineChart<String, Number> humLineChart;
     @FXML
-    public LineChart<String, Number> lightLineChart;
+    private LineChart<String, Number> lightLineChart;
 
     @FXML
     public void initialize(){
@@ -24,6 +32,21 @@ public class StatsController {
         initializeChart(moistLineChart);
         initializeChart(humLineChart);
         initializeChart(lightLineChart);
+    }
+    public void show (Stage stage) throws IOException {
+        URL fxmlResource = getClass().getResource("/statScene.fxml");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(fxmlResource);
+        Parent root = loader.load();
+        Scene statScene = new Scene(root,800,600);
+        stage.setScene(statScene);
+        loader.getController();
+
+        stage.setTitle("BloomBuddy");
+        stage.setScene(statScene);
+        stage.setResizable(false);
+        stage.setFullScreen(false);
+        stage.show();
     }
     public void initializeChart(LineChart<String, Number> lineChart){
         lineChart.setCreateSymbols(false);
