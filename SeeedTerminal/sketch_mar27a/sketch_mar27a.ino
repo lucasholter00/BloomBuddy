@@ -13,10 +13,10 @@
 // Update these with values suitable for your network.
 const char* ssid = "TP-Link_7460"; // WiFi Name
 const char* password = "13401115";  // WiFi Password
-String getThresholdColorTemperature = "TFT_GREEN";
-String getThresholdColorHumidity = "TFT_GREEN";
-String getThresholdColorLight = "TFT_GREEN";
-String getThresholdColorMoisture = "TFT_GREEN";
+const char* getThresholdColorTemperature = "green";
+const char* getThresholdColorHumidity = "green";
+const char* getThresholdColorLight = "green";
+const char* getThresholdColorMoisture = "green";
 
 /**********  HOW TO FIND YOUR MOSQUITTO BROKER ADDRESS*******************
   In Windows command prompt, use the command:   ipconfig
@@ -94,18 +94,18 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   Serial.println();
   buff_p[length] = '\0';
-  String message = String(buff_p);
+  char* message =  buff_p;
   if(topic = "thresholdColorTemperature"){
-    thresholdColorTemperature = String(buff_p);
+    getThresholdColorTemperature = message;
   }
   if(topic = "thresholdColorHumidity"){
-    thresholdColorHumidity = String(buff_p);
+    getThresholdColorHumidity = message;
    }
   if(topic = "thresholdColorLight"){
-    thresholdColorLight = String(buff_p);
+    getThresholdColorLight = message;
   }
   if(topic = "thresholdColorMoisture"){
-    thresholdColorMoisture = String(buff_p);
+    getThresholdColorMoisture = message;
   }
 // end of conversion
   /***************  Action with topic and messages ***********/
@@ -254,7 +254,11 @@ void ThresholdIndication(){
   tft.setTextColor(TFT_WHITE);
   tft.setTextSize(2);
   tft.setTextWrap(true);
-  tft.fillRoundRect(0, 0, tft.width(), quadrantHeight, 5, thresholdColorTemperature);
+  if(std::strcmp(getThresholdColorTemperature, "green") == 0){
+  tft.fillRoundRect(0, 0, tft.width(), quadrantHeight, 5, TFT_GREEN);
+  }else{
+  tft.fillRoundRect(0, 0, tft.width(), quadrantHeight, 5, TFT_RED);
+  }
   tft.println("TEMP");
 
   // Draw text and fill color for the second quadrant
@@ -262,7 +266,11 @@ void ThresholdIndication(){
   tft.setTextColor(TFT_WHITE);
   tft.setTextSize(2);
   tft.setTextWrap(true);
-  tft.fillRoundRect(0, quadrantHeight, tft.width(), quadrantHeight, 5, thresholdColorMoisture);
+  if(std::strcmp(getThresholdColorTemperature, "green") == 0){
+    tft.fillRoundRect(0, quadrantHeight, tft.width(), quadrantHeight, 5, TFT_GREEN);
+  }else{
+    tft.fillRoundRect(0, quadrantHeight, tft.width(), quadrantHeight, 5, TFT_RED);
+  }
   tft.println("HUMIDITY");
 
   // Draw text and fill color for the third quadrant
@@ -270,7 +278,11 @@ void ThresholdIndication(){
   tft.setTextColor(TFT_WHITE);
   tft.setTextSize(2);
   tft.setTextWrap(true);
-  tft.fillRoundRect(0, 2 * quadrantHeight, tft.width(), quadrantHeight, 5, thresholdColorHumidity);
+  if(std::strcmp(getThresholdColorTemperature, "green") == 0){
+    tft.fillRoundRect(0, 2 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_GREEN);
+  }else{
+    tft.fillRoundRect(0, 2 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_RED);
+  }
   tft.println("MOISTURE");
 
   // Draw text and fill color for the fourth quadrant
@@ -278,7 +290,11 @@ void ThresholdIndication(){
   tft.setTextColor(TFT_WHITE);
   tft.setTextSize(2);
   tft.setTextWrap(true);
-  tft.fillRoundRect(0, 3 * quadrantHeight, tft.width(), quadrantHeight, 5, thresholdColorLight);
+  if(std::strcmp(getThresholdColorTemperature, "green") == 0){
+    tft.fillRoundRect(0, 3 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_GREEN);
+  }else{
+    tft.fillRoundRect(0, 3 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_RED);
+  }
   tft.println("LIGHT");
 }
 

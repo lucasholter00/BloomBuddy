@@ -56,27 +56,27 @@ public class App extends Application {
                         if(previousThresholdValues.get(i) != newThresholdValues.get(i)){
                             if(i == 0) {
                                 if(newThresholdValues.get(i) == TRUE) {
-                                    mqttHandler.publish("thresholdColorTemperature", "TFT_RED" );
+                                    mqttHandler.publish("thresholdColorTemperature", "red" );
                                 }else{
-                                    mqttHandler.publish("thresholdColorTemperature", "TFT_GREEN" );
+                                    mqttHandler.publish("thresholdColorTemperature", "green" );
                                 }
                             } else if (i == 1) {
                                 if(newThresholdValues.get(i) == TRUE) {
-                                    mqttHandler.publish("thresholdColorMoisture", "TFT_RED" );
+                                    mqttHandler.publish("thresholdColorMoisture", "red" );
                                 }else{
-                                    mqttHandler.publish("thresholdColorMoisture", "TFT_GREEN" );
+                                    mqttHandler.publish("thresholdColorMoisture", "green" );
                                 }
                             } else if (i == 2) {
                                 if(newThresholdValues.get(i) == TRUE) {
-                                    mqttHandler.publish("thresholdColorLight", "TFT_RED" );
+                                    mqttHandler.publish("thresholdColorLight", "red" );
                                 }else{
-                                    mqttHandler.publish("thresholdColorLight", "TFT_GREEN" );
+                                    mqttHandler.publish("thresholdColorLight", "green" );
                                 }
                             } else{
                                 if(newThresholdValues.get(i) == TRUE) {
-                                    mqttHandler.publish("thresholdColorHumidity", "TFT_RED" );
+                                    mqttHandler.publish("thresholdColorHumidity", "red" );
                                 }else{
-                                    mqttHandler.publish("thresholdColorHumidity", "TFT_GREEN" );
+                                    mqttHandler.publish("thresholdColorHumidity", "green" );
                                 }
                             }
                             previousThresholdValues = newThresholdValues;
