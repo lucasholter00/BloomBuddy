@@ -1,5 +1,6 @@
 package com.group18.BloomBuddy.application;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +13,6 @@ import java.net.URL;
 import java.util.Objects;
 public class LoginController extends SceneSwitcher{
 
-    public Button loginButton;
 
     public void show (Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/loginScene.fxml");
@@ -28,11 +28,5 @@ public class LoginController extends SceneSwitcher{
         stage.setResizable(false);
         stage.setFullScreen(false);
         stage.show();
-    }
-
-    public void login () throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/homeScene.fxml")));
-        Stage window = (Stage) loginButton.getScene().getWindow();
-        window.setScene(new Scene(root,800,600));
     }
 }

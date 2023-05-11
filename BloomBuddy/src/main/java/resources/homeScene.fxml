@@ -5,6 +5,6 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.HomeController">
    <children>
-      <Button fx:id="statistics" layoutX="369.0" layoutY="287.0" mnemonicParsing="false" onAction="#stats" text="Statistics" />
+      <Button fx:id="statistics" layoutX="369.0" layoutY="287.0" mnemonicParsing="false" onAction="#setStatScene" text="Statistics" />
    </children>
 </AnchorPane>

@@ -2,6 +2,7 @@ package com.group18.BloomBuddy.application;
 
 import com.group18.BloomBuddy.SensorData;
 import com.group18.BloomBuddy.SensorInteractor;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class StatsController {
+
     @FXML
     private LineChart<String, Number> tempLineChart;
     @FXML
@@ -25,20 +27,21 @@ public class StatsController {
     private LineChart<String, Number> humLineChart;
     @FXML
     private LineChart<String, Number> lightLineChart;
-
     @FXML
-    public void initialize(){
+    public void initialize() {
         initializeChart(tempLineChart);
         initializeChart(moistLineChart);
         initializeChart(humLineChart);
         initializeChart(lightLineChart);
+        startSensorThread();
     }
-    public void show (Stage stage) throws IOException {
+
+    public void show(Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/statScene.fxml");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(fxmlResource);
         Parent root = loader.load();
-        Scene statScene = new Scene(root,800,600);
+        Scene statScene = new Scene(root, 800, 600);
         stage.setScene(statScene);
         loader.getController();
 
@@ -48,7 +51,29 @@ public class StatsController {
         stage.setFullScreen(false);
         stage.show();
     }
-    public void initializeChart(LineChart<String, Number> lineChart){
+
+    public void startSensorThread() {
+        Thread sensorThread = new Thread(() -> {
+            try {
+                SensorInteractor data = new SensorInteractor();
+                while (true) {
+                    Thread.sleep(1000);
+                    System.out.println(data.getData());
+                    Platform.runLater(() -> {
+                        updateChart(data.getData(), LineChartDataType.LIGHT);
+                        updateChart(data.getData(), LineChartDataType.HUMIDITY);
+                        updateChart(data.getData(), LineChartDataType.TEMPERATURE);
+                        updateChart(data.getData(), LineChartDataType.MOISTURE);
+                    });
+                }
+            } catch (InterruptedException | MqttException e) {
+                e.printStackTrace();
+            }
+        });
+        sensorThread.setDaemon(true);
+        sensorThread.start();
+    }
+    public void initializeChart(LineChart<String, Number> lineChart) {
         lineChart.setCreateSymbols(false);
         lineChart.setAnimated(false);
         lineChart.getXAxis().setTickLabelsVisible(true);
@@ -61,7 +86,7 @@ public class StatsController {
 
         //Checks the id, to which the enum value is assigned to the chartType.
         LineChartDataType chartType = null;
-        switch(lineChart.getId()) {
+        switch (lineChart.getId()) {
             case "tempLineChart":
                 chartType = LineChartDataType.TEMPERATURE;
                 break;
@@ -83,6 +108,7 @@ public class StatsController {
             lineChart.getYAxis().setLabel(chartType.getYAxisLabel());
         }
     }
+
     //Updates the lineChart with sensorData based on the chartType.
     public void updateChart(SensorData data, LineChartDataType chartType) {
         LineChart<String, Number> lineChart;
@@ -103,17 +129,18 @@ public class StatsController {
             default:
                 throw new IllegalArgumentException("Invalid LineChartDataType: " + chartType);
         }
-        //Initializes a Series, if the lineChart is empty it creates a new Series, otherwise it gets the first line chart's data.
-        XYChart.Series<String, Number> series = lineChart.getData().isEmpty() ? new XYChart.Series<>() : lineChart.getData().get(0);
-        //The time in which the data point was captured.
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-        series.getData().add(new XYChart.Data<>(time, chartType.getSensorValue(data)));
-        if (series.getData().size() > 10) {
-            series.getData().remove(0);
-        }
-        if (lineChart.getData().isEmpty()) {
-            lineChart.getData().add(series);
+        if (lineChart != null) {
+            // Initializes a Series
+            XYChart.Series<String, Number> series = lineChart.getData().isEmpty() ? new XYChart.Series<>() : lineChart.getData().get(0);
+            // The time at which the data point was captured
+            String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+            series.getData().add(new XYChart.Data<>(time, chartType.getSensorValue(data)));
+            if (series.getData().size() > 10) {
+                series.getData().remove(0);
+            }
+            if (lineChart.getData().isEmpty()) {
+                lineChart.getData().add(series);
+            }
         }
     }
 }
-

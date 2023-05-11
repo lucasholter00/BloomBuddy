@@ -14,6 +14,6 @@
          </image>
       </ImageView>
       <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ddfbdb" height="494.0" layoutX="460.0" layoutY="76.0" stroke="WHITE" strokeType="INSIDE" width="284.0" />
-      <Button fx:id="loginButton" layoutX="505.0" layoutY="499.0" mnemonicParsing="false" onAction="#login" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: #7ba96f;" text="Button" />
+      <Button fx:id="loginButton" layoutX="505.0" layoutY="499.0" mnemonicParsing="false" onAction="#setHomeScene" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: #7ba96f;" text="Button" />
    </children>
 </AnchorPane>
