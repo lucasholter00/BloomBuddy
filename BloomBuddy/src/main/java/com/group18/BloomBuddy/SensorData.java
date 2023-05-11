@@ -9,9 +9,9 @@ public class SensorData {
     private float humidity;
     
     public SensorData() {
-        this.moistureLevel = new Random().nextInt(100);
+        this.moistureLevel = 0;
         this.temperature = 0;
-        this.lightIntensity = new Random().nextInt(100);
+        this.lightIntensity = 0;
         this.humidity = 0;
     }
 
