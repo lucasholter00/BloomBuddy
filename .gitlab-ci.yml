@@ -80,9 +80,6 @@ image: maven:3-openjdk-11
   script:
     # Added the cd part to navigate to folder where pom.xml is
     - 'cd BloomBuddy; mvn $MAVEN_CLI_OPTS verify'
-  except:
-    variables:
-      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     
 
 # Verify merge requests using JDK11
