@@ -10,8 +10,10 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import com.mongodb.client.model.ReplaceOptions;
 import org.bson.Document;
 
 public class DataBaseConnection {
@@ -90,6 +92,22 @@ public class DataBaseConnection {
                 .append("light", data.getLight())
                 .append("time", data.getTime())));
         collection.updateOne(filter, update);
+    }
+
+
+
+    public void insertLastWatered(LocalDateTime lastWatered, String userName){
+        MongoCollection<Document> collection = database.getCollection("sys_user"); //needs to be correlating to the plant
+
+        // Create a new document representing the user
+        Document userDocument = new Document("username", userName)
+                .append("lastWatered", lastWatered);
+
+        // Find the user document by username
+        Document filter = new Document("username", userName);
+
+        // Replace the existing user document with the new document, as of the reason that only one lastWatered should be saved
+        collection.replaceOne(filter, userDocument, new ReplaceOptions().upsert(true));
     }
 
 

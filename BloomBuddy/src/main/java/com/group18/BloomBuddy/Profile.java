@@ -1,10 +1,11 @@
 package com.group18.BloomBuddy;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.temporal.ChronoUnit; //used to calculate the difference, could be replaced
 
 public class Profile {
     private SensorSettings sensorSettings;
+    private DataBaseConnection dbConn;
     //Date of when the plant was last watered
     private LocalDateTime lastWatered;
     private int waterFrequency; //How often the water should be watered, in terms of days
@@ -30,10 +31,6 @@ public class Profile {
 
     }
 
-    public void saveLastWatered(){
-
-    }
-
     public SensorSettings getSensorSettings() {
         return sensorSettings;
     }
@@ -46,6 +43,7 @@ public class Profile {
         return lastWatered;
     }
     public void setLastWatered(LocalDateTime lastWatered) {
+        dbConn.insertLastWatered(lastWatered,"hej"); //update with plant id
         this.lastWatered = lastWatered;
     }
     public int getWaterFrequency() {
