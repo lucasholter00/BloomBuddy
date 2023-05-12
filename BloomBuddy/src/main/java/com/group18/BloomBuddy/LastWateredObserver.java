@@ -17,7 +17,7 @@ public class LastWateredObserver implements myObserver {
             Profile profile = (Profile) o; //Downcast the Observable object
             LocalDateTime lastWatered = profile.getLastWatered();
             //Method to insert in to the database, will be active when profile.getID exists
-            //updateLastWatered(lastWatered, profile.getID);
+            updateLastWatered(lastWatered, profile.getId());
         }
 
     }
@@ -27,5 +27,6 @@ public class LastWateredObserver implements myObserver {
 
         // connect to the database here
         dbConn.insertLastWatered(lastWatered,profileID);
+        dbConn.close();
     }
 }

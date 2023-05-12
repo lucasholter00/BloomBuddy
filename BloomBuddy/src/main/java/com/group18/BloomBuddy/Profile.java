@@ -6,11 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
-
 public class Profile implements myObservable {
-
-
-public class Profile {
     private SensorSettings sensorSettings;
     private String name;
     private String id;
@@ -50,61 +46,61 @@ public class Profile {
 
     public void addHistoricalData(HistoricalData data) {
         this.historicalData.add(data);
-
-
-    public SensorSettings getSensorSettings() {
-        return sensorSettings;
     }
 
-    public void setSensorSettings(SensorSettings sensorSettings) {
-        this.sensorSettings = sensorSettings;
+        public SensorSettings getSensorSettings () {
+            return sensorSettings;
+        }
+
+        public void setSensorSettings (SensorSettings sensorSettings){
+            this.sensorSettings = sensorSettings;
+        }
+
+        public String getName () {
+            return name;
+        }
+
+        public String getId () {
+            return id;
+        }
+
+        public void setName (String newName){
+            this.name = newName;
+        }
+
+        public LocalDateTime getLastWatered () {
+            return lastWatered;
+        }
+
+        public void setLastWatered (LocalDateTime lastWatered){
+            this.lastWatered = lastWatered;
+            notifyObservers();
+        }
+
+
+        public int getWaterFrequency () {
+            return waterFrequency;
+        }
+
+        public void setWaterFrequency ( int waterFrequency){
+            this.waterFrequency = waterFrequency;
+        }
+
+        @Override
+        public void addObserver (myObserver observer){
+            observers.add(observer);
+        }
+
+        @Override //Can not make this function work :( It says it does not override
+        public void removeObserver (myObserver observer){
+            observers.remove(observer);
+        }
+
+
+        @Override
+        public void notifyObservers () {
+            for (myObserver observer : observers) {
+                observer.update(this, null);
+            }
+        }
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setName(String newName) {
-        this.name = newName;
-    }
-
-    public LocalDateTime getLastWatered() {
-        return lastWatered;
-    }
-
-    public void setLastWatered(LocalDateTime lastWatered) {
-         this.lastWatered = lastWatered;
-         notifyObservers();
-     }
-
-
-    public int getWaterFrequency() {
-        return waterFrequency;
-    }
-
-    public void setWaterFrequency(int waterFrequency) {
-        this.waterFrequency = waterFrequency;
-    }
-
-    @Override
-    public void addObserver(myObserver observer) {
-        observers.add(observer);
-    }
-
-  @Override //Can not make this function work :( It says it does not override
-    public void removeObserver(myObserver observer) {
-        observers.remove(observer);
-    }
-
-
-  @Override
-  public void notifyObservers() {
-      for (myObserver observer : observers) {
-          observer.update(this, null);
-      }
-  }
-}

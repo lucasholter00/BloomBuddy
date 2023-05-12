@@ -62,8 +62,7 @@ public class DataBaseConnection {
 
         Document document = new Document("username", username)
                 .append("password", password)
-                .append("profiles", Arrays.asList())
-                .append("lastWatered", "");
+                .append("profiles", Arrays.asList());
         collection.insertOne(document);
         return true;
     }
@@ -102,6 +101,7 @@ public class DataBaseConnection {
 
         Document query = new Document("name", profile.getName())
                 .append("id", profile.getId())
+                .append("lastWatered", "")
                 .append("sensorSettings", new Document("tempratureThresholdLow", profile.getSensorSettings().getTemperatureLowerBound())
                         .append("tempratureThresholdHigh", profile.getSensorSettings().getTemperatureUpperBound())
                         .append("humidityThresholdLow", profile.getSensorSettings().getHumidityLowerBound())
@@ -127,11 +127,10 @@ public class DataBaseConnection {
         Document plantDocument = new Document("$set", new Document("profiles.$.lastWatered",lastWatered));
 
         // Find the user document by username
-        Document filter = new Document("id", profileId);
+        Document filter = new Document("profiles.id", profileId);
 
         // Replace the existing user document with the new document, as of the reason that only one lastWatered should be saved
-        collection.replaceOne(filter, plantDocument);
-        collection.replaceOne(filter, plantDocument);
+        collection.updateOne(filter, plantDocument);
     }
 
 
