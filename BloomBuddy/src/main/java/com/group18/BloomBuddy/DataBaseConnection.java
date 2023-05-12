@@ -67,6 +67,7 @@ public class DataBaseConnection {
 
         Document document = new Document("username", username)
                 .append("password", password)
+                .append("lastWatered", "")
                 .append("profiles", Arrays.asList())
                 .append("historicalData", Arrays.asList());
         collection.insertOne(document);
@@ -96,18 +97,18 @@ public class DataBaseConnection {
 
 
 
-    public void insertLastWatered(LocalDateTime lastWatered, String userName){
+    public void insertLastWatered(LocalDateTime lastWatered, String profileId){
         MongoCollection<Document> collection = database.getCollection("sys_user"); //needs to be correlating to the plant
 
-        // Create a new document representing the user
-        Document userDocument = new Document("username", userName)
-                .append("lastWatered", lastWatered);
+        // Create a new document representing the Plant
+        Document plantDocument = new Document("$set", new Document("profiles.$.lastWatered",lastWatered));
 
         // Find the user document by username
-        Document filter = new Document("username", userName);
+        Document filter = new Document("id", profileId);
 
         // Replace the existing user document with the new document, as of the reason that only one lastWatered should be saved
-        collection.replaceOne(filter, userDocument, new ReplaceOptions().upsert(true));
+        collection.replaceOne(filter, plantDocument);
+        collection.replaceOne(filter, plantDocument);
     }
 
 
