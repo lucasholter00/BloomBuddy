@@ -4,16 +4,27 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class Profile implements myObservable {
+
+
+public class Profile {
     private SensorSettings sensorSettings;
+    private String name;
+    private String id;
+    private ArrayList<HistoricalData> historicalData;
     //Date of when the plant was last watered
     private LocalDateTime lastWatered;
     private int waterFrequency; //How often the water should be watered, in terms of days
     private List<myObserver> observers;
 
-    public Profile(SensorSettings sensorSettings) {
+    public Profile(SensorSettings sensorSettings, String name) {
         this.sensorSettings = sensorSettings;
+        this.name = name;
+        this.id = UUID.randomUUID().toString();
+        this.historicalData = new ArrayList<HistoricalData>();
         this.lastWatered = null; //Initialize as null, could be better ways to initialize this
         this.waterFrequency = 0; //Initialize as 0, i.e. no interval to water have been chosen yet by the user
         observers = new ArrayList<>();
@@ -35,8 +46,11 @@ public class Profile implements myObservable {
         long waterFreqToMilli = (long) waterFrequency * 24 * 60 * 60 * 1000; //24 * 60 * 60 * 1000 = numbers of miliseconds in a day (24h)
 
         return elapsedTime > waterFreqToMilli;
-
     }
+
+    public void addHistoricalData(HistoricalData data) {
+        this.historicalData.add(data);
+
 
     public SensorSettings getSensorSettings() {
         return sensorSettings;
@@ -44,6 +58,18 @@ public class Profile implements myObservable {
 
     public void setSensorSettings(SensorSettings sensorSettings) {
         this.sensorSettings = sensorSettings;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setName(String newName) {
+        this.name = newName;
     }
 
     public LocalDateTime getLastWatered() {
@@ -73,8 +99,6 @@ public class Profile implements myObservable {
     public void removeObserver(myObserver observer) {
         observers.remove(observer);
     }
-
-
 
 
   @Override
