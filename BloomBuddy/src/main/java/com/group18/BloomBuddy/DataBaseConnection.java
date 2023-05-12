@@ -117,5 +117,8 @@ public class DataBaseConnection {
         return true;
     }
 
+    public void close(){
+        client.close();
+    }
 }
 
