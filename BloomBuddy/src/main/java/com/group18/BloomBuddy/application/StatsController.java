@@ -17,7 +17,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class StatsController {
+public class StatsController extends SceneSwitcher {
 
     @FXML
     private LineChart<String, Number> tempLineChart;
@@ -27,6 +27,11 @@ public class StatsController {
     private LineChart<String, Number> humLineChart;
     @FXML
     private LineChart<String, Number> lightLineChart;
+
+    private XYChart.Series<String, Number> tempSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> moistSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> humSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> lightSeries = new XYChart.Series<>();
     @FXML
     public void initialize() {
         initializeChart(tempLineChart);
@@ -34,6 +39,7 @@ public class StatsController {
         initializeChart(humLineChart);
         initializeChart(lightLineChart);
         startSensorThread();
+        initializeSeries();
     }
 
     public void show(Stage stage) throws IOException {
@@ -73,6 +79,13 @@ public class StatsController {
         sensorThread.setDaemon(true);
         sensorThread.start();
     }
+
+    public void initializeSeries() {
+        tempLineChart.getData().add(tempSeries);
+        moistLineChart.getData().add(moistSeries);
+        humLineChart.getData().add(humSeries);
+        lightLineChart.getData().add(lightSeries);
+    }
     public void initializeChart(LineChart<String, Number> lineChart) {
         lineChart.setCreateSymbols(false);
         lineChart.setAnimated(false);
@@ -111,35 +124,30 @@ public class StatsController {
 
     //Updates the lineChart with sensorData based on the chartType.
     public void updateChart(SensorData data, LineChartDataType chartType) {
-        LineChart<String, Number> lineChart;
+        XYChart.Series<String, Number> series;
         //Determines which lineChart should receive the sensorData.
         switch (chartType) {
             case TEMPERATURE:
-                lineChart = tempLineChart;
+                series = tempSeries;
                 break;
             case MOISTURE:
-                lineChart = moistLineChart;
+                series = moistSeries;
                 break;
             case HUMIDITY:
-                lineChart = humLineChart;
+                series = humSeries;
                 break;
             case LIGHT:
-                lineChart = lightLineChart;
+                series = lightSeries;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid LineChartDataType: " + chartType);
         }
-        if (lineChart != null) {
-            // Initializes a Series
-            XYChart.Series<String, Number> series = lineChart.getData().isEmpty() ? new XYChart.Series<>() : lineChart.getData().get(0);
+        if (series != null) {
             // The time at which the data point was captured
             String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
             series.getData().add(new XYChart.Data<>(time, chartType.getSensorValue(data)));
             if (series.getData().size() > 10) {
                 series.getData().remove(0);
-            }
-            if (lineChart.getData().isEmpty()) {
-                lineChart.getData().add(series);
             }
         }
     }

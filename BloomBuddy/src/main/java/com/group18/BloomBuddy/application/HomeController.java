@@ -11,8 +11,7 @@ import java.net.URL;
 
 public class HomeController extends SceneSwitcher {
 
-    private StatsController statsController;
-    public Button statistics;
+    public Button statisticsButton;
 
     public void show (Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/homeScene.fxml");

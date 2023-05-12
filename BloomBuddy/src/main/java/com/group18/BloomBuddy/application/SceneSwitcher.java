@@ -22,4 +22,21 @@ public class SceneSwitcher {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         new StatsController().show(stage);
     }
+
+    public void setSettingsScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new AccountSettingsController().show(stage);
+    }
+    public void setPlantOverviewScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new PlantOverviewController().show(stage);
+    }
+    public void setPlantAddingScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new PlantAddingController().show(stage);
+    }
+    public void setEditingAddingScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new PlantEditingController().show(stage);
+    }
 }
