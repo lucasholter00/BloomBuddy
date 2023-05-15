@@ -30,6 +30,7 @@ const char* TOPIC_sub = "hej";
 const char* TOPIC_pub_connection = "klonk";
 
 bool displayPopup = false;
+bool popupPainted = false;
 
 
 TFT_eSPI tft;
@@ -206,15 +207,16 @@ void loop() {
 
     delay(1000);
 
-    if(displayPopup){
+    if(displayPopup && !popupPainted){
         showNotification();
+        popupPainted=true;
     }
-    else{
+    elseif(!displayPopup){
     tft.fillScreen(tft_BLACK)
     }
-
    if(digitalRead(WIO_KEY_A)==LOW){
     removeNotification();
+    popupPainted=false;
     }
 
 /*   Use to continuously execute something in the loop.
