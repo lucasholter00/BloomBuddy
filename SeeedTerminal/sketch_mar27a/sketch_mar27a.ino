@@ -211,7 +211,7 @@ void loop() {
         showNotification();
         popupPainted=true;
     }
-    elseif(!displayPopup){
+    else if(!displayPopup){
     tft.fillScreen(TFT_BLACK);
     }
    if(digitalRead(WIO_KEY_A)==LOW){
