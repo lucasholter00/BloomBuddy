@@ -7,9 +7,9 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class NeedsWaterObserver implements MyObserver {
     @Override
-    public void update(MyObservable o, Object arg) throws MqttException {
+    public void update(MyObservable subject, Object arg) throws MqttException {
         String filter = (String)arg;
-        if (o instanceof Profile && filter.equals("needsWater")){
+        if (subject instanceof Profile && filter.equals("needsWater")){
             notifyTerminal();
         }
     }
