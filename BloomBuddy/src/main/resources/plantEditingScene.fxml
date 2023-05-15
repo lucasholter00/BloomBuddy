@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.PlantEditingController">
    <children>
       <Button fx:id="backToMyPlants" layoutX="34.0" layoutY="40.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" text="Back" />
-      <VBox layoutX="427.0" layoutY="40.0" prefHeight="152.0" prefWidth="100.0">
+      <Pane layoutX="171.0" layoutY="30.0" prefHeight="339.0" prefWidth="258.0" style="-fx-background-color: #ddfbdb;">
          <children>
-            <TextField fx:id="TempLowBound" prefHeight="25.0" prefWidth="73.0" promptText="TempLowBound" />
-            <TextField fx:id="TempUpBound" prefHeight="15.0" prefWidth="100.0" promptText="TempUpBound" />
-            <TextField fx:id="HumLowBound" promptText="HumLowBound" />
-            <TextField fx:id="HumUpBound" promptText="HumUpBound" />
-            <TextField fx:id="MoistLowBound" promptText="MoistLowBound" />
-            <TextField fx:id="MoistUpBound" promptText="MoistUpBound" />
+            <TextField fx:id="TempLowBound" layoutX="12.0" layoutY="39.0" prefHeight="25.0" prefWidth="111.0" promptText="Min (°C)" />
+            <TextField fx:id="TempUpBound" layoutX="144.0" layoutY="39.0" prefHeight="15.0" prefWidth="100.0" promptText="Max (°C)" />
+            <TextField fx:id="HumLowBound" layoutX="12.0" layoutY="113.0" prefHeight="25.0" prefWidth="100.0" promptText="Min (RH%)" />
+            <TextField fx:id="HumUpBound" layoutX="147.0" layoutY="113.0" prefHeight="25.0" prefWidth="95.0" promptText="Max(RH%)" />
+            <TextField fx:id="MoistLowBound" layoutX="12.0" layoutY="184.0" prefHeight="25.0" prefWidth="100.0" promptText="Min (%)" />
+            <TextField fx:id="MoistUpBound" layoutX="136.0" layoutY="184.0" prefHeight="25.0" prefWidth="100.0" promptText="Max (%)" />
+            <Label layoutX="76.0" layoutY="21.0" text="Temperature Values" />
+            <Label layoutX="81.0" layoutY="95.0" text="Humidity Values" />
+            <Label layoutX="81.0" layoutY="166.0" text="Moisture Values" />
+            <Label layoutX="90.0" layoutY="240.0" text="Light Options" />
+            <RadioButton fx:id="LightHigh" layoutX="154.0" layoutY="256.0" mnemonicParsing="false" text="High" />
+            <RadioButton fx:id="LightLow" layoutX="32.0" layoutY="256.0" mnemonicParsing="false" text="Low" />
+            <Button layoutX="80.0" layoutY="291.0" mnemonicParsing="false" onAction="#handleSaveSettingsButton" text="Save Settings" />
          </children>
-      </VBox>
-      <Button layoutX="382.0" layoutY="240.0" mnemonicParsing="false" onAction="#saveSettings" text="Save Settings" />
-      <RadioButton fx:id="LightLow" layoutX="323.0" layoutY="44.0" mnemonicParsing="false" text="Low" />
-      <RadioButton fx:id="LightHigh" layoutX="321.0" layoutY="65.0" mnemonicParsing="false" text="High" />
+      </Pane>
    </children>
 </AnchorPane>
