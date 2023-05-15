@@ -28,7 +28,7 @@ public class App extends Application {
         Thread sensorThread = new Thread(() -> {
             try {
             SensorInteractor data = new SensorInteractor();
-            SensorSettings sensorSettings = new SensorSettings(10,20, 0,20,0,2000,10,20);
+            SensorSettings sensorSettings = new SensorSettings(10,20, 0,100,500,2000,10,20);
             List<Boolean> previousThresholdValues = sensorSettings.checkSensorReadings(data.getData());;
             List<Boolean> newThresholdValues;
                 MqttCallback mqttCallback = new MqttCallback() {
