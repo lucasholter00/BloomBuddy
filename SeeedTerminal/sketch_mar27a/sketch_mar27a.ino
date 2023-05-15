@@ -29,6 +29,8 @@ const char* server = "broker.hivemq.com";  // MQTT Broker URL
 const char* TOPIC_sub = "hej";
 const char* TOPIC_pub_connection = "klonk";
 
+bool displayPopup = false;
+
 
 TFT_eSPI tft;
 int DHTPIN = A0;
@@ -58,7 +60,7 @@ void setup_wifi() {
   Serial.println(ssid);
   WiFi.begin(ssid, password); // Connecting WiFi
 
-  bool displayPopup = false;
+
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -100,35 +102,28 @@ void callback(char* topic, byte* payload, unsigned int length) {
   setColorAndPrintMessage(message);
   //we want to add a notification
 
-  if(strcmp(topic, "BloomBuddy/watering") && message == notification){
+  if(strcmp(topic, "BloomBuddy/watering") && message == "notification"){
     displayPopup = true;
   }
 
 }
 
 void showNotification(){
-    display.clearDisplay();
-    display.fillScreen(RED);
+    tft.fillScreen(tft_RED);
 
   // Set the text color to white
-  display.setTextColor(WHITE);
+  tft.setTextColor(tft_WHITE);
 
   // Set the text size and position
-  display.setTextSize(2);
-  display.setCursor(10, 20);
+  tft.setTextSize(2);
+  tft.setCursor(10, 20);
 
   // Display the message
-  display.println("Watering is needed! :)");
+  tft.println("Watering is needed! :)");
 
-  // Update the display
-  display.display();
 }
 
 void removeNotification(){
-// Clear the display
-  display.clearDisplay();
-  display.display();
-
   // Set the displayPopup flag to false
   displayPopup = false;
 }
@@ -195,6 +190,7 @@ void setup() {
   client.setCallback(callback);
 
     pinMode(WIO_MIC, INPUT);
+    pinMode(WIO_KEY_A, INPUT_PULLUP)
 }
 
 void loop() {
@@ -213,7 +209,11 @@ void loop() {
     if(displayPopup){
         showNotification();
     }
-   if(!digitalRead(WIO_5S_PRESS)==HIGH)
+    else{
+    tft.fillScreen(tft_BLACK)
+    }
+
+   if(digitalRead(WIO_KEY_A)==LOW){
     removeNotification();
     }
 
