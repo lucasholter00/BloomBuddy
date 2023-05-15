@@ -28,7 +28,7 @@ public class App extends Application {
         Thread sensorThread = new Thread(() -> {
             try {
             SensorInteractor data = new SensorInteractor();
-            SensorSettings sensorSettings = new SensorSettings(10,20, 10,20,10,20,10,20);
+            SensorSettings sensorSettings = new SensorSettings(10,20, 0,20,0,2000,10,20);
             List<Boolean> previousThresholdValues = sensorSettings.checkSensorReadings(data.getData());;
             List<Boolean> newThresholdValues;
                 MqttCallback mqttCallback = new MqttCallback() {
@@ -77,29 +77,35 @@ public class App extends Application {
         for(int i= 0; i < 4; i++){
                 if(i == 0) {
                     if(thresholdValues.get(i) == TRUE) {
-                        mqttHandler.publish("thresholdColorTemperature", "red" );
+                        mqttHandler.publish("BloomBuddy/Threshold/Color/Temperature", "red" );
                         System.out.println("Temp bad");
                     }else{
-                        mqttHandler.publish("thresholdColorTemperature", "green" );
+                        mqttHandler.publish("BloomBuddy/Threshold/Color/Temperature", "green" );
                         System.out.println("Temp good");
                     }
                 } else if (i == 1) {
                     if(thresholdValues.get(i) == TRUE) {
-                        mqttHandler.publish("thresholdColorMoisture", "red" );
+                        mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "red" );
+                        System.out.println("moist bad");
                     }else{
-                        mqttHandler.publish("thresholdColorMoisture", "green" );
+                        mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "green" );
+                        System.out.println("moist good");
                     }
                 } else if (i == 2) {
                     if(thresholdValues.get(i) == TRUE) {
-                        mqttHandler.publish("thresholdColorLight", "red" );
+                        mqttHandler.publish("BloomBuddy/Threshold/Color/Light", "red" );
+                        System.out.println("light bad");
                     }else{
-                        mqttHandler.publish("thresholdColorLight", "green" );
+                        mqttHandler.publish("BloomBuddy/Threshold/Color/Light", "green" );
+                        System.out.println("light good");
                     }
                 } else{
                     if(thresholdValues.get(i) == TRUE) {
-                        mqttHandler.publish("thresholdColorHumidity", "red" );
+                        mqttHandler.publish("BloomBuddy/Threshold/Color/Humidity", "red" );
+                        System.out.println("humidity bad");
                     }else{
-                        mqttHandler.publish("thresholdColorHumidity", "green" );
+                        mqttHandler.publish("BloomBuddy/Threshold/Color/Humidity", "green" );
+                        System.out.println("humidity good");
                     }
                 }
             }
