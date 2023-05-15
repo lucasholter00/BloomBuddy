@@ -110,10 +110,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 void showNotification(){
-    tft.fillScreen(tft_RED);
+    tft.fillScreen(TFT_RED);
 
   // Set the text color to white
-  tft.setTextColor(tft_WHITE);
+  tft.setTextColor(TFT_WHITE);
 
   // Set the text size and position
   tft.setTextSize(2);
@@ -212,7 +212,7 @@ void loop() {
         popupPainted=true;
     }
     elseif(!displayPopup){
-    tft.fillScreen(tft_BLACK)
+    tft.fillScreen(TFT_BLACK)
     }
    if(digitalRead(WIO_KEY_A)==LOW){
     removeNotification();
