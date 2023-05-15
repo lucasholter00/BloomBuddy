@@ -1,41 +1,42 @@
 package com.group18.BloomBuddy.application;
 
-import com.group18.BloomBuddy.SensorData;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.stage.Stage;
+
+import javafx.event.ActionEvent;
 import java.io.IOException;
-import java.net.URL;
 
 public class SceneSwitcher {
 
-private final Stage stage;
-
-private StatsController statsController;
-
-    public SceneSwitcher(Stage stage) {
-        this.stage = stage;
+    public void setLoginScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new LoginController().show(stage);
     }
 
-    public void setStatScene() throws IOException {
-        URL fxmlResource = getClass().getResource("/statScene.fxml");
-        FXMLLoader loader1 = new FXMLLoader();
-        loader1.setLocation(fxmlResource);
-        Parent root1 = loader1.load();
-        Scene loginScene = new Scene(root1,800,600);
-
-        statsController = loader1.getController();
-
-        stage.setTitle("BloomBuddy");
-        stage.setScene(loginScene);
-        stage.setResizable(false);
-        stage.setFullScreen(false);
-        stage.show();
+    public void setHomeScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new HomeController().show(stage);
     }
 
-    public void updateSensorData(SensorData data, LineChartDataType chartType) {
-        Platform.runLater(() -> statsController.updateChart(data, chartType));
+    public void setStatScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new StatsController().show(stage);
+    }
+
+    public void setSettingsScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new AccountSettingsController().show(stage);
+    }
+    public void setPlantOverviewScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new PlantOverviewController().show(stage);
+    }
+    public void setPlantAddingScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new PlantAddingController().show(stage);
+    }
+    public void setEditingAddingScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new PlantEditingController().show(stage);
     }
 }

@@ -1,44 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.*?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;"
-            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.group18.BloomBuddy.application.StatsController">
-   <LineChart fx:id="tempLineChart" layoutX="29.0" layoutY="56.0" legendVisible="false" prefHeight="268.0"
-              prefWidth="345.0" title="Temperature">
-      <xAxis>
-         <CategoryAxis side="BOTTOM"/>
-      </xAxis>
-      <yAxis>
-         <NumberAxis side="LEFT"/>
-      </yAxis>
-   </LineChart>
-   <LineChart fx:id="moistLineChart" layoutX="413.0" layoutY="56.0" legendVisible="false" prefHeight="268.0"
-              prefWidth="354.0" title="Moisture">
-      <xAxis>
-         <CategoryAxis side="BOTTOM"/>
-      </xAxis>
-      <yAxis>
-         <NumberAxis side="LEFT"/>
-      </yAxis>
-   </LineChart>
-   <LineChart fx:id="humLineChart" layoutX="29.0" layoutY="300.0" legendVisible="false" prefHeight="268.0"
-              prefWidth="345.0" title="Humidity">
-      <xAxis>
-         <CategoryAxis side="BOTTOM"/>
-      </xAxis>
-      <yAxis>
-         <NumberAxis side="LEFT"/>
-      </yAxis>
-   </LineChart>
-   <LineChart fx:id="lightLineChart" layoutX="413.0" layoutY="300.0" legendVisible="false" prefHeight="268.0"
-              prefWidth="354.0" title="Light level">
-      <xAxis>
-         <CategoryAxis side="BOTTOM"/>
-      </xAxis>
-      <yAxis>
-         <NumberAxis side="LEFT"/>
-      </yAxis>
-   </LineChart>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.StatsController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ddfbdb" height="600.0" stroke="#ddfbdb" strokeType="INSIDE" width="174.0" />
+      <Button fx:id="statisticsButton" layoutX="59.0" layoutY="342.0" mnemonicParsing="false" onAction="#setStatScene" text="Statistics" />
+      <Button fx:id="homeButton" layoutX="56.0" layoutY="205.0" mnemonicParsing="false" onAction="#setHomeScene" text="Home Page" />
+      <Button fx:id="settingsButton" layoutX="63.0" layoutY="401.0" mnemonicParsing="false" onAction="#setSettingsScene" text="Settings" />
+      <Button fx:id="logOutButton" layoutX="56.0" layoutY="458.0" mnemonicParsing="false" onAction="#setLoginScene" prefHeight="19.0" prefWidth="72.0" text="Log out" />
+      <Button fx:id="myPlantButton" layoutX="59.0" layoutY="285.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" text="My plants" />
+      <LineChart fx:id="tempLineChart" layoutX="216.0" layoutY="31.0" legendVisible="false" prefHeight="240.0" prefWidth="280.0" title="Temperature">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </LineChart>
+      <LineChart fx:id="moistLineChart" layoutX="210.0" layoutY="286.0" legendVisible="false" prefHeight="240.0" prefWidth="280.0" title="Moisture">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </LineChart>
+      <LineChart fx:id="humLineChart" layoutX="504.0" layoutY="286.0" legendVisible="false" prefHeight="240.0" prefWidth="280.0" title="Humidity">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </LineChart>
+      <LineChart fx:id="lightLineChart" layoutX="504.0" layoutY="31.0" legendVisible="false" prefHeight="240.0" prefWidth="280.0" title="Light level">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </LineChart>
+   </children>
 </AnchorPane>

@@ -8,4 +8,5 @@ module com.group18.BloomBuddy {
     requires org.mongodb.bson;
     exports com.group18.BloomBuddy to javafx.graphics;
     opens com.group18.BloomBuddy.application to javafx.fxml;
+    exports com.group18.BloomBuddy.application to javafx.graphics;
 }
