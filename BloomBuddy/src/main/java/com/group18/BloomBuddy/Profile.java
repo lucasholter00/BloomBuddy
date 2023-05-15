@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-public class Profile implements myObservable {
+public class Profile implements MyObservable {
     private SensorSettings sensorSettings;
     private String name;
     private String id;
@@ -15,7 +15,7 @@ public class Profile implements myObservable {
     //Date of when the plant was last watered
     private LocalDateTime lastWatered;
     private int waterFrequency; //How often the water should be watered, in terms of days
-    private List<myObserver> observers;
+    private List<MyObserver> observers;
 
     public Profile(SensorSettings sensorSettings, String name) {
         this.sensorSettings = sensorSettings;
@@ -26,7 +26,7 @@ public class Profile implements myObservable {
         this.waterFrequency = 0; //Initialize as 0, i.e. no interval to water have been chosen yet by the user
         observers = new ArrayList<>();
         LastWateredObserver wateredObserver = new LastWateredObserver();
-        needsWaterObserver needsWaterObserver = new needsWaterObserver();
+        NeedsWaterObserver needsWaterObserver = new NeedsWaterObserver();
         addObserver(wateredObserver);
         addObserver(needsWaterObserver);
 
@@ -95,19 +95,19 @@ public class Profile implements myObservable {
         }
 
         @Override
-        public void addObserver (myObserver observer){
+        public void addObserver (MyObserver observer){
             observers.add(observer);
         }
 
         @Override
-        public void removeObserver (myObserver observer){
+        public void removeObserver (MyObserver observer){
             observers.remove(observer);
         }
 
 
         @Override
         public void notifyObservers (String arg) throws MqttException {
-            for (myObserver observer : observers) {
+            for (MyObserver observer : observers) {
                 observer.update(this, arg);
             }
         }

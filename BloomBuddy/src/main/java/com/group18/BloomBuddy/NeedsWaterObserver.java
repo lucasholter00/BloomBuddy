@@ -5,9 +5,9 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class needsWaterObserver implements myObserver {
+public class NeedsWaterObserver implements MyObserver {
     @Override
-    public void update(myObservable o, Object arg) throws MqttException {
+    public void update(MyObservable o, Object arg) throws MqttException {
         String filter = (String)arg;
         if (o instanceof Profile && filter.equals("needsWater")){
             notifyTerminal();

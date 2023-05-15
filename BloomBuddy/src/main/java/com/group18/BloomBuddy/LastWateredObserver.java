@@ -3,16 +3,14 @@ package com.group18.BloomBuddy;
 import com.mongodb.MongoException;
 
 import java.time.LocalDateTime;
-import java.util.Observable;
-import java.util.Observer;
 
-public class LastWateredObserver implements myObserver {
+public class LastWateredObserver implements MyObserver {
 
     public LastWateredObserver() {
     }
 
     @Override
-    public void update(myObservable o, Object arg) {
+    public void update(MyObservable o, Object arg) {
         String filter = (String)arg;
         if(o instanceof Profile && filter.equals("lastWatered")){ //Check if the observable object is an instance of Profile, if not we do not want it to precede
             Profile profile = (Profile) o; //Downcast the Observable object
