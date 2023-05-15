@@ -191,7 +191,7 @@ void setup() {
   client.setCallback(callback);
 
     pinMode(WIO_MIC, INPUT);
-    pinMode(WIO_KEY_A, INPUT_PULLUP)
+    pinMode(WIO_KEY_A, INPUT_PULLUP);
 }
 
 void loop() {
@@ -212,7 +212,7 @@ void loop() {
         popupPainted=true;
     }
     elseif(!displayPopup){
-    tft.fillScreen(TFT_BLACK)
+    tft.fillScreen(TFT_BLACK);
     }
    if(digitalRead(WIO_KEY_A)==LOW){
     removeNotification();
