@@ -1,6 +1,9 @@
 package com.group18.BloomBuddy;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -17,7 +20,9 @@ public class Profile implements MyObservable {
     private int waterFrequency; //How often the water should be watered, in terms of days
     private List<MyObserver> observers;
 
-    public Profile(SensorSettings sensorSettings, String name) {
+    MQTTHandler mqttHandler;
+
+    public Profile(SensorSettings sensorSettings, String name) throws MqttException {
         this.sensorSettings = sensorSettings;
         this.name = name;
         this.id = UUID.randomUUID().toString();
@@ -29,6 +34,7 @@ public class Profile implements MyObservable {
         NeedsWaterObserver needsWaterObserver = new NeedsWaterObserver();
         addObserver(wateredObserver);
         addObserver(needsWaterObserver);
+       mqttHandler = createMQTTHandler();
 
     }
 
@@ -54,6 +60,11 @@ public class Profile implements MyObservable {
 
     public void addHistoricalData(HistoricalData data) {
         this.historicalData.add(data);
+    }
+
+    public void recieveWatered(){
+
+
     }
 
         public SensorSettings getSensorSettings () {
@@ -111,4 +122,32 @@ public class Profile implements MyObservable {
                 observer.update(this, arg);
             }
         }
+
+        private MQTTHandler createMQTTHandler() throws MqttException {
+        MQTTHandler mqttHandler = new MQTTHandler(MqttCallback());
+        mqttHandler.subscribe("BloomBuddy/lastWatered");
+
+        return mqttHandler;
+        }
+    private MqttCallback MqttCallback (){
+        MqttCallback mqttCallback = new MqttCallback() {
+            public void connectionLost(Throwable cause) {
+                System.out.println("Connection lost: " + cause.getMessage());
+            }
+
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                if (topic.equals("BloomBuddy/lastWatered")){
+                    if(new String(message.getPayload()).equals("Watered")){
+                        setLastWatered(LocalDateTime.now());
+                    }
+                }
+            }
+
+            public void deliveryComplete(IMqttDeliveryToken token) {
+                // not used in this example
+            }
+        };
+
+        return mqttCallback;
+    }
     }

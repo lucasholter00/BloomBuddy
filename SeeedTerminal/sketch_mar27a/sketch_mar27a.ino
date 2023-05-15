@@ -215,6 +215,7 @@ void loop() {
     tft.fillScreen(TFT_BLACK);
     }
    if(digitalRead(WIO_KEY_A)==LOW){
+    publishLastWatered();
     removeNotification();
     popupPainted=false;
     }
@@ -270,3 +271,9 @@ void publishLightValues(){
   snprintf(msg, 8, "%d", valLight);
   client.publish("BloomBuddy/Light/raw", msg);
 }
+
+void publishLastWatered(){
+    client.publish("BloomBuddy/lastWatered", "Watered");
+}
+
+
