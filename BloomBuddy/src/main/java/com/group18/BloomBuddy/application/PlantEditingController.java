@@ -67,6 +67,31 @@ public class PlantEditingController extends SceneSwitcher {
                 lightLowerBound = 512;
                 lightUpperBound = 2000;
             }
+
+            //Validate the bounds
+            if (temperatureLowerBound >= temperatureUpperBound) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Temperature lower bound must be less than upper bound.");
+                alert.showAndWait();
+                return null;
+            }
+            if (humidityLowerBound >= humidityUpperBound) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Humidity lower bound must be less than upper bound.");
+                alert.showAndWait();
+                return null;            }
+            if (moistureLowerBound >= moistureUpperBound) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("moisture lower bound must be less than upper bound.");
+                alert.showAndWait();
+                return null;
+            }
             //if all validations pass, create the new SensorSettings object.
             SensorSettings settings = new SensorSettings(temperatureLowerBound, temperatureUpperBound, moistureLowerBound, moistureUpperBound, lightLowerBound, lightUpperBound, humidityLowerBound, humidityUpperBound);
             newProfile.setSensorSettings(settings);
