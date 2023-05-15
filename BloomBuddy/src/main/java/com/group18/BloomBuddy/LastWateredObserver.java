@@ -12,8 +12,9 @@ public class LastWateredObserver implements myObserver {
     }
 
     @Override
-    public void update(myObservable o, Object arg) { //should we modify to not use the Object arg?
-        if(o instanceof Profile){ //Check if the observable object is an instance of Profile, if not we do not want it to precede
+    public void update(myObservable o, Object arg) {
+        String filter = (String)arg;
+        if(o instanceof Profile && filter.equals("lastWatered")){ //Check if the observable object is an instance of Profile, if not we do not want it to precede
             Profile profile = (Profile) o; //Downcast the Observable object
             LocalDateTime lastWatered = profile.getLastWatered();
             //Method to insert in to the database, will be active when profile.getID exists

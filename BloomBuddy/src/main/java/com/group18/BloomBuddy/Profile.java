@@ -1,10 +1,11 @@
 package com.group18.BloomBuddy;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.UUID;
 public class Profile implements myObservable {
     private SensorSettings sensorSettings;
@@ -25,11 +26,13 @@ public class Profile implements myObservable {
         this.waterFrequency = 0; //Initialize as 0, i.e. no interval to water have been chosen yet by the user
         observers = new ArrayList<>();
         LastWateredObserver wateredObserver = new LastWateredObserver();
+        needsWaterObserver needsWaterObserver = new needsWaterObserver();
         addObserver(wateredObserver);
+        addObserver(needsWaterObserver);
 
     }
 
-    public boolean waterNeeded() {
+    public boolean waterNeeded() throws MqttException { //This method needs to be checked in the app in order for the functionality to work.
         if (lastWatered == null) {
             //If lastWatered have not been initialized we will assume that the plant needs watering
             return true;
@@ -41,7 +44,12 @@ public class Profile implements myObservable {
 
         long waterFreqToMilli = (long) waterFrequency * 24 * 60 * 60 * 1000; //24 * 60 * 60 * 1000 = numbers of miliseconds in a day (24h)
 
-        return elapsedTime > waterFreqToMilli;
+        if (elapsedTime > waterFreqToMilli) {
+            notifyObservers("needsWater");
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public void addHistoricalData(HistoricalData data) {
@@ -72,9 +80,9 @@ public class Profile implements myObservable {
             return lastWatered;
         }
 
-        public void setLastWatered (LocalDateTime lastWatered){
+        public void setLastWatered (LocalDateTime lastWatered) throws MqttException {
             this.lastWatered = lastWatered;
-            notifyObservers();
+            notifyObservers("lastWatered");
         }
 
 
@@ -91,16 +99,16 @@ public class Profile implements myObservable {
             observers.add(observer);
         }
 
-        @Override //Can not make this function work :( It says it does not override
+        @Override
         public void removeObserver (myObserver observer){
             observers.remove(observer);
         }
 
 
         @Override
-        public void notifyObservers () {
+        public void notifyObservers (String arg) throws MqttException {
             for (myObserver observer : observers) {
-                observer.update(this, null);
+                observer.update(this, arg);
             }
         }
     }
