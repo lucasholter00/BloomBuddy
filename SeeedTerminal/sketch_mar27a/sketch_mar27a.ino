@@ -58,6 +58,8 @@ void setup_wifi() {
   Serial.println(ssid);
   WiFi.begin(ssid, password); // Connecting WiFi
 
+  bool displayPopup = false;
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -73,6 +75,7 @@ void setup_wifi() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP()); // Display Local IP Address
 }
+
 
 String getPayload(){
 
@@ -95,7 +98,39 @@ void callback(char* topic, byte* payload, unsigned int length) {
 // end of conversion
   /***************  Action with topic and messages ***********/
   setColorAndPrintMessage(message);
+  //we want to add a notification
 
+  if(strcmp(topic, "BloomBuddy/watering") && message == notification){
+    displayPopup = true;
+  }
+
+}
+
+void showNotification(){
+    display.clearDisplay();
+    display.fillScreen(RED);
+
+  // Set the text color to white
+  display.setTextColor(WHITE);
+
+  // Set the text size and position
+  display.setTextSize(2);
+  display.setCursor(10, 20);
+
+  // Display the message
+  display.println("Watering is needed! :)");
+
+  // Update the display
+  display.display();
+}
+
+void removeNotification(){
+// Clear the display
+  display.clearDisplay();
+  display.display();
+
+  // Set the displayPopup flag to false
+  displayPopup = false;
 }
 
 void setColorAndPrintMessage(String message) {
@@ -174,6 +209,13 @@ void loop() {
     publishHumidityValues();
 
     delay(1000);
+
+    if(displayPopup){
+        showNotification();
+    }
+   if(!digitalRead(WIO_5S_PRESS)==HIGH)
+    removeNotification();
+    }
 
 /*   Use to continuously execute something in the loop.
      sensor data?! Hint hint  ヾ(o✪‿✪o)ｼ 
