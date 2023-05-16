@@ -49,7 +49,7 @@ public class PlantEditingController extends SceneSwitcher {
     }
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) {
-        saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20)));
+        saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Test"));
     }
     @FXML
     private void saveSettings(ActionEvent event, Profile profile) {

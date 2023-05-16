@@ -29,6 +29,9 @@ const char* server = "broker.hivemq.com";  // MQTT Broker URL
 const char* TOPIC_sub = "hej";
 const char* TOPIC_pub_connection = "klonk";
 
+bool displayPopup = false;
+bool popupPainted = false;
+
 
 TFT_eSPI tft;
 int DHTPIN = A0;
@@ -58,6 +61,8 @@ void setup_wifi() {
   Serial.println(ssid);
   WiFi.begin(ssid, password); // Connecting WiFi
 
+
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -73,6 +78,7 @@ void setup_wifi() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP()); // Display Local IP Address
 }
+
 
 String getPayload(){
 
@@ -95,7 +101,32 @@ void callback(char* topic, byte* payload, unsigned int length) {
 // end of conversion
   /***************  Action with topic and messages ***********/
   setColorAndPrintMessage(message);
+  //we want to add a notification
 
+  if(strcmp(topic, "BloomBuddy/watering") && message == "notification"){
+    displayPopup = true;
+  }
+
+}
+
+void showNotification(){
+    tft.fillScreen(TFT_RED);
+
+  // Set the text color to white
+  tft.setTextColor(TFT_WHITE);
+
+  // Set the text size and position
+  tft.setTextSize(2);
+  tft.setCursor(10, 20);
+
+  // Display the message
+  tft.println("Watering is needed! :)");
+
+}
+
+void removeNotification(){
+  // Set the displayPopup flag to false
+  displayPopup = false;
 }
 
 void setColorAndPrintMessage(String message) {
@@ -160,6 +191,7 @@ void setup() {
   client.setCallback(callback);
 
     pinMode(WIO_MIC, INPUT);
+    pinMode(WIO_KEY_A, INPUT_PULLUP);
 }
 
 void loop() {
@@ -174,6 +206,19 @@ void loop() {
     publishHumidityValues();
 
     delay(1000);
+
+    if(displayPopup && !popupPainted){
+        showNotification();
+        popupPainted=true;
+    }
+    else if(!displayPopup){
+    tft.fillScreen(TFT_BLACK);
+    }
+   if(digitalRead(WIO_KEY_A)==LOW){
+    publishLastWatered();
+    removeNotification();
+    popupPainted=false;
+    }
 
 /*   Use to continuously execute something in the loop.
      sensor data?! Hint hint  ヾ(o✪‿✪o)ｼ 
@@ -226,3 +271,9 @@ void publishLightValues(){
   snprintf(msg, 8, "%d", valLight);
   client.publish("BloomBuddy/Light/raw", msg);
 }
+
+void publishLastWatered(){
+    client.publish("BloomBuddy/lastWatered", "Watered");
+}
+
+
