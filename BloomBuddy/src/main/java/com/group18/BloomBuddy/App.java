@@ -29,8 +29,8 @@ public class App extends Application {
             try {
             SensorInteractor data = new SensorInteractor();
             SensorSettings sensorSettings = new SensorSettings(10,20, 0,100,500,2000,10,20);
-            List<Boolean> previousThresholdValues = sensorSettings.checkSensorReadings(data.getData());;
-            List<Boolean> newThresholdValues;
+            List<Boolean> previousThresholdValues = sensorSettings.checkSensorReadings(data.getData());//is used to check if sensor values have changed beyond the threshold values
+            List<Boolean> newThresholdValues; //is used to check if sensor values have changed beyond the threshold values
                 MqttCallback mqttCallback = new MqttCallback() {
                     public void connectionLost(Throwable cause) {
                         System.out.println("Connection lost: " + cause.getMessage());
@@ -45,8 +45,9 @@ public class App extends Application {
                     }
                 };
                 MQTTHandler mqttHandler = new MQTTHandler(mqttCallback, "BloomBuddyThreshold");
-                
-                checkThresholdValues(previousThresholdValues, mqttHandler);
+                for(int x = 0; x < 4; x++) {
+                    checkThresholdValues(previousThresholdValues, mqttHandler, x);
+                }
 
                 while (true) {
                     sceneSwitcher.updateSensorData(data.getData(),LineChartDataType.MOISTURE);
@@ -55,8 +56,11 @@ public class App extends Application {
                     sceneSwitcher.updateSensorData(data.getData(),LineChartDataType.LIGHT);
                     newThresholdValues = sensorSettings.checkSensorReadings(data.getData());
                     Thread.sleep(1000);
-                    if(previousThresholdValues != newThresholdValues){
-                        checkThresholdValues(newThresholdValues, mqttHandler);
+
+                    for(int i = 0; i < 4; i++){ // checks if sensor values have changed beyond thresholds
+                        if(previousThresholdValues.get(i) != newThresholdValues.get(i)){
+                            checkThresholdValues(newThresholdValues, mqttHandler,i);
+                        }
                     }
                     previousThresholdValues = newThresholdValues;
 
@@ -73,43 +77,34 @@ public class App extends Application {
         sensorThread.start();
     }
 
-    public void checkThresholdValues(List<Boolean> thresholdValues, MQTTHandler mqttHandler) throws MqttException{
-        for(int i= 0; i < 4; i++){
-                if(i == 0) {
-                    if(thresholdValues.get(i) == TRUE) {
-                        mqttHandler.publish("BloomBuddy/Threshold/Color/Temperature", "red" );
-                        System.out.println("Temp bad");
-                    }else{
-                        mqttHandler.publish("BloomBuddy/Threshold/Color/Temperature", "green" );
-                        System.out.println("Temp good");
-                    }
-                } else if (i == 1) {
-                    if(thresholdValues.get(i) == TRUE) {
-                        mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "red" );
-                        System.out.println("moist bad");
-                    }else{
-                        mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "green" );
-                        System.out.println("moist good");
-                    }
-                } else if (i == 2) {
-                    if(thresholdValues.get(i) == TRUE) {
-                        mqttHandler.publish("BloomBuddy/Threshold/Color/Light", "red" );
-                        System.out.println("light bad");
-                    }else{
-                        mqttHandler.publish("BloomBuddy/Threshold/Color/Light", "green" );
-                        System.out.println("light good");
-                    }
-                } else{
-                    if(thresholdValues.get(i) == TRUE) {
-                        mqttHandler.publish("BloomBuddy/Threshold/Color/Humidity", "red" );
-                        System.out.println("humidity bad");
-                    }else{
-                        mqttHandler.publish("BloomBuddy/Threshold/Color/Humidity", "green" );
-                        System.out.println("humidity good");
-                    }
-                }
+    public void checkThresholdValues(List<Boolean> thresholdValues, MQTTHandler mqttHandler, int sensor) throws MqttException{ // only sens messages for one sensor at a time specified by int sensor
+        if(sensor == 0) {
+            if(thresholdValues.get(sensor) == TRUE) {
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Temperature", "red" );
+            }else{
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Temperature", "green" );
             }
+        } else if (sensor == 1) {
+            if(thresholdValues.get(sensor) == TRUE) {
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "red" );
+            }else{
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "green" );
+            }
+        } else if (sensor == 2) {
+            if(thresholdValues.get(sensor) == TRUE) {
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Light", "red" );
+            }else{
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Light", "green" );
+            }
+        } else{
+            if(thresholdValues.get(sensor) == TRUE) {
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Humidity", "red" );
+            }else{
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Humidity", "green" );
+            }
+        }
     }
+
 }
 
 

@@ -99,28 +99,24 @@ void callback(char* topic, byte* payload, unsigned int length) {
   char* message =  buff_p;
   if(std::strcmp(topic,"BloomBuddy/Threshold/Color/Temperature") == 0){
     std::strcpy(getThresholdColorTemperature, message);
-    Serial.println(getThresholdColorTemperature);
     ThresholdIndication();
   }
   if(std::strcmp(topic, "BloomBuddy/Threshold/Color/Humidity") == 0){
     std::strcpy(getThresholdColorHumidity, message);
-    Serial.println(getThresholdColorHumidity);
     ThresholdIndication();
    }
   if(std::strcmp(topic, "BloomBuddy/Threshold/Color/Light") == 0){
     std::strcpy(getThresholdColorLight, message);
-    Serial.println(getThresholdColorLight);
     ThresholdIndication();
   }
   if(std::strcmp(topic, "BloomBuddy/Threshold/Color/Moisture") == 0){
     std::strcpy(getThresholdColorMoisture, message);
-    Serial.println(getThresholdColorMoisture);
     ThresholdIndication();
   }
-  ThresholdIndication();
+  
 // end of conversion
   /***************  Action with topic and messages ***********/
-  //setColorAndPrintMessage(message);
+  //setColorAndPrintMessage(message); // not necessary
 
 }
 
@@ -159,7 +155,7 @@ void reconnect() {
       client.publish(TOPIC_pub_connection, "hello world");
       Serial.println("Published connection message ");
       // ... and resubscribe
-      client.subscribe(TOPIC_sub);
+      client.subscribe(TOPIC_sub); // not necessary
       subToThresholdValues();
       
     } else {
@@ -186,8 +182,6 @@ void setup() {
   client.setServer(server, 1883); // Connect the MQTT Server   hive_mqtt_server
   client.setCallback(callback);
   subToThresholdValues();
-  ThresholdIndication();
-
   ThresholdIndication();
 
     pinMode(WIO_MIC, INPUT);
@@ -263,13 +257,6 @@ void ThresholdIndication(){
 
   // Clear the display
   //tft.fillScreen(TFT_BLACK);
-  Serial.println("display");
-  Serial.println(getThresholdColorTemperature);
-  Serial.println(getThresholdColorMoisture);
-  Serial.println(getThresholdColorLight);
-  Serial.println(getThresholdColorHumidity);
-  Serial.println("display");
-
   // Draw text and fill color for the first quadrant
   tft.setCursor(10, 7);
   tft.setTextColor(TFT_WHITE);
