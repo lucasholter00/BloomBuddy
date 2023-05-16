@@ -2,7 +2,12 @@ package com.group18.BloomBuddy;
 
 import com.group18.BloomBuddy.application.LineChartDataType;
 import com.group18.BloomBuddy.application.SceneSwitcher;
+import com.group18.BloomBuddy.application.StatsController;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -13,9 +18,12 @@ import java.util.List;
 
 import static java.lang.Boolean.TRUE;
 
+import java.util.Objects;
+
 public class App extends Application {
 
     private Stage stage;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -75,6 +83,10 @@ public class App extends Application {
         });
         sensorThread.setDaemon(true);
         sensorThread.start();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/loginScene.fxml")));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void checkThresholdValues(List<Boolean> thresholdValues, MQTTHandler mqttHandler, int sensor) throws MqttException{ // only sens messages for one sensor at a time specified by int sensor
