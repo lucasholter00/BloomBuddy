@@ -1,23 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.PlantOverviewController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ddfbdb" height="600.0" stroke="#ddfbdb" strokeType="INSIDE" width="174.0" />
-      <Button fx:id="statisticsButton" layoutX="59.0" layoutY="342.0" mnemonicParsing="false" onAction="#setStatScene" text="Statistics" />
-      <Button fx:id="homeButton" layoutX="56.0" layoutY="205.0" mnemonicParsing="false" onAction="#setHomeScene" text="Home Page" />
-      <Button fx:id="settingsButton" layoutX="63.0" layoutY="401.0" mnemonicParsing="false" onAction="#setSettingsScene" text="Settings" />
-      <Button fx:id="logOutButton" layoutX="56.0" layoutY="458.0" mnemonicParsing="false" onAction="#setLoginScene" prefHeight="19.0" prefWidth="72.0" text="Log out" />
-      <Button fx:id="myPlantButton" layoutX="59.0" layoutY="285.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" text="My plants" />
-      <Button fx:id="AddPlant" layoutX="651.0" layoutY="477.0" mnemonicParsing="false" onAction="#setPlantAddingScene" text="+">
+      <Button fx:id="AddPlant" alignment="CENTER" cache="true" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="594.0" layoutY="464.0" mnemonicParsing="false" onAction="#setPlantAddingScene" prefHeight="128.0" prefWidth="148.0" style="-fx-background-color: TRANSPARENT;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
          <font>
-            <Font size="27.0" />
+            <Font name="System Italic" size="62.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="81.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@plusIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Button fx:id="editPlant" layoutX="666.0" layoutY="75.0" mnemonicParsing="false" onAction="#setEditingAddingScene" text="Edit" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ddfbdb" height="610.0" stroke="#ddfbdb" strokeType="INSIDE" width="174.0" />
+      <Button fx:id="myPlantButton" contentDisplay="TOP" layoutX="50.0" layoutY="150.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="My plants" textAlignment="CENTER">
+         <graphic>
+            <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@plantIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="homeButton" contentDisplay="TOP" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" onAction="#setHomeScene" prefHeight="0.0" prefWidth="0.0" style="-fx-background-color: Transparent;" text="Home" textAlignment="CENTER">
+         <graphic>
+            <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@homeIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="statisticsButton" contentDisplay="TOP" layoutX="50.0" layoutY="250.0" mnemonicParsing="false" onAction="#setStatScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="Statistics" textAlignment="CENTER">
+         <graphic>
+            <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@statIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="settingsButton" contentDisplay="TOP" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#setSettingsScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="Settings" textAlignment="CENTER">
+         <graphic>
+            <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@settingsIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="logOutButton" contentDisplay="TOP" layoutX="50.0" layoutY="450.0" mnemonicParsing="false" onAction="#setLoginScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="Log out" textAlignment="CENTER">
+         <graphic>
+            <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@logoutIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>
