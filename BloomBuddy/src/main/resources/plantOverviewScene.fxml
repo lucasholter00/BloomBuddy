@@ -13,6 +13,13 @@
          <font>
             <Font name="System Italic" size="62.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="81.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@plusIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Button fx:id="editPlant" layoutX="666.0" layoutY="75.0" mnemonicParsing="false" onAction="#setEditingAddingScene" text="Edit" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ddfbdb" height="610.0" stroke="#ddfbdb" strokeType="INSIDE" width="174.0" />
@@ -61,10 +68,5 @@
             </ImageView>
          </graphic>
       </Button>
-      <ImageView fitHeight="81.0" fitWidth="98.0" layoutX="647.0" layoutY="485.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@plusIcon.png" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>
