@@ -75,16 +75,6 @@ public class PlantEditingController extends SceneSwitcher {
                     alert.setHeaderText(null);
                     alert.setContentText("Settings were successfully saved.");
                     alert.showAndWait();
-
-                    System.out.println("New settings saved to profile:");
-                    System.out.println("Temperature Lower Bound: " + settings.getTemperatureLowerBound());
-                    System.out.println("Temperature Upper Bound: " + settings.getTemperatureUpperBound());
-                    System.out.println("Humidity Lower Bound: " + settings.getHumidityLowerBound());
-                    System.out.println("Humidity Upper Bound: " + settings.getHumidityUpperBound());
-                    System.out.println("Moisture Lower Bound: " + settings.getMoistureLowerBound());
-                    System.out.println("Moisture Upper Bound: " + settings.getMoistureUpperBound());
-                    System.out.println("Light Lower Bound: " + settings.getLightLowerBound());
-                    System.out.println("Light Upper Bound: " + settings.getLightUpperBound());
                 }
 
 
