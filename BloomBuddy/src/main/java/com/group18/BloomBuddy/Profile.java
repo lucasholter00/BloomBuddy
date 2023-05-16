@@ -1,3 +1,4 @@
+
 package com.group18.BloomBuddy;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -151,3 +152,4 @@ public class Profile implements MyObservable {
         return mqttCallback;
     }
     }
+
