@@ -11,8 +11,10 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
@@ -147,7 +149,8 @@ public class DataBaseConnection {
         if (historicalData != null && !historicalData.isEmpty()) {
             List<Document> filteredData = new ArrayList<>();
             for (Document data : historicalData) {
-                LocalDateTime time = (LocalDateTime) data.get("time");
+                Date date = data.getDate("time");
+                LocalDateTime time = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
                 if (time.isAfter(from) && time.isBefore(until)) {
                     filteredData.add(data);
                 }
