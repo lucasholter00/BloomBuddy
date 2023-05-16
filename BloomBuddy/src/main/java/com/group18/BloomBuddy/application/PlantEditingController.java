@@ -52,10 +52,16 @@ public class PlantEditingController extends SceneSwitcher {
         stage.setFullScreen(false);
         stage.show();
     }
+
+    //This method is called when the 'Save Settings' button is clicked.
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) throws Exception {
+     //TODO Specify what profile to edit. It should be an already existing profile!
         saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Test"));
     }
+
+    //This method is responsible for saving the sensor settings for a given profile.
+    //It first validates the input bounds, then tries to update the sensor settings of the profile.
     @FXML
     private void saveSettings(ActionEvent event, Profile profile) {
 
@@ -92,6 +98,8 @@ public class PlantEditingController extends SceneSwitcher {
             }
         }
 
+    //This method checks if the sensor settings bounds are valid.
+    //Specifically, it checks if the lower bounds are less than the upper bounds for the sensor settings.
     public Boolean validateBounds(){
         boolean valid = true;
         float temperatureLowerBound = Float.parseFloat(TempLowBound.getText());
