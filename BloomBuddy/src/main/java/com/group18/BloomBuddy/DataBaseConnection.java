@@ -8,6 +8,7 @@ import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.*;
 
 import java.time.LocalDateTime;
@@ -120,17 +121,26 @@ public class DataBaseConnection {
     }
 
 
-    public void insertLastWatered(LocalDateTime lastWatered, String profileId){
+    public void insertLastWatered(LocalDateTime lastWatered, String id){
         MongoCollection<Document> collection = database.getCollection("sys_user"); //needs to be correlating to the plant
 
         // Create a new document representing the Plant
         Document plantDocument = new Document("$set", new Document("profiles.$.lastWatered",lastWatered));
 
         // Find the user document by username
-        Document filter = new Document("profiles.id", profileId);
+        Document filter = new Document("profiles.id", id);
 
         // Replace the existing user document with the new document, as of the reason that only one lastWatered should be saved
         collection.updateOne(filter, plantDocument);
+    }
+
+    public void editSensorSettings(String type, float value, String profileID){
+        System.out.println("Hello");
+        MongoCollection<Document> collection = database.getCollection("sys_user"); 
+        Document filter = new Document("profiles.id", profileID);
+        String path = "profiles.$.sensorSettings." + type;
+        Document updateThreshold = new Document("$set", new Document(path, value));
+        collection.updateOne(filter, updateThreshold);
     }
 
 
