@@ -14,6 +14,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 public class PlantEditingController extends SceneSwitcher {
     public RadioButton LightLow;
     public RadioButton LightHigh;
@@ -48,7 +53,7 @@ public class PlantEditingController extends SceneSwitcher {
         stage.show();
     }
     @FXML
-    private void handleSaveSettingsButton(ActionEvent event) {
+    private void handleSaveSettingsButton(ActionEvent event) throws Exception {
         saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Test"));
     }
     @FXML
