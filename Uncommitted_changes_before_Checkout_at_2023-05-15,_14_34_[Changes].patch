@@ -1,0 +1,206 @@
+Index: SeeedTerminal/sketch_mar27a/sketch_mar27a.ino
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/SeeedTerminal/sketch_mar27a/sketch_mar27a.ino b/SeeedTerminal/sketch_mar27a/sketch_mar27a.ino
+--- a/SeeedTerminal/sketch_mar27a/sketch_mar27a.ino	
++++ b/SeeedTerminal/sketch_mar27a/sketch_mar27a.ino	
+@@ -8,15 +8,16 @@
+ #include"TFT_eSPI.h"
+ #include <PubSubClient.h>
+ #include "DHT.h" //Include the DHT library
++#include <cstring>
+ 
+ 
+ // Update these with values suitable for your network.
+-const char* ssid = "TP-Link_7460"; // WiFi Name
+-const char* password = "13401115";  // WiFi Password
+-const char* getThresholdColorTemperature = "green";
+-const char* getThresholdColorHumidity = "green";
+-const char* getThresholdColorLight = "green";
+-const char* getThresholdColorMoisture = "green";
++const char* ssid = "VILMERSLAPTOP"; // WiFi Name
++const char* password = "BloomBuddy123";  // WiFi Password
++char getThresholdColorTemperature[6] = "green";
++char getThresholdColorHumidity[6] = "green";
++char getThresholdColorLight[6] = "green";
++char getThresholdColorMoisture[6] = "green";
+ 
+ /**********  HOW TO FIND YOUR MOSQUITTO BROKER ADDRESS*******************
+   In Windows command prompt, use the command:   ipconfig
+@@ -36,9 +37,9 @@
+ TFT_eSPI tft;
+ int DHTPIN = A0;
+ DHT dht (DHTPIN, 11);
+-int moisturePin = A0;
++int moisturePin = A1;
+ int humidityPin = A0;
+-int lightPin = A0;
++int lightPin = A2;
+ int temperaturePin = A0;
+ 
+ WiFiClient wioClient;
+@@ -87,7 +88,7 @@
+   Serial.print(topic);
+   Serial.print("] ");
+ // process payload and convert it to a string
+-  char buff_p[length];
++  char buff_p[length + 1];
+   for (int i = 0; i < length; i++) {
+     Serial.print((char)payload[i]);
+     buff_p[i] = (char)payload[i];
+@@ -95,21 +96,30 @@
+   Serial.println();
+   buff_p[length] = '\0';
+   char* message =  buff_p;
+-  if(topic = "thresholdColorTemperature"){
+-    getThresholdColorTemperature = message;
++  if(std::strcmp(topic,"BloomBuddy/Threshold/Color/Temperature") == 0){
++    std::strcpy(getThresholdColorTemperature, message);
++    Serial.println(getThresholdColorTemperature);
++    ThresholdIndication();
+   }
+-  if(topic = "thresholdColorHumidity"){
+-    getThresholdColorHumidity = message;
++  if(std::strcmp(topic, "BloomBuddy/Threshold/Color/Humidity") == 0){
++    std::strcpy(getThresholdColorHumidity, message);
++    Serial.println(getThresholdColorHumidity);
++    ThresholdIndication();
+    }
+-  if(topic = "thresholdColorLight"){
+-    getThresholdColorLight = message;
++  if(std::strcmp(topic, "BloomBuddy/Threshold/Color/Light") == 0){
++    std::strcpy(getThresholdColorLight, message);
++    Serial.println(getThresholdColorLight);
++    ThresholdIndication();
+   }
+-  if(topic = "thresholdColorMoisture"){
+-    getThresholdColorMoisture = message;
++  if(std::strcmp(topic, "BloomBuddy/Threshold/Color/Moisture") == 0){
++    std::strcpy(getThresholdColorMoisture, message);
++    Serial.println(getThresholdColorMoisture);
++    ThresholdIndication();
+   }
++  
+ // end of conversion
+   /***************  Action with topic and messages ***********/
+-  setColorAndPrintMessage(message);
++  //setColorAndPrintMessage(message);
+ 
+ }
+ 
+@@ -149,6 +159,7 @@
+       Serial.println("Published connection message ");
+       // ... and resubscribe
+       client.subscribe(TOPIC_sub);
++      getThresholdColor();
+       Serial.print("Subcribed to: ");
+       Serial.println(TOPIC_sub);
+     } else {
+@@ -171,9 +182,12 @@
+   Serial.println();
+   Serial.begin(115200);
+   setup_wifi();
++  getThresholdColor();
+   client.setServer(server, 1883); // Connect the MQTT Server   hive_mqtt_server
+   client.setCallback(callback);
+ 
++  ThresholdIndication();
++
+     pinMode(WIO_MIC, INPUT);
+ }
+ 
+@@ -183,10 +197,11 @@
+     reconnect();
+   }
+ 
+-    //publishMoistureValues();
+-    //publishLightValues();
++    publishMoistureValues();
++    publishLightValues();
+     publishTemperatureValues();
+     publishHumidityValues();
++    client.loop();
+ 
+     delay(1000);
+ 
+@@ -247,10 +262,16 @@
+   int quadrantHeight = tft.height() / 4;
+ 
+   // Clear the display
+-  tft.fillScreen(TFT_BLACK);
++  //tft.fillScreen(TFT_BLACK);
++  Serial.println("display");
++  Serial.println(getThresholdColorTemperature);
++  Serial.println(getThresholdColorMoisture);
++  Serial.println(getThresholdColorLight);
++  Serial.println(getThresholdColorHumidity);
++  Serial.println("display");
+ 
+   // Draw text and fill color for the first quadrant
+-  tft.setCursor(0, 0);
++  tft.setCursor(10, 7);
+   tft.setTextColor(TFT_WHITE);
+   tft.setTextSize(2);
+   tft.setTextWrap(true);
+@@ -262,11 +283,11 @@
+   tft.println("TEMP");
+ 
+   // Draw text and fill color for the second quadrant
+-  tft.setCursor(0, quadrantHeight);
++  tft.setCursor(10, quadrantHeight + 7);
+   tft.setTextColor(TFT_WHITE);
+   tft.setTextSize(2);
+   tft.setTextWrap(true);
+-  if(std::strcmp(getThresholdColorTemperature, "green") == 0){
++  if(std::strcmp(getThresholdColorHumidity, "green") == 0){
+     tft.fillRoundRect(0, quadrantHeight, tft.width(), quadrantHeight, 5, TFT_GREEN);
+   }else{
+     tft.fillRoundRect(0, quadrantHeight, tft.width(), quadrantHeight, 5, TFT_RED);
+@@ -274,11 +295,11 @@
+   tft.println("HUMIDITY");
+ 
+   // Draw text and fill color for the third quadrant
+-  tft.setCursor(0, 2 * quadrantHeight);
++  tft.setCursor(10, 2 * quadrantHeight + 7);
+   tft.setTextColor(TFT_WHITE);
+   tft.setTextSize(2);
+   tft.setTextWrap(true);
+-  if(std::strcmp(getThresholdColorTemperature, "green") == 0){
++  if(std::strcmp(getThresholdColorMoisture, "green") == 0){
+     tft.fillRoundRect(0, 2 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_GREEN);
+   }else{
+     tft.fillRoundRect(0, 2 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_RED);
+@@ -286,11 +307,11 @@
+   tft.println("MOISTURE");
+ 
+   // Draw text and fill color for the fourth quadrant
+-  tft.setCursor(0, 3 * quadrantHeight);
++  tft.setCursor(10, 3 * quadrantHeight + 7);
+   tft.setTextColor(TFT_WHITE);
+   tft.setTextSize(2);
+   tft.setTextWrap(true);
+-  if(std::strcmp(getThresholdColorTemperature, "green") == 0){
++  if(std::strcmp(getThresholdColorLight, "green") == 0){
+     tft.fillRoundRect(0, 3 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_GREEN);
+   }else{
+     tft.fillRoundRect(0, 3 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_RED);
+@@ -299,13 +320,11 @@
+ }
+ 
+ void getThresholdColor(){
+-    client.subscribe("thresholdColorTemperature");
+-
+-    client.subscribe("thresholdColorHumidity");
++    client.subscribe("BloomBuddy/Threshold/Color/Temperature",0);
+ 
+-    client.subscribe("thresholdColorLight");
++    client.subscribe("BloomBuddy/Threshold/Color/Humidity",0);
+ 
+-    client.subscribe("thresholdColorMoisture");
++    client.subscribe("BloomBuddy/Threshold/Color/Light",0);
+ 
+-
++    client.subscribe("BloomBuddy/Threshold/Color/Moisture",0);
+ }
