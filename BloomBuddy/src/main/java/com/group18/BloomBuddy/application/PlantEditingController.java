@@ -67,7 +67,7 @@ public class PlantEditingController extends SceneSwitcher {
                         settings.setLightLowerBound(0);
                         settings.setLightUpperBound(512);
                     } else if (LightHigh.isSelected()) {
-                        settings.setLightLowerBound(0);
+                        settings.setLightLowerBound(512);
                         settings.setLightUpperBound(2000);
                     }
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
