@@ -12,7 +12,12 @@ import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import org.bson.Document;
 
@@ -145,6 +150,45 @@ public class DataBaseConnection {
 
 
 
+
+    //This method is a getter which allows search for historical data from date "from" until date "until"
+    public List<Document> getHistoricalData(String username, String profileId, LocalDateTime from, LocalDateTime until) {
+        MongoCollection<Document> collection = database.getCollection("sys_user");
+
+        // Find the user document by username
+        Document filter = new Document("username", username);
+
+        // Project only the profiles which have id = profileID
+        Document projection = new Document("profiles", new Document("$elemMatch", new Document("id", profileId)));
+
+        // Execute the query to get the result
+        Document result = collection.find(filter).projection(projection).first();
+
+        // Extract the historical data array from the profile that match profileID
+        List<Document> historicalData = null;
+        if (result != null) {
+            List<Document> profiles = (List<Document>) result.get("profiles");
+            if (profiles != null && !profiles.isEmpty()) {
+                Document profile = profiles.get(0);
+                historicalData = (List<Document>) profile.get("HistoricalData");
+            }
+        }
+
+        // Filter the historical data with regards to date range
+        if (historicalData != null && !historicalData.isEmpty()) {
+            List<Document> filteredData = new ArrayList<>();
+            for (Document data : historicalData) {
+                Date date = data.getDate("time");
+                LocalDateTime time = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+                if (time.isAfter(from) && time.isBefore(until)) {
+                    filteredData.add(data);
+                }
+            }
+            return filteredData;
+        }
+
+        return null; //if filteredData can not be returned, the return value will be null.
+    }
 
     public void close(){
         client.close();
