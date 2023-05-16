@@ -13,6 +13,7 @@ import com.mongodb.client.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -98,13 +99,14 @@ public class DataBaseConnection {
     public boolean addProfile(Profile profile, String username){
         MongoCollection<Document> collection = database.getCollection("sys_user");
         Document filter = new Document("username", username);
-        Document checkForId = new Document("profiles", new Document("$elemMatch", new Document("id", profile.getId()))); 
+        Document checkForId = new Document("profiles", new Document("$elemMatch", new Document("id", profile.getId())));
         long count = collection.countDocuments(new Document("$and", Arrays.asList(filter, checkForId)));
         if (count > 0)
             return false;
 
         Document query = new Document("name", profile.getName())
                 .append("id", profile.getId())
+                .append("lastWatered", "")
                 .append("sensorSettings", new Document("tempratureThresholdLow", profile.getSensorSettings().getTemperatureLowerBound())
                         .append("tempratureThresholdHigh", profile.getSensorSettings().getTemperatureUpperBound())
                         .append("humidityThresholdLow", profile.getSensorSettings().getHumidityLowerBound())
@@ -114,13 +116,30 @@ public class DataBaseConnection {
                         .append("lightThresholdLow", profile.getSensorSettings().getLightLowerBound())
                         .append("lightThresholdHigh", profile.getSensorSettings().getLightUpperBound())
                         .append("HistoricalData", Arrays.asList()));
-                        
 
-        Document update = new Document("$addToSet", new Document("profiles", query)); 
+
+        Document update = new Document("$addToSet", new Document("profiles", query));
 
         collection.updateOne(filter, update);
         return true;
     }
+
+
+    public void insertLastWatered(LocalDateTime lastWatered, String profileId){
+        MongoCollection<Document> collection = database.getCollection("sys_user"); //needs to be correlating to the plant
+
+        // Create a new document representing the Plant
+        Document plantDocument = new Document("$set", new Document("profiles.$.lastWatered",lastWatered));
+
+        // Find the user document by username
+        Document filter = new Document("profiles.id", profileId);
+
+        // Replace the existing user document with the new document, as of the reason that only one lastWatered should be saved
+        collection.updateOne(filter, plantDocument);
+    }
+
+
+
 
     //This method is a getter which allows search for historical data from date "from" until date "until"
     public List<Document> getHistoricalData(String username, String profileId, LocalDateTime from, LocalDateTime until) {

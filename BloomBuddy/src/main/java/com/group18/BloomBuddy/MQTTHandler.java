@@ -1,16 +1,13 @@
 package com.group18.BloomBuddy;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.*;
+
+import java.util.UUID;
 
 public class MQTTHandler {
     
     private final String BROKERURL ="tcp://broker.hivemq.com:1883" ;
-    private final String CLIENTID = "JavaMQTTClient";
+    private String clientId;
     private final int QOS = 0;
     private MqttClient client;
     private float humidityReading;
@@ -20,11 +17,12 @@ public class MQTTHandler {
 
 
     public MQTTHandler(MqttCallback callback) throws MqttException{
+        this.clientId = UUID.randomUUID().toString();
         initiateMQTTClient(callback);
     }
 
     public void initiateMQTTClient(MqttCallback callback) throws MqttException{
-        this.client = new MqttClient(BROKERURL, CLIENTID);
+        this.client = new MqttClient(BROKERURL, clientId);
             
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
