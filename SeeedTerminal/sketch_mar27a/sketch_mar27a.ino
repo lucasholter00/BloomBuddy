@@ -33,6 +33,9 @@ const char* server = "broker.hivemq.com";  // MQTT Broker URL
 const char* TOPIC_sub = "hej";
 const char* TOPIC_pub_connection = "klonk";
 
+bool displayPopup = false;
+bool popupPainted = false;
+
 
 TFT_eSPI tft;
 int DHTPIN = A0;
@@ -113,11 +116,36 @@ void callback(char* topic, byte* payload, unsigned int length) {
     std::strcpy(getThresholdColorMoisture, message);
     ThresholdIndication();
   }
-  
+
 // end of conversion
   /***************  Action with topic and messages ***********/
-  //setColorAndPrintMessage(message); // not necessary
+  setColorAndPrintMessage(message);
+  //we want to add a notification
 
+  if(strcmp(topic, "BloomBuddy/watering") && message == "notification"){
+    displayPopup = true;
+  }
+
+}
+
+void showNotification(){
+    tft.fillScreen(TFT_RED);
+
+  // Set the text color to white
+  tft.setTextColor(TFT_WHITE);
+
+  // Set the text size and position
+  tft.setTextSize(2);
+  tft.setCursor(10, 20);
+
+  // Display the message
+  tft.println("Watering is needed! :)");
+
+}
+
+void removeNotification(){
+  // Set the displayPopup flag to false
+  displayPopup = false;
 }
 
 void setColorAndPrintMessage(String message) {
@@ -155,9 +183,9 @@ void reconnect() {
       client.publish(TOPIC_pub_connection, "hello world");
       Serial.println("Published connection message ");
       // ... and resubscribe
-      client.subscribe(TOPIC_sub); // not necessary
-      subToThresholdValues();
-      
+      client.subscribe(TOPIC_sub);
+      Serial.print("Subcribed to: ");
+      Serial.println(TOPIC_sub);
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -178,13 +206,13 @@ void setup() {
   Serial.println();
   Serial.begin(115200);
   setup_wifi();
-  subToThresholdValues();
   client.setServer(server, 1883); // Connect the MQTT Server   hive_mqtt_server
   client.setCallback(callback);
   subToThresholdValues();
   ThresholdIndication();
 
     pinMode(WIO_MIC, INPUT);
+    pinMode(WIO_KEY_A, INPUT_PULLUP);
 }
 
 void loop() {
@@ -197,7 +225,21 @@ void loop() {
     publishLightValues();
     publishTemperatureValues();
     publishHumidityValues();
+
     delay(1000);
+
+    if(displayPopup && !popupPainted){
+        showNotification();
+        popupPainted=true;
+    }
+    else if(!displayPopup){
+    tft.fillScreen(TFT_BLACK);
+    }
+   if(digitalRead(WIO_KEY_A)==LOW){
+    publishLastWatered();
+    removeNotification();
+    popupPainted=false;
+    }
 
 /*   Use to continuously execute something in the loop.
      sensor data?! Hint hint  ヾ(o✪‿✪o)ｼ 
@@ -316,4 +358,10 @@ void subToThresholdValues(){
   Serial.println("BloomBuddy/Threshold/Color/Light");
   Serial.println("BloomBuddy/Threshold/Color/Moisture");
 }
+
+
+void publishLastWatered(){
+    client.publish("BloomBuddy/lastWatered", "Watered");
+}
+
 
