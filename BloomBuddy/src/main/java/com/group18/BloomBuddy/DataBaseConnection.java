@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 //This class will be responsible for communication with the database
 public class DataBaseConnection {
@@ -195,6 +196,65 @@ public class DataBaseConnection {
         Document filter = new Document("profiles.id", profileID);
         Document updateName = new Document("$set", new Document("profiles.$.name", newName));
         collection.updateOne(filter, updateName);
+    }
+
+    public List<Profile> getProfiles(String username) throws MqttException{
+        MongoCollection<Document> collection = database.getCollection("sys_user");
+        Document filter = new Document("username", username);
+        Document user = collection.find(filter).first();
+
+        List<Profile> profileList = new ArrayList<>();
+        if(user != null){
+            System.out.println("User found");
+
+            List<Document> profiles = (List<Document>) user.get("profiles");
+            for(Document profile : profiles){
+                String name = (String) profile.get("name"); 
+                String id = (String) profile.get("id");
+                String lastWatered = (String) profile.get("lastWatered");
+
+                Document sensorSettings = (Document) profile.get("sensorSettings");
+                double temperatureLowerBound = sensorSettings.getDouble("tempratureThresholdLow");
+                double temperatureUpperBound = sensorSettings.getDouble("tempratureThresholdHigh");
+                double humidityLowerBound = sensorSettings.getDouble("humidityThresholdLow");
+                double humidityUpperBound = sensorSettings.getDouble("humidityThresholdHigh");
+                double moistureLowerBound = sensorSettings.getDouble("moistureThresholdLow");
+                double moistureUpperBound = sensorSettings.getDouble("moistureThresholdHigh");
+                double lightLowerBound = sensorSettings.getDouble("lightThresholdLow");
+                double lightUpperBound = sensorSettings.getDouble("lightThresholdHigh");
+
+                SensorSettings settings = new SensorSettings((float)temperatureLowerBound, (float)temperatureUpperBound,  (float)moistureLowerBound, (float)moistureUpperBound, (float)lightLowerBound, (float)lightUpperBound, (float)humidityLowerBound, (float)humidityUpperBound);
+                Profile dbProfile = new Profile(settings, username);
+
+                List<Document> historicalData = (List<Document>)profile.get("HistoricalData");
+                if(historicalData != null){
+                    for(Document data :  historicalData){
+                        double temperature = (double)data.get("temperature");
+                        double humidity = (double)data.get("humidity");
+                        double moisture = (double)data.get("moisture");
+                        double light = (double)data.get("light");
+                        Date date = (Date)data.get("time");
+
+                        LocalDateTime time = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+
+                        HistoricalData dbHisData = new HistoricalData((float)moisture, (float)temperature, (float)humidity, (float)light, time);
+
+                        dbProfile.addHistoricalData(dbHisData);
+
+
+                    }
+                }
+
+                System.out.println("Name: " + name);
+                System.out.println("ID: " + id);
+                System.out.println("Temperature lower bound: " + temperatureLowerBound);
+
+                profileList.add(dbProfile);
+            }
+
+        }
+        return profileList;
+
     }
 
     public void close(){
