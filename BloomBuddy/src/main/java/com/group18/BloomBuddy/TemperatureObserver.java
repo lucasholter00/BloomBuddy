@@ -4,9 +4,13 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class TemperatureObserver implements MyObserver {
 
+    public TemperatureObserver(){
+        
+    }
+
     @Override
     public void update(MyObservable subject, Object arg) throws MqttException{
-        if(subject instanceof Profile){
+        if(subject instanceof Profile && arg instanceof String){
             Profile profile = (Profile) subject;
             updateDatabase(profile, (String) arg);
                 

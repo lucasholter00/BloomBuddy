@@ -85,9 +85,9 @@ public class DataBaseConnection {
     }
 
     //This method inserts historical data into a profile that belongs to a user
-    public void insertHistoricalData(HistoricalData data, String username, String profileId){
+    public void insertHistoricalData(HistoricalData data, String profileId){
         MongoCollection<Document> collection = database.getCollection("sys_user");
-        Document filter = new Document("username", username).append("profiles.id", profileId);
+        Document filter = new Document("profiles.id", profileId);
         Document update = new Document("$addToSet", new Document("profiles.$.HistoricalData", new Document("moisture", data.getMoisture())
                 .append("temperature", data.getTemperature())
                 .append("humidity", data.getHumidity())
@@ -141,7 +141,7 @@ public class DataBaseConnection {
 
     public void editSensorSettings(String type, float value, String profileID){
         System.out.println("Hello");
-        MongoCollection<Document> collection = database.getCollection("sys_user"); 
+        MongoCollection<Document> collection = database.getCollection("sys_user");
         Document filter = new Document("profiles.id", profileID);
         String path = "profiles.$.sensorSettings." + type;
         Document updateThreshold = new Document("$set", new Document(path, value));
@@ -188,6 +188,62 @@ public class DataBaseConnection {
         }
 
         return null; //if filteredData can not be returned, the return value will be null.
+    }
+
+
+
+    public SensorSettings getSensorSettings(String profileId) {
+        MongoCollection<Document> collection = database.getCollection("sys_user");
+
+        Document filter = new Document("profiles.id", profileId);
+
+        Document document = collection.find(filter).first();
+
+        if (document != null) {
+            //This code retrieves the profile document with the specified profile ID from the document object
+            // by filtering the list of profiles based on the ID and returning the first matching profile document,
+            // or null if not found
+            Document profileDoc = document.getList("profiles", Document.class)
+                    .stream()
+                    .filter(profile -> profile.getString("id").equals(profileId))
+                    .findFirst()
+                    .orElse(null);
+
+            if (profileDoc != null) {
+                Document sensorSettingsDoc = profileDoc.get("sensorSettings", Document.class);
+
+                if (sensorSettingsDoc != null) {
+                    Float temperatureLowerBound = sensorSettingsDoc.getDouble("tempratureThresholdLow").floatValue();
+                    Float temperatureUpperBound = sensorSettingsDoc.getDouble("tempratureThresholdHigh").floatValue();
+                    Float humidityLowerBound = sensorSettingsDoc.getDouble("humidityThresholdLow").floatValue();
+                    Float humidityUpperBound = sensorSettingsDoc.getDouble("humidityThresholdHigh").floatValue();
+                    Float moistureLowerBound = sensorSettingsDoc.getDouble("moistureThresholdLow").floatValue();
+                    Float moistureUpperBound = sensorSettingsDoc.getDouble("moistureThresholdHigh").floatValue();
+                    Float lightLowerBound = sensorSettingsDoc.getDouble("lightThresholdLow").floatValue();
+                    Float lightUpperBound = sensorSettingsDoc.getDouble("lightThresholdHigh").floatValue();
+
+                    return new SensorSettings(
+                            temperatureLowerBound != null ? temperatureLowerBound : 0.0f,
+                            temperatureUpperBound != null ? temperatureUpperBound : 0.0f,
+                            humidityLowerBound != null ? humidityLowerBound : 0.0f,
+                            humidityUpperBound != null ? humidityUpperBound : 0.0f,
+                            moistureLowerBound != null ? moistureLowerBound : 0.0f,
+                            moistureUpperBound != null ? moistureUpperBound : 0.0f,
+                            lightLowerBound != null ? lightLowerBound : 0.0f,
+                            lightUpperBound != null ? lightUpperBound : 0.0f
+                    );
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void editProfileName(String newName, String profileID){
+        MongoCollection<Document> collection = database.getCollection("sys_user");
+        Document filter = new Document("profiles.id", profileID);
+        Document updateName = new Document("$set", new Document("profiles.$.name", newName));
+        collection.updateOne(filter, updateName);
     }
 
     public void close(){
