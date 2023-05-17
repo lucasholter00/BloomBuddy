@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 
@@ -18,10 +19,16 @@
          </image>
       </ImageView>
       <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ddfbdb" height="461.0" layoutX="265.0" layoutY="58.0" stroke="WHITE" strokeType="INSIDE" width="284.0" />
-      <TextField fx:id="usernameTextField" layoutX="333.0" layoutY="150.0" />
-      <PasswordField fx:id="accountPasswordField" layoutX="333.0" layoutY="232.0" />
-      <Text layoutX="337.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
-      <Text layoutX="337.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
-      <Button fx:id="CreateAccountButton" layoutX="337.0" layoutY="304.0" mnemonicParsing="false" onAction="#CreateAccount" text="Button" />
+      <TextField fx:id="usernameTextField" layoutX="302.0" layoutY="170.0" prefHeight="25.0" prefWidth="219.0" />
+      <PasswordField fx:id="accountPasswordField" layoutX="301.0" layoutY="240.0" prefHeight="25.0" prefWidth="219.0" />
+      <Text layoutX="303.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
+      <Text layoutX="302.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
+      <Button fx:id="CreateAccountButton" layoutX="332.0" layoutY="322.0" mnemonicParsing="false" onAction="#CreateAccount" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #7ba96f;" text="Create Account" />
+      <Button fx:id="backButton" layoutX="25.0" layoutY="21.0" mnemonicParsing="false" onAction="#setLoginScene" prefHeight="39.0" prefWidth="53.0" style="-fx-background-color: #678c66;" text="Back" />
+      <Text layoutX="299.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create your account">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
