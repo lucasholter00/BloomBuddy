@@ -3,9 +3,11 @@ package com.group18.BloomBuddy.application;
 import com.group18.BloomBuddy.DataBaseConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -17,6 +19,7 @@ public class CreateAccountController extends SceneSwitcher{
     public TextField usernameTextField;
     public PasswordField accountPasswordField;
     public Button CreateAccountButton;
+    public Label createAccountLabel;
 
     public void show (Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/createAccountScene.fxml");
@@ -34,10 +37,13 @@ public class CreateAccountController extends SceneSwitcher{
     }
 
     public void CreateAccount(ActionEvent actionEvent) throws IOException {
-        if(usernameTextField.getText().isBlank() || accountPasswordField.getText().isBlank()) {
-            accountPasswordField.setText("Please enter username and password");
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        createAccountLabel.setAlignment(Pos.CENTER);
+        if (usernameTextField.getText().isBlank() || accountPasswordField.getText().isBlank()) {
+            createAccountLabel.setText("Please enter username and password");
+        } else if (!dataBaseConnection.addUser(usernameTextField.getText(), accountPasswordField.getText())){
+            createAccountLabel.setText("Username is already in use");
         } else {
-            DataBaseConnection dataBaseConnection = new DataBaseConnection();
             dataBaseConnection.addUser(usernameTextField.getText(), accountPasswordField.getText());
             setLoginScene(actionEvent);
         }
