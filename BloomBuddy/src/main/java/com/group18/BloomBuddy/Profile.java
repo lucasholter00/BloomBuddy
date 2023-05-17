@@ -35,11 +35,15 @@ public class Profile implements MyObservable {
         MyObserver temperatureObserver = new TemperatureObserver();
         MyObserver humidityObserver = new HumidityObserver();
         MyObserver lightObserver = new LightObserver();
+        MyObserver nameObserver = new NameObserver();
+        MyObserver historicalDataObserver = new HistoricalDataObserver();
         addObserver(wateredObserver);
         addObserver(needsWaterObserver);
         addObserver(temperatureObserver); 
         addObserver(humidityObserver);
         addObserver(lightObserver);
+        addObserver(nameObserver);
+        addObserver(historicalDataObserver);
         mqttHandler = createMQTTHandler();
 
     }
@@ -68,6 +72,17 @@ public class Profile implements MyObservable {
         this.historicalData.add(data);
     }
 
+    public void newHistoricalData(HistoricalData data) throws MqttException {
+        this.historicalData.add(data);
+        notifyObservers(data);
+    }
+
+    public HistoricalData getHistoricalData(int index) {
+        return this.historicalData.get(index);
+    }
+
+    
+
     public void recieveWatered(){
 
 
@@ -89,8 +104,9 @@ public class Profile implements MyObservable {
             return id;
         }
 
-        public void setName (String newName){
+        public void setName (String newName) throws MqttException{
             this.name = newName;
+            notifyObservers("name");
         }
 
         public LocalDateTime getLastWatered () {
@@ -123,7 +139,7 @@ public class Profile implements MyObservable {
 
 
         @Override
-        public void notifyObservers (String arg) throws MqttException {
+        public void notifyObservers (Object arg) throws MqttException {
             for (MyObserver observer : observers) {
                 observer.update(this, arg);
             }
