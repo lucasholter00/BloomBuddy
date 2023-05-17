@@ -85,9 +85,9 @@ public class DataBaseConnection {
     }
 
     //This method inserts historical data into a profile that belongs to a user
-    public void insertHistoricalData(HistoricalData data, String username, String profileId){
+    public void insertHistoricalData(HistoricalData data, String profileId){
         MongoCollection<Document> collection = database.getCollection("sys_user");
-        Document filter = new Document("username", username).append("profiles.id", profileId);
+        Document filter = new Document("profiles.id", profileId);
         Document update = new Document("$addToSet", new Document("profiles.$.HistoricalData", new Document("moisture", data.getMoisture())
                 .append("temperature", data.getTemperature())
                 .append("humidity", data.getHumidity())
@@ -188,6 +188,13 @@ public class DataBaseConnection {
         }
 
         return null; //if filteredData can not be returned, the return value will be null.
+    }
+
+    public void editProfileName(String newName, String profileID){
+        MongoCollection<Document> collection = database.getCollection("sys_user"); 
+        Document filter = new Document("profiles.id", profileID);
+        Document updateName = new Document("$set", new Document("profiles.$.name", newName));
+        collection.updateOne(filter, updateName);
     }
 
     public void close(){
