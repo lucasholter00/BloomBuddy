@@ -1,7 +1,9 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorData;
 import com.group18.BloomBuddy.SensorInteractor;
+import com.group18.BloomBuddy.SensorSettings;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import javafx.scene.chart.XYChart.Data;
 
 public class StatsController extends SceneSwitcher {
 
@@ -32,14 +36,29 @@ public class StatsController extends SceneSwitcher {
     private XYChart.Series<String, Number> moistSeries = new XYChart.Series<>();
     private XYChart.Series<String, Number> humSeries = new XYChart.Series<>();
     private XYChart.Series<String, Number> lightSeries = new XYChart.Series<>();
+
+    private XYChart.Series<String, Number> tempLowerSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> tempUpperSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> moistLowerSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> moistUpperSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> humLowerSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> humUpperSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> lightLowerSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> lightUpperSeries = new XYChart.Series<>();
+
+    private SensorSettings sensorSettings;
+    private Profile profile;
     @FXML
-    public void initialize() {
+    public void initialize() throws MqttException {
+        sensorSettings = new SensorSettings(10,20,10,20,10,20,10, 20);
+        profile = new Profile(sensorSettings, "test");
         initializeChart(tempLineChart);
         initializeChart(moistLineChart);
         initializeChart(humLineChart);
         initializeChart(lightLineChart);
         startSensorThread();
         initializeSeries();
+        updateThresholdSeries();
     }
 
     public void show(Stage stage) throws IOException {
@@ -85,6 +104,10 @@ public class StatsController extends SceneSwitcher {
         moistLineChart.getData().add(moistSeries);
         humLineChart.getData().add(humSeries);
         lightLineChart.getData().add(lightSeries);
+        tempLineChart.getData().addAll(tempLowerSeries, tempUpperSeries);
+        moistLineChart.getData().addAll(moistLowerSeries, moistUpperSeries);
+        humLineChart.getData().addAll(humLowerSeries, humUpperSeries);
+        lightLineChart.getData().addAll(lightLowerSeries, lightUpperSeries);
     }
     public void initializeChart(LineChart<String, Number> lineChart) {
         lineChart.setCreateSymbols(false);
@@ -150,5 +173,30 @@ public class StatsController extends SceneSwitcher {
                 series.getData().remove(0);
             }
         }
+        updateThresholdSeries();
+    }
+    public void updateThresholdSeries() {
+        // Get current time
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        // Update lower and upper threshold series for each sensor
+        updateSeriesWithThreshold(time, tempLowerSeries, sensorSettings.getTemperatureLowerBound());
+        updateSeriesWithThreshold(time, tempUpperSeries, sensorSettings.getTemperatureUpperBound());
+        updateSeriesWithThreshold(time, moistLowerSeries, sensorSettings.getMoistureLowerBound());
+        updateSeriesWithThreshold(time, moistUpperSeries, sensorSettings.getMoistureUpperBound());
+        updateSeriesWithThreshold(time, humLowerSeries, sensorSettings.getHumidityLowerBound());
+        updateSeriesWithThreshold(time, humUpperSeries, sensorSettings.getHumidityUpperBound());
+        updateSeriesWithThreshold(time, lightLowerSeries, sensorSettings.getLightLowerBound());
+        updateSeriesWithThreshold(time, lightUpperSeries, sensorSettings.getLightUpperBound());
+
+    }
+
+    private void updateSeriesWithThreshold(String time, XYChart.Series<String, Number> series, float threshold) {
+            // If series has more than 36 data points, remove the oldest one
+            if (series.getData().size() > 36) {
+                series.getData().remove(0);
+            }
+        series.getData().add(new Data<>(time, threshold));
+
     }
 }
