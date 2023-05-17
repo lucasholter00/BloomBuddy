@@ -92,7 +92,6 @@ public class StatsController extends SceneSwitcher {
                 }
                 while (true) {
                     Thread.sleep(1000);
-                    System.out.println(data.getData());
                     Platform.runLater(() -> {
                         updateChart(data.getData(), LineChartDataType.LIGHT);
                         updateChart(data.getData(), LineChartDataType.HUMIDITY);
@@ -101,6 +100,8 @@ public class StatsController extends SceneSwitcher {
 
                     });
                     newThresholdValues = sensorSettings.checkSensorReadings(data.getData());
+                    System.out.println(data.getData());
+
 
 
                     for(int i = 0; i < 4; i++){ // checks if sensor values have changed beyond thresholds
@@ -127,8 +128,11 @@ public class StatsController extends SceneSwitcher {
         } else if (sensor == 1) {
             if(thresholdValues.get(sensor) == TRUE) {
                 mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "red" );
+                System.out.println("red");
             }else{
                 mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "green" );
+                System.out.println("green");
+
             }
         } else if (sensor == 2) {
             if(thresholdValues.get(sensor) == TRUE) {
