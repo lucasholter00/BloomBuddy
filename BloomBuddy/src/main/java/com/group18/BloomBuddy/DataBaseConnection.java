@@ -179,7 +179,6 @@ public class DataBaseConnection {
 
         return null; //if filteredData can not be returned, the return value will be null.
     }
-
     public void close(){
         client.close();
     }
