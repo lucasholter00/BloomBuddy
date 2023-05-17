@@ -1,8 +1,5 @@
 package com.group18.BloomBuddy;
 
-import com.group18.BloomBuddy.application.LineChartDataType;
-import com.group18.BloomBuddy.application.SceneSwitcher;
-import com.group18.BloomBuddy.application.StatsController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,5 +30,4 @@ public class App extends Application {
     }
 
 }
-
 
