@@ -20,8 +20,6 @@ public class Profile implements MyObservable {
     private int waterFrequency; //How often the water should be watered, in terms of days
     private List<MyObserver> observers;
 
-    MQTTHandler mqttHandler;
-
     public Profile(SensorSettings sensorSettings, String name) throws MqttException {
         this.sensorSettings = sensorSettings;
         this.name = name;
@@ -44,7 +42,6 @@ public class Profile implements MyObservable {
         addObserver(lightObserver);
         addObserver(nameObserver);
         addObserver(historicalDataObserver);
-        mqttHandler = createMQTTHandler();
 
     }
 
@@ -245,6 +242,16 @@ public class Profile implements MyObservable {
         return sensorSettings.getMoistureLowerBound();
     }
 
+    public String toString() {
+        return "Plant{" +
+                "name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                ", lastWatered=" + lastWatered +
+                ", waterFrequency=" + waterFrequency +
+                ", sensorSettings=" + sensorSettings +
+                ", historicalData=" + historicalData +
+                '}';
+    }
 
 
 
