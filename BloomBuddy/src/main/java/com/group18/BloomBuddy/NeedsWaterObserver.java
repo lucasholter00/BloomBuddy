@@ -13,9 +13,9 @@ public class NeedsWaterObserver implements MyObserver {
 
     @Override
     public void update(MyObservable subject, Object arg) throws MqttException {
-        if(arg instanceof String){
+        if(subject instanceof Profile && arg instanceof String){
             String filter = (String)arg;
-            if (subject instanceof Profile && filter.equals("needsWater")){
+            if (filter.equals("needsWater")){
                 notifyTerminal();
             }
         }
