@@ -2,7 +2,7 @@ package com.group18.BloomBuddy;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-public class TemperatureObserver implements MyObserver {
+public class LightObserver implements MyObserver {
 
     @Override
     public void update(MyObservable subject, Object arg) throws MqttException{
@@ -16,18 +16,16 @@ public class TemperatureObserver implements MyObserver {
 
     
     public void updateDatabase(Profile profile, String arg) throws MqttException{
-        if(arg.equals("tempratureThresholdLow") == true || arg.equals("tempratureThresholdHigh") == true){
+        if (arg.equals("lightThresholdLow") == true || arg.equals("lightThresholdHigh") == true) {
             DataBaseConnection db = new DataBaseConnection();
             float value = 0;
-            if(arg.equals("tempratureThresholdLow")){
-                value = profile.getTemperatureLowerBound();
-            }
-            else if(arg.equals("tempratureThresholdHigh")){
-                value = profile.getTemperatureUpperBound();
+            if (arg.equals("lightThresholdLow")) {
+                value = profile.getLightLowerBound();
+            } else if (arg.equals("lightThresholdHigh")) {
+                value = profile.getLightUpperBound();
             }
 
             db.editSensorSettings(arg, value, profile.getId());
         }
-    }
-    
+    } 
 }

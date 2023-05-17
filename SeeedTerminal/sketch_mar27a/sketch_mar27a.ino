@@ -8,12 +8,16 @@
 #include"TFT_eSPI.h"
 #include <PubSubClient.h>
 #include "DHT.h" //Include the DHT library
+#include <cstring>
 
 
 // Update these with values suitable for your network.
-const char* ssid = "TP-Link_7460"; // WiFi Name
-const char* password = "13401115";  // WiFi Password
-
+const char* ssid = "VILMERSLAPTOP"; // WiFi Name
+const char* password = "BloomBuddy123";  // WiFi Password
+char getThresholdColorTemperature[6] = "green";
+char getThresholdColorHumidity[6] = "green";
+char getThresholdColorLight[6] = "green";
+char getThresholdColorMoisture[6] = "green";
 
 /**********  HOW TO FIND YOUR MOSQUITTO BROKER ADDRESS*******************
   In Windows command prompt, use the command:   ipconfig
@@ -36,9 +40,9 @@ bool popupPainted = false;
 TFT_eSPI tft;
 int DHTPIN = A0;
 DHT dht (DHTPIN, 11);
-int moisturePin = A0;
+int moisturePin = A1;
 int humidityPin = A0;
-int lightPin = A0;
+int lightPin = A2;
 int temperaturePin = A0;
 
 WiFiClient wioClient;
@@ -61,8 +65,6 @@ void setup_wifi() {
   Serial.println(ssid);
   WiFi.begin(ssid, password); // Connecting WiFi
 
-
-
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -79,25 +81,42 @@ void setup_wifi() {
   Serial.println(WiFi.localIP()); // Display Local IP Address
 }
 
-
 String getPayload(){
 
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.println("got a message!");
   tft.fillScreen(TFT_BLACK);
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
 // process payload and convert it to a string
-  char buff_p[length];
+  char buff_p[length + 1];
   for (int i = 0; i < length; i++) {
     Serial.print((char)payload[i]);
     buff_p[i] = (char)payload[i];
   }
   Serial.println();
   buff_p[length] = '\0';
-  String message = String(buff_p);
+  char* message =  buff_p;
+  if(std::strcmp(topic,"BloomBuddy/Threshold/Color/Temperature") == 0){
+    std::strcpy(getThresholdColorTemperature, message);
+    ThresholdIndication();
+  }
+  if(std::strcmp(topic, "BloomBuddy/Threshold/Color/Humidity") == 0){
+    std::strcpy(getThresholdColorHumidity, message);
+    ThresholdIndication();
+   }
+  if(std::strcmp(topic, "BloomBuddy/Threshold/Color/Light") == 0){
+    std::strcpy(getThresholdColorLight, message);
+    ThresholdIndication();
+  }
+  if(std::strcmp(topic, "BloomBuddy/Threshold/Color/Moisture") == 0){
+    std::strcpy(getThresholdColorMoisture, message);
+    ThresholdIndication();
+  }
+
 // end of conversion
   /***************  Action with topic and messages ***********/
   setColorAndPrintMessage(message);
@@ -189,6 +208,8 @@ void setup() {
   setup_wifi();
   client.setServer(server, 1883); // Connect the MQTT Server   hive_mqtt_server
   client.setCallback(callback);
+  subToThresholdValues();
+  ThresholdIndication();
 
     pinMode(WIO_MIC, INPUT);
     pinMode(WIO_KEY_A, INPUT_PULLUP);
@@ -199,9 +220,9 @@ void loop() {
   if (!client.connected()) {
     reconnect();
   }
-
-    //publishMoistureValues();
-    //publishLightValues();
+    client.loop();
+    publishMoistureValues();
+    publishLightValues();
     publishTemperatureValues();
     publishHumidityValues();
 
@@ -236,7 +257,7 @@ void publishMicValues(){
   int val = analogRead(WIO_MIC);
   itoa(val, buffer, 10);
   client.publish("hej", buffer);
-
+    client.subscribe("BloomBuddy/Threshold/Color/Moisture",0);
 }
 
 void publishMoistureValues(){
@@ -271,6 +292,73 @@ void publishLightValues(){
   snprintf(msg, 8, "%d", valLight);
   client.publish("BloomBuddy/Light/raw", msg);
 }
+
+void ThresholdIndication(){
+  // Calculate the height of each screen quadrant
+  int quadrantHeight = tft.height() / 4;
+
+  // Clear the display
+  //tft.fillScreen(TFT_BLACK);
+  // Draw text and fill color for the first quadrant
+  tft.setCursor(10, 7);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(2);
+  tft.setTextWrap(true);
+  if(std::strcmp(getThresholdColorTemperature, "green") == 0){
+  tft.fillRoundRect(0, 0, tft.width(), quadrantHeight, 5, TFT_GREEN);
+  }else{
+  tft.fillRoundRect(0, 0, tft.width(), quadrantHeight, 5, TFT_RED);
+  }
+  tft.println("TEMP");
+
+  // Draw text and fill color for the second quadrant
+  tft.setCursor(10, quadrantHeight + 7);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(2);
+  tft.setTextWrap(true);
+  if(std::strcmp(getThresholdColorHumidity, "green") == 0){
+    tft.fillRoundRect(0, quadrantHeight, tft.width(), quadrantHeight, 5, TFT_GREEN);
+  }else{
+    tft.fillRoundRect(0, quadrantHeight, tft.width(), quadrantHeight, 5, TFT_RED);
+  }
+  tft.println("HUMIDITY");
+
+  // Draw text and fill color for the third quadrant
+  tft.setCursor(10, 2 * quadrantHeight + 7);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(2);
+  tft.setTextWrap(true);
+  if(std::strcmp(getThresholdColorMoisture, "green") == 0){
+    tft.fillRoundRect(0, 2 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_GREEN);
+  }else{
+    tft.fillRoundRect(0, 2 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_RED);
+  }
+  tft.println("MOISTURE");
+
+  // Draw text and fill color for the fourth quadrant
+  tft.setCursor(10, 3 * quadrantHeight + 7);
+  tft.setTextColor(TFT_WHITE);
+  tft.setTextSize(2);
+  tft.setTextWrap(true);
+  if(std::strcmp(getThresholdColorLight, "green") == 0){
+    tft.fillRoundRect(0, 3 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_GREEN);
+  }else{
+    tft.fillRoundRect(0, 3 * quadrantHeight, tft.width(), quadrantHeight, 5, TFT_RED);
+  }
+  tft.println("LIGHT");
+}
+void subToThresholdValues(){
+  client.subscribe("BloomBuddy/Threshold/Color/Temperature",0);
+  client.subscribe("BloomBuddy/Threshold/Color/Humidity",0);
+  client.subscribe("BloomBuddy/Threshold/Color/Light",0);
+  client.subscribe("BloomBuddy/Threshold/Color/Moisture",0);
+  Serial.print("Subcribed to: ");
+  Serial.println("BloomBuddy/Threshold/Color/Temperature");
+  Serial.println("BloomBuddy/Threshold/Color/Humidity");
+  Serial.println("BloomBuddy/Threshold/Color/Light");
+  Serial.println("BloomBuddy/Threshold/Color/Moisture");
+}
+
 
 void publishLastWatered(){
     client.publish("BloomBuddy/lastWatered", "Watered");
