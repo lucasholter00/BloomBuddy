@@ -31,6 +31,7 @@ public class TemperatureObserver implements MyObserver {
             }
 
             db.editSensorSettings(arg, value, profile.getId());
+            db.close();
         }
     }
     

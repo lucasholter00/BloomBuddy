@@ -30,6 +30,7 @@ public class LightObserver implements MyObserver {
             }
 
             db.editSensorSettings(arg, value, profile.getId());
+            db.close();
         }
     } 
 }
