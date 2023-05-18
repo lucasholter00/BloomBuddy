@@ -12,15 +12,15 @@
    <children>
       <Pane layoutX="271.0" layoutY="130.0" prefHeight="339.0" prefWidth="258.0" style="-fx-background-color: #ddfbdb;">
          <children>
-            <TextField fx:id="TempLowBound" layoutX="40.0" layoutY="38.0" prefHeight="25.0" prefWidth="72.0" promptText="Min (°C)" />
-            <TextField fx:id="TempUpBound" layoutX="140.0" layoutY="39.0" prefHeight="23.0" prefWidth="72.0" promptText="Max (°C)" />
-            <TextField fx:id="HumLowBound" layoutX="40.0" layoutY="113.0" prefHeight="25.0" prefWidth="72.0" promptText="Min (RH%)" />
-            <TextField fx:id="HumUpBound" layoutX="140.0" layoutY="113.0" prefHeight="25.0" prefWidth="72.0" promptText="Max(RH%)" />
-            <TextField fx:id="MoistLowBound" layoutX="40.0" layoutY="184.0" prefHeight="25.0" prefWidth="72.0" promptText="Min (%)" />
-            <TextField fx:id="MoistUpBound" layoutX="140.0" layoutY="184.0" prefHeight="25.0" prefWidth="72.0" promptText="Max (%)" />
-            <Label layoutX="76.0" layoutY="21.0" text="Temperature Values" />
-            <Label layoutX="81.0" layoutY="95.0" text="Humidity Values" />
-            <Label layoutX="81.0" layoutY="166.0" text="Moisture Values" />
+            <TextField fx:id="TempLowBound" layoutX="40.0" layoutY="60.0" prefHeight="25.0" prefWidth="72.0" promptText="Min (°C)" />
+            <TextField fx:id="TempUpBound" layoutX="140.0" layoutY="61.0" prefHeight="23.0" prefWidth="72.0" promptText="Max (°C)" />
+            <TextField fx:id="HumLowBound" layoutX="40.0" layoutY="135.0" prefHeight="25.0" prefWidth="72.0" promptText="Min (RH%)" />
+            <TextField fx:id="HumUpBound" layoutX="140.0" layoutY="135.0" prefHeight="25.0" prefWidth="72.0" promptText="Max(RH%)" />
+            <TextField fx:id="MoistLowBound" layoutX="40.0" layoutY="206.0" prefHeight="25.0" prefWidth="72.0" promptText="Min (%)" />
+            <TextField fx:id="MoistUpBound" layoutX="140.0" layoutY="206.0" prefHeight="25.0" prefWidth="72.0" promptText="Max (%)" />
+            <Label layoutX="76.0" layoutY="43.0" text="Temperature Values" />
+            <Label layoutX="81.0" layoutY="117.0" text="Humidity Values" />
+            <Label layoutX="81.0" layoutY="188.0" text="Moisture Values" />
             <Label layoutX="90.0" layoutY="240.0" text="Light Options" />
             <RadioButton fx:id="LightHigh" layoutX="137.0" layoutY="257.0" mnemonicParsing="false" selected="true" text="High">
                <toggleGroup>
@@ -29,8 +29,9 @@
             </RadioButton>
             <RadioButton fx:id="LightLow" layoutX="60.0" layoutY="257.0" mnemonicParsing="false" text="Low" toggleGroup="$Light" />
             <Button layoutX="80.0" layoutY="291.0" mnemonicParsing="false" onAction="#handleSaveSettingsButton" text="Save Settings" />
+            <Label fx:id="editingLabel" layoutX="41.0" layoutY="14.0" prefHeight="17.0" prefWidth="171.0" textFill="RED" />
          </children>
       </Pane>
-      <Button fx:id="backToMyPlants" layoutX="34.0" layoutY="40.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" text="Back" />
+      <Button fx:id="backToMyPlants" layoutX="31.0" layoutY="33.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" prefHeight="39.0" prefWidth="53.0" style="-fx-background-color: #678c66;" text="Back" />
    </children>
 </AnchorPane>

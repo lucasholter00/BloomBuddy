@@ -1,11 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.PlantAddingController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.PlantAddingController">
    <children>
-      <Button fx:id="backToMyPlants" layoutX="37.0" layoutY="45.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" text="Back" />
+      <Button fx:id="backToMyPlants" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" prefHeight="49.0" prefWidth="65.0" style="-fx-background-color: #678c66;" text="Back" />
+      <Pane layoutX="273.0" layoutY="33.0" prefHeight="479.0" prefWidth="246.0" style="-fx-background-color: #ddfbdb;">
+         <children>
+            <TextField fx:id="TempLowBound" layoutX="35.0" layoutY="133.0" prefHeight="25.0" prefWidth="72.0" promptText="Min (°C)" />
+            <TextField fx:id="TempUpBound" layoutX="135.0" layoutY="134.0" prefHeight="23.0" prefWidth="72.0" promptText="Max (°C)" />
+            <TextField fx:id="HumLowBound" layoutX="35.0" layoutY="208.0" prefHeight="25.0" prefWidth="72.0" promptText="Min (RH%)" />
+            <TextField fx:id="HumUpBound" layoutX="135.0" layoutY="208.0" prefHeight="25.0" prefWidth="72.0" promptText="Max(RH%)" />
+            <TextField fx:id="MoistLowBound" layoutX="35.0" layoutY="279.0" prefHeight="25.0" prefWidth="72.0" promptText="Min (%)" />
+            <TextField fx:id="MoistUpBound" layoutX="135.0" layoutY="279.0" prefHeight="25.0" prefWidth="72.0" promptText="Max (%)" />
+            <Label layoutX="71.0" layoutY="116.0" text="Temperature Values" />
+            <Label layoutX="76.0" layoutY="190.0" text="Humidity Values" />
+            <Label layoutX="76.0" layoutY="261.0" text="Moisture Values" />
+            <Label layoutX="85.0" layoutY="335.0" text="Light Options" />
+            <RadioButton fx:id="LightHigh" layoutX="132.0" layoutY="352.0" mnemonicParsing="false" selected="true" text="High">
+               <toggleGroup>
+                  <ToggleGroup fx:id="Light" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="LightLow" layoutX="55.0" layoutY="352.0" mnemonicParsing="false" text="Low" toggleGroup="$Light" />
+            <Button layoutX="75.0" layoutY="386.0" mnemonicParsing="false" onAction="#createPlantProfile" text="Save Settings" />
+            <TextField fx:id="plantName" layoutX="49.0" layoutY="70.0" promptText="Your plant" />
+            <Label layoutX="91.0" layoutY="50.0" text="Plant name" />
+            <Label fx:id="accountCreationLabel" alignment="CENTER" layoutX="105.0" layoutY="17.0" textAlignment="CENTER" textFill="RED" />
+         </children>
+      </Pane>
+      <ImageView fitHeight="359.0" fitWidth="305.0" layoutX="-16.0" layoutY="155.0" opacity="0.43" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@chomp plant.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="336.0" fitWidth="217.0" layoutX="560.0" layoutY="290.0" opacity="0.44" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@fire flower.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
