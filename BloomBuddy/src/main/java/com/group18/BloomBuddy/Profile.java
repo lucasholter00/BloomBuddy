@@ -33,14 +33,12 @@ public class Profile implements MyObservable {
         MyObserver temperatureObserver = new TemperatureObserver();
         MyObserver humidityObserver = new HumidityObserver();
         MyObserver lightObserver = new LightObserver();
-        MyObserver nameObserver = new NameObserver();
         MyObserver historicalDataObserver = new HistoricalDataObserver();
         addObserver(wateredObserver);
         addObserver(needsWaterObserver);
         addObserver(temperatureObserver); 
         addObserver(humidityObserver);
         addObserver(lightObserver);
-        addObserver(nameObserver);
         addObserver(historicalDataObserver);
 
     }
