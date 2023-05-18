@@ -20,6 +20,14 @@ public class HistoricalData {
 
     }
 
+    public HistoricalData(float moisture, float temperature, float humidity, float light, LocalDateTime time){
+        this.moisture = moisture;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.light = light;
+        this.time = time;
+    }
+
     //Getter methods
     public float getMoisture(){
         return moisture;
@@ -39,6 +47,10 @@ public class HistoricalData {
 
     public LocalDateTime getTime(){
         return time;
+    }
+
+    public String toString(){
+        return "Moisture: " + moisture + " Temperature: " + temperature + " Humidity: " + humidity + " Light: " + light + " Time: " + time;
     }
     
 }

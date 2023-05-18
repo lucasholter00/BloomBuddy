@@ -1,5 +1,6 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.DataBaseConnection;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorSettings;
 import javafx.event.ActionEvent;
@@ -53,33 +54,30 @@ public class PlantEditingController extends SceneSwitcher {
         stage.setFullScreen(false);
         stage.show();
     }
-
-    //This method is called when the 'Save Settings' button is clicked.
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) throws Exception {
-     //TODO Specify what profile to edit. It should be an already existing profile!
-        saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Test"));
+        saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Felix"));
     }
-
-    //This method is responsible for saving the sensor settings for a given profile.
-    //It first validates the input bounds, then tries to update the sensor settings of the profile.
     @FXML
-    private void saveSettings(ActionEvent event, Profile profile) {
+    private void saveSettings(ActionEvent event, Profile profile) throws MqttException {
+            DataBaseConnection db = new DataBaseConnection();
+            db.addProfile(profile, "Felix");
+
             try {
                 if(validateBounds()) {
                     SensorSettings settings = profile.getSensorSettings();
-                    settings.setTemperatureLowerBound(Float.parseFloat(TempLowBound.getText()));
-                    settings.setTemperatureUpperBound(Float.parseFloat(TempUpBound.getText()));
-                    settings.setHumidityLowerBound(Float.parseFloat(HumLowBound.getText()));
-                    settings.setHumidityUpperBound(Float.parseFloat(HumUpBound.getText()));
-                    settings.setMoistureLowerBound(Float.parseFloat(MoistLowBound.getText()));
-                    settings.setMoistureUpperBound(Float.parseFloat(MoistUpBound.getText()));
+                    profile.setTemperatureLowerBound(Float.parseFloat(TempLowBound.getText()));
+                    profile.setTemperatureUpperBound(Float.parseFloat(TempUpBound.getText()));
+                    profile.setHumidityLowerBound(Float.parseFloat(HumLowBound.getText()));
+                    profile.setHumidityUpperBound(Float.parseFloat(HumUpBound.getText()));
+                    profile.setMoistureLowerBound(Float.parseFloat(MoistLowBound.getText()));
+                    profile.setMoistureUpperBound(Float.parseFloat(MoistUpBound.getText()));
                     if (LightLow.isSelected()) {
-                        settings.setLightLowerBound(0);
-                        settings.setLightUpperBound(512);
+                        profile.setLightLowerBound(0);
+                        profile.setLightUpperBound(512);
                     } else if (LightHigh.isSelected()) {
-                        settings.setLightLowerBound(512);
-                        settings.setLightUpperBound(2000);
+                        profile.setLightLowerBound(512);
+                        profile.setLightUpperBound(2000);
                     }
                     editingLabel.setText("Settings were successfully saved.");
                 }
@@ -88,8 +86,6 @@ public class PlantEditingController extends SceneSwitcher {
             }
         }
 
-    //This method checks if the sensor settings bounds are valid.
-    //Specifically, it checks if the lower bounds are less than the upper bounds for the sensor settings.
     public Boolean validateBounds(){
         boolean valid = true;
         float temperatureLowerBound = Float.parseFloat(TempLowBound.getText());
