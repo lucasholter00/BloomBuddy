@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.io.IOException;
@@ -18,6 +20,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javafx.scene.chart.XYChart.Data;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import static java.lang.Boolean.TRUE;
 
 public class StatsController extends SceneSwitcher {
 
@@ -110,6 +115,7 @@ public class StatsController extends SceneSwitcher {
                         } catch (MqttException e) {
                             throw new RuntimeException(e);
 
+                        }
                     });
                     newThresholdValues = sensorSettings.checkSensorReadings(data.getData());
                     System.out.println(data.getData());
