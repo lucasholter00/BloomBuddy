@@ -30,6 +30,7 @@ public class MoistureObserver implements MyObserver {
             }
 
             db.editSensorSettings(arg, value, profile.getId());
+            db.close();
         }
     } 
 }
