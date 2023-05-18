@@ -101,6 +101,14 @@ public class SensorSettings {
         public void setHumidityUpperBound(float humidityUpperBound) {
             this.humidityUpperBound = humidityUpperBound;
         }
-    }
+
+        public String toString () {
+            return "Temperature: " + temperatureLowerBound + " - " + temperatureUpperBound + "\n" +
+                    "Moisture: " + moistureLowerBound + " - " + moistureUpperBound + "\n" +
+                    "Light: " + lightLowerBound + " - " + lightUpperBound + "\n" +
+                    "Humidity: " + humidityLowerBound + " - " + humidityUpperBound + "\n";
+        }
+}
+
 
 
