@@ -119,7 +119,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 // end of conversion
   /***************  Action with topic and messages ***********/
-  setColorAndPrintMessage(message);
+  //setColorAndPrintMessage(message);
   //we want to add a notification
 
   if(strcmp(topic, "BloomBuddy/watering") && message == "notification"){
@@ -184,6 +184,7 @@ void reconnect() {
       Serial.println("Published connection message ");
       // ... and resubscribe
       client.subscribe(TOPIC_sub);
+      subToThresholdValues();
       Serial.print("Subcribed to: ");
       Serial.println(TOPIC_sub);
     } else {
@@ -221,14 +222,14 @@ void loop() {
     reconnect();
   }
     client.loop();
+    Serial.println("-------------");
     publishMoistureValues();
     publishLightValues();
     publishTemperatureValues();
     publishHumidityValues();
-
     delay(1000);
 
-    if(displayPopup && !popupPainted){
+    /*if(displayPopup && !popupPainted){
         showNotification();
         popupPainted=true;
     }
@@ -239,7 +240,7 @@ void loop() {
     publishLastWatered();
     removeNotification();
     popupPainted=false;
-    }
+    }*/
 
 /*   Use to continuously execute something in the loop.
      sensor data?! Hint hint  ヾ(o✪‿✪o)ｼ 
@@ -257,7 +258,6 @@ void publishMicValues(){
   int val = analogRead(WIO_MIC);
   itoa(val, buffer, 10);
   client.publish("hej", buffer);
-    client.subscribe("BloomBuddy/Threshold/Color/Moisture",0);
 }
 
 void publishMoistureValues(){
@@ -265,6 +265,7 @@ void publishMoistureValues(){
   int val = analogRead(moisturePin);
   itoa(val, buffer, 10);
   client.publish("BloomBuddy/Moisture/raw", buffer);
+  Serial.println(val);
 }
 
 void publishHumidityValues(){
@@ -291,6 +292,7 @@ void publishLightValues(){
   char msg[8];
   snprintf(msg, 8, "%d", valLight);
   client.publish("BloomBuddy/Light/raw", msg);
+  Serial.println(valLight);
 }
 
 void ThresholdIndication(){

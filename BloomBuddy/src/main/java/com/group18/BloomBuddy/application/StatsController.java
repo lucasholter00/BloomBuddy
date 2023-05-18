@@ -78,6 +78,26 @@ public class StatsController extends SceneSwitcher {
         Thread sensorThread = new Thread(() -> {
             try {
                 SensorInteractor data = new SensorInteractor();
+                SensorSettings sensorSettings = new SensorSettings(10,20, 0,100,500,2000,10,20);
+                List<Boolean> previousThresholdValues = sensorSettings.checkSensorReadings(data.getData());//is used to check if sensor values have changed beyond the threshold values
+                List<Boolean> newThresholdValues; //is used to check if sensor values have changed beyond the threshold values
+                MqttCallback mqttCallback = new MqttCallback() {
+                    public void connectionLost(Throwable cause) {
+                        System.out.println("Connection lost: " + cause.getMessage());
+                    }
+
+                    public void messageArrived(String topic, MqttMessage message) throws Exception {
+                        //empty for now
+                    }
+
+                    public void deliveryComplete(IMqttDeliveryToken token) {
+                        // not used in this example
+                    }
+                };
+                MQTTHandler mqttHandler = new MQTTHandler(mqttCallback);
+                for(int x = 0; x < 4; x++) {
+                    checkThresholdValues(previousThresholdValues, mqttHandler, x);
+                }
                 while (true) {
                     Thread.sleep(1000);
                     System.out.println(data.getData());
@@ -89,8 +109,19 @@ public class StatsController extends SceneSwitcher {
                             updateChart(data.getData(), LineChartDataType.MOISTURE);
                         } catch (MqttException e) {
                             throw new RuntimeException(e);
-                        }
+
                     });
+                    newThresholdValues = sensorSettings.checkSensorReadings(data.getData());
+                    System.out.println(data.getData());
+
+
+
+                    for(int i = 0; i < 4; i++){ // checks if sensor values have changed beyond thresholds
+                        if(previousThresholdValues.get(i) != newThresholdValues.get(i)){
+                            checkThresholdValues(newThresholdValues, mqttHandler,i);
+                        }
+                    }
+                    previousThresholdValues = newThresholdValues;
                 }
             } catch (InterruptedException | MqttException e) {
                 e.printStackTrace();
@@ -99,7 +130,36 @@ public class StatsController extends SceneSwitcher {
         sensorThread.setDaemon(true);
         sensorThread.start();
     }
+    public void checkThresholdValues(List<Boolean> thresholdValues, MQTTHandler mqttHandler, int sensor) throws MqttException{ // only sens messages for one sensor at a time specified by int sensor
+        if(sensor == 0) {
+            if(thresholdValues.get(sensor) == TRUE) {
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Temperature", "red" );
+            }else{
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Temperature", "green" );
+            }
+        } else if (sensor == 1) {
+            if(thresholdValues.get(sensor) == TRUE) {
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "red" );
+                System.out.println("red");
+            }else{
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Moisture", "green" );
+                System.out.println("green");
 
+            }
+        } else if (sensor == 2) {
+            if(thresholdValues.get(sensor) == TRUE) {
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Light", "red" );
+            }else{
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Light", "green" );
+            }
+        } else{
+            if(thresholdValues.get(sensor) == TRUE) {
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Humidity", "red" );
+            }else{
+                mqttHandler.publish("BloomBuddy/Threshold/Color/Humidity", "green" );
+            }
+        }
+    }
     public void initializeSeries() {
         tempLineChart.getData().add(tempSeries);
         moistLineChart.getData().add(moistSeries);

@@ -24,6 +24,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class PlantEditingController extends SceneSwitcher {
     public RadioButton LightLow;
     public RadioButton LightHigh;
+    public Label editingLabel;
     @FXML
     private TextField TempLowBound;
     @FXML
@@ -54,10 +55,16 @@ public class PlantEditingController extends SceneSwitcher {
         stage.setFullScreen(false);
         stage.show();
     }
+
+    //This method is called when the 'Save Settings' button is clicked.
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) throws Exception {
-        saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Felix"));
+     //TODO Specify what profile to edit. It should be an already existing profile!
+        saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Test"));
     }
+
+    //This method is responsible for saving the sensor settings for a given profile.
+    //It first validates the input bounds, then tries to update the sensor settings of the profile.
     @FXML
     private void saveSettings(ActionEvent event, Profile profile1) throws MqttException {
         //TODO: Make use of currentUser.
@@ -65,7 +72,7 @@ public class PlantEditingController extends SceneSwitcher {
             //db.addProfile(profile1, "Felix");
             CurrentUser user = new CurrentUser("Felix", db.getProfiles("Felix"));
             Profile profile = user.getProfile("15b1d93d-a4c8-46ae-b6b0-10059388d3d3");
-
+            editingLabel.setWrapText(true);
             try {
                 if(validateBounds()) {
                     SensorSettings settings = profile.getSensorSettings();
@@ -82,26 +89,17 @@ public class PlantEditingController extends SceneSwitcher {
                         profile.setLightLowerBound(512);
                         profile.setLightUpperBound(2000);
                     }
-                    System.out.println(profile.getSensorSettings());
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success Dialog");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Settings were successfully saved.");
-                    alert.showAndWait();
-                    System.out.println(profile.getTemperatureLowerBound());
-                    System.out.println(profile.getTemperatureUpperBound());
+                    editingLabel.setText("Settings were successfully saved.");
                 }
 
 
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Input");
-                alert.setHeaderText(null);
-                alert.setContentText("Please enter valid numbers.");
-                alert.showAndWait();
+                editingLabel.setText("Please enter valid numbers.");
             }
         }
 
+    //This method checks if the sensor settings bounds are valid.
+    //Specifically, it checks if the lower bounds are less than the upper bounds for the sensor settings.
     public Boolean validateBounds(){
         boolean valid = true;
         float temperatureLowerBound = Float.parseFloat(TempLowBound.getText());
@@ -111,32 +109,17 @@ public class PlantEditingController extends SceneSwitcher {
         float moistureLowerBound = Float.parseFloat(MoistLowBound.getText());
         float moistureUpperBound = Float.parseFloat(MoistUpBound.getText());
         if (temperatureLowerBound >= temperatureUpperBound) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText(null);
-            alert.setContentText("Temperature lower bound must be less than upper bound.");
-            alert.showAndWait();
-            valid = true;
-
+           editingLabel.setText("Temperature lower bound must be less than upper bound.");
+           valid = false;
         }
         if (humidityLowerBound >= humidityUpperBound) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText(null);
-            alert.setContentText("Humidity lower bound must be less than upper bound.");
-            alert.showAndWait();
+            editingLabel.setText("Humidity lower bound must be less than upper bound.");
             valid = false;
         }
         if (moistureLowerBound >= moistureUpperBound) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText(null);
-            alert.setContentText("moisture lower bound must be less than upper bound.");
-            alert.showAndWait();
+            editingLabel.setText("moisture lower bound must be less than upper bound.");
             valid = false;
-
         }
         return valid;
     }
-
 }
