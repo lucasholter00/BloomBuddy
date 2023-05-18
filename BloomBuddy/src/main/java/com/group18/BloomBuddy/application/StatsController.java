@@ -1,9 +1,6 @@
 package com.group18.BloomBuddy.application;
 
-import com.group18.BloomBuddy.Profile;
-import com.group18.BloomBuddy.SensorData;
-import com.group18.BloomBuddy.SensorInteractor;
-import com.group18.BloomBuddy.SensorSettings;
+import com.group18.BloomBuddy.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,18 +45,18 @@ public class StatsController extends SceneSwitcher {
     private Profile profile;
     @FXML
     public void initialize() throws MqttException {
-        SensorSettings settings = new SensorSettings(10, 40, 20, 200, 30, 512, 20, 40);
-        profile = new Profile(settings, "Felix");
+        SensorSettings test = new SensorSettings(10,20,10,20,10,20,10,20);
+        profile = new Profile(test, "Hello");
+        updateSensorSettingsFromDatabase("15b1d93d-a4c8-46ae-b6b0-10059388d3d3");
         initializeChart(tempLineChart);
         initializeChart(moistLineChart);
         initializeChart(humLineChart);
         initializeChart(lightLineChart);
         startSensorThread();
         initializeSeries();
-        updateThresholdSeries();
     }
 
-    public void show(Stage stage) throws IOException {
+    public void show(Stage stage) throws IOException, MqttException {
         URL fxmlResource = getClass().getResource("/statScene.fxml");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(fxmlResource);
@@ -202,5 +199,12 @@ public class StatsController extends SceneSwitcher {
         series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: #000000;");
 
 
+    }
+    public void updateSensorSettingsFromDatabase(String profileId){
+        DataBaseConnection db = new DataBaseConnection();
+        SensorSettings settings = db.getSensorSettings(profileId);
+        if (settings != null) {
+            profile.setSensorSettings(settings);
+        }
     }
 }
