@@ -62,29 +62,30 @@ public class HomeController extends SceneSwitcher {
             Image broccoli = new Image("broccoli.png");
             Image lettuce = new Image("lettuce.png");
             Image onions = new Image("onion.png");
+            recommendationText.setWrapText(true);
             switch (randomNumber){
                 case 0:
-                    recommendationText.setText("Grow a cauliflower.\nCauliflower is rich in vitamin C which is good for skin,\n healing, and gum health");
+                    recommendationText.setText("Grow a cauliflower.Cauliflower is rich in vitamin C which is good for skin, healing, and gum health");
                     recommendationImage.setImage(cauliflower);
                     break;
                 case 1:
-                    recommendationText.setText("Grow a kale.\nKale is a good source of vitamins A, C and K.\nKale also contains antioxidants,\nwhich promote general health and well-being.");
+                    recommendationText.setText("Grow a kale. Kale is a good source of vitamins A, C and K. Kale also contains antioxidants, which promote general health and well-being.");
                     recommendationImage.setImage(kale);
                     break;
                 case 2:
-                    recommendationText.setText("Grow a broccoli.\nBroccoli is a cruciferous vegetable rich many nutrients.\nIt is a good source of vitamin C,\n vitamin K, and vitamin A. ");
+                    recommendationText.setText("Grow a broccoli. Broccoli is a cruciferous vegetable rich many nutrients. It is a good source of vitamin C, vitamin K, and vitamin A. ");
                     recommendationImage.setImage(broccoli);
                     break;
                 case 3:
-                    recommendationText.setText("Grow a lettuce.\nAlmost all lettuces contain a significant amount of vitamin A,\n along with small amounts of vitamin C and iron.");
+                    recommendationText.setText("Grow a lettuce. Almost all lettuces contain a significant amount of vitamin A, along with small amounts of vitamin C and iron.");
                     recommendationImage.setImage(lettuce);
                     break;
                 case 4:
-                    recommendationText.setText("Grow a onions.\nOnions are part of the allium family with scallions and leeks.\n When onions are cut, a compound is released\n and turns to sulfuric acid in the air.\n This is what makes people cry when \nthey cook with onions.");
+                    recommendationText.setText("Grow a onions. Onions are part of the allium family with scallions and leeks.  When onions are cut, a compound is released  and turns to sulfuric acid in the air. This is what makes people cry when they cook with onions.");
                     recommendationImage.setImage(onions);
                     break;
                 default:
-                    recommendationText.setText("Grow a cabbages.\nCabbage contains many vitamins and minerals.\n It is high in fiber, vitamin C,\n vitamin K, potassium, calcium, and iron. ");
+                    recommendationText.setText("Grow a cabbages. Cabbage contains many vitamins and minerals. It is high in fiber, vitamin C, vitamin K, potassium, calcium, and iron. ");
                     recommendationImage.setImage(cabbage);
                     break;
             }
