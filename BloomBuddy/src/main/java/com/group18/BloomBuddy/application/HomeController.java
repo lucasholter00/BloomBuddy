@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -21,6 +23,7 @@ public class HomeController extends SceneSwitcher {
     public Button statisticsButton;
     public Label recommendationText;
     public Label seasonText;
+    public ImageView recommendationImage;
 
     public void show (Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/homeScene.fxml");
@@ -53,26 +56,39 @@ public class HomeController extends SceneSwitcher {
 
             Random random = new Random();
             int randomNumber = random.nextInt(6);
+            Image cabbage = new Image("cabbage.png");
+            Image cauliflower = new Image("cauliflower.png");
+            Image kale = new Image("kale.png");
+            Image broccoli = new Image("broccoli.png");
+            Image lettuce = new Image("lettuce.png");
+            Image onions = new Image("onion.png");
             switch (randomNumber){
                 case 0:
                     recommendationText.setText("Grow a cauliflower.\nCauliflower is rich in vitamin C which is good for skin,\n healing, and gum health");
+                    recommendationImage.setImage(cauliflower);
                     break;
                 case 1:
                     recommendationText.setText("Grow a kale.\nKale is a good source of vitamins A, C and K.\nKale also contains antioxidants,\nwhich promote general health and well-being.");
+                    recommendationImage.setImage(kale);
                     break;
                 case 2:
                     recommendationText.setText("Grow a broccoli.\nBroccoli is a cruciferous vegetable rich many nutrients.\nIt is a good source of vitamin C,\n vitamin K, and vitamin A. ");
+                    recommendationImage.setImage(broccoli);
                     break;
                 case 3:
                     recommendationText.setText("Grow a lettuce.\nAlmost all lettuces contain a significant amount of vitamin A,\n along with small amounts of vitamin C and iron.");
+                    recommendationImage.setImage(lettuce);
                     break;
                 case 4:
                     recommendationText.setText("Grow a onions.\nOnions are part of the allium family with scallions and leeks.\n When onions are cut, a compound is released\n and turns to sulfuric acid in the air.\n This is what makes people cry when \nthey cook with onions.");
+                    recommendationImage.setImage(onions);
                     break;
                 default:
                     recommendationText.setText("Grow a cabbages.\nCabbage contains many vitamins and minerals.\n It is high in fiber, vitamin C,\n vitamin K, potassium, calcium, and iron. ");
+                    recommendationImage.setImage(cabbage);
                     break;
             }
+
         } else if(now.isAfter(summerStart) && now.isBefore(autumnStart)) {
             seasonText.setText("Summer");
             recommendationText.setText("Grow a jordgubbe");
