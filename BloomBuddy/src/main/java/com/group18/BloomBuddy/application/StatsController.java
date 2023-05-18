@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javafx.scene.chart.XYChart.Data;
 
@@ -45,6 +46,7 @@ public class StatsController extends SceneSwitcher {
     private Profile profile;
     @FXML
     public void initialize() throws MqttException {
+        //TODO: make use of current user.
         SensorSettings test = new SensorSettings(10,20,10,20,10,20,10,20);
         profile = new Profile(test, "Hello");
         updateSensorSettingsFromDatabase("15b1d93d-a4c8-46ae-b6b0-10059388d3d3");
@@ -200,9 +202,17 @@ public class StatsController extends SceneSwitcher {
 
 
     }
-    public void updateSensorSettingsFromDatabase(String profileId){
+    public void updateSensorSettingsFromDatabase(String profileId) throws MqttException {
+        //TODO: Make use of current user.
         DataBaseConnection db = new DataBaseConnection();
-        SensorSettings settings = db.getSensorSettings(profileId);
+        CurrentUser user = new CurrentUser("Felix", db.getProfiles("Felix"));
+        List<Profile> profiles = user.getProfiles();
+
+        for(Profile profile : profiles){
+            System.out.println(profile.getId());
+        }
+
+        SensorSettings settings = user.getProfile("15b1d93d-a4c8-46ae-b6b0-10059388d3d3").getSensorSettings();
         if (settings != null) {
             profile.setSensorSettings(settings);
         }

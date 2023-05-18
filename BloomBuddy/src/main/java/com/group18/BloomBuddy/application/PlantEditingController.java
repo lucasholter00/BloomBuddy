@@ -1,5 +1,6 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.CurrentUser;
 import com.group18.BloomBuddy.DataBaseConnection;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorSettings;
@@ -58,9 +59,12 @@ public class PlantEditingController extends SceneSwitcher {
         saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Felix"));
     }
     @FXML
-    private void saveSettings(ActionEvent event, Profile profile) throws MqttException {
+    private void saveSettings(ActionEvent event, Profile profile1) throws MqttException {
+        //TODO: Make use of currentUser.
             DataBaseConnection db = new DataBaseConnection();
-            db.addProfile(profile, "Felix");
+            //db.addProfile(profile1, "Felix");
+            CurrentUser user = new CurrentUser("Felix", db.getProfiles("Felix"));
+            Profile profile = user.getProfile("15b1d93d-a4c8-46ae-b6b0-10059388d3d3");
 
             try {
                 if(validateBounds()) {
@@ -78,6 +82,7 @@ public class PlantEditingController extends SceneSwitcher {
                         profile.setLightLowerBound(512);
                         profile.setLightUpperBound(2000);
                     }
+                    System.out.println(profile.getSensorSettings());
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Success Dialog");
                     alert.setHeaderText(null);
