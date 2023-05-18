@@ -9,9 +9,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.HomeController">
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.HomeController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ddfbdb" height="600.0" stroke="#ddfbdb" strokeType="INSIDE" width="174.0" />
+      <Rectangle fill="#bbd3ba" height="156.0" layoutX="-1.0" layoutY="444.0" stroke="BLACK" strokeType="INSIDE" width="801.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ddfbdb" height="600.0" stroke="BLACK" strokeType="INSIDE" width="174.0" />
+      <Label fx:id="recommendationText" layoutX="316.0" layoutY="488.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="92.0" prefWidth="317.0" textAlignment="CENTER" />
+      <Label fx:id="seasonText" layoutX="436.0" layoutY="459.0" minHeight="-Infinity" minWidth="-Infinity" text="Season tips" textAlignment="CENTER">
+         <font>
+            <Font size="26.0" />
+         </font></Label>
       <Button fx:id="myPlantButton" contentDisplay="TOP" layoutX="50.0" layoutY="150.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="My plants" textAlignment="CENTER">
          <graphic>
             <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
@@ -61,6 +67,10 @@
             <Font size="22.0" />
          </font>
       </Text>
-      <Label fx:id="lalala" layoutX="429.0" layoutY="226.0" text="Label" />
+      <Button fx:id="generateNewTip" layoutX="186.0" layoutY="491.0" mnemonicParsing="false" onAction="#changeRecommendationText" prefHeight="62.0" prefWidth="121.0" style="-fx-background-color: #678c66;" text="Generate new tip">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <ImageView fx:id="recommendationImage" fitHeight="120.0" fitWidth="133.0" layoutX="651.0" layoutY="460.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
