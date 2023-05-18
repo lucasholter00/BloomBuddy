@@ -1,6 +1,7 @@
 package com.group18.BloomBuddy.application;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Random;
 
 public class HomeController extends SceneSwitcher {
 
@@ -49,7 +51,28 @@ public class HomeController extends SceneSwitcher {
         if (now.isAfter(springStart) && now.isBefore(summerStart)) { //Spring
             seasonText.setText("Spring");
 
-            recommendationText.setText("Grow a vitsippa");
+            Random random = new Random();
+            int randomNumber = random.nextInt(6);
+            switch (randomNumber){
+                case 0:
+                    recommendationText.setText("Grow a cauliflower.\nCauliflower is rich in vitamin C which is good for skin,\n healing, and gum health");
+                    break;
+                case 1:
+                    recommendationText.setText("Grow a kale.\nKale is a good source of vitamins A, C and K.\nKale also contains antioxidants,\nwhich promote general health and well-being.");
+                    break;
+                case 2:
+                    recommendationText.setText("Grow a broccoli.\nBroccoli is a cruciferous vegetable rich many nutrients.\nIt is a good source of vitamin C,\n vitamin K, and vitamin A. ");
+                    break;
+                case 3:
+                    recommendationText.setText("Grow a lettuce.\nAlmost all lettuces contain a significant amount of vitamin A,\n along with small amounts of vitamin C and iron.");
+                    break;
+                case 4:
+                    recommendationText.setText("Grow a onions.\nOnions are part of the allium family with scallions and leeks.\n When onions are cut, a compound is released\n and turns to sulfuric acid in the air.\n This is what makes people cry when \nthey cook with onions.");
+                    break;
+                default:
+                    recommendationText.setText("Grow a cabbages.\nCabbage contains many vitamins and minerals.\n It is high in fiber, vitamin C,\n vitamin K, potassium, calcium, and iron. ");
+                    break;
+            }
         } else if(now.isAfter(summerStart) && now.isBefore(autumnStart)) {
             seasonText.setText("Summer");
             recommendationText.setText("Grow a jordgubbe");
@@ -60,7 +83,6 @@ public class HomeController extends SceneSwitcher {
             seasonText.setText("Winter");
             recommendationText.setText("Grow a istapp");
         }
-
     }
 }
 

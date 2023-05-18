@@ -13,8 +13,11 @@
    <children>
       <Rectangle fill="#bbd3ba" height="156.0" layoutX="-1.0" layoutY="444.0" stroke="#bbd3ba" strokeType="INSIDE" width="801.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ddfbdb" height="600.0" stroke="#ddfbdb" strokeType="INSIDE" width="174.0" />
-      <Label fx:id="recommendationText" layoutX="447.0" layoutY="513.0" text="Let's grow together" />
-      <Label fx:id="seasonText" layoutX="408.0" layoutY="459.0" text="Hope you are having a wounderful day" />
+      <Label fx:id="recommendationText" layoutX="372.0" layoutY="481.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="108.0" prefWidth="277.0" textAlignment="CENTER" />
+      <Label fx:id="seasonText" layoutX="460.0" layoutY="450.0" minHeight="-Infinity" minWidth="-Infinity" text="Season" textAlignment="CENTER">
+         <font>
+            <Font size="26.0" />
+         </font></Label>
       <Button fx:id="myPlantButton" contentDisplay="TOP" layoutX="50.0" layoutY="150.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="My plants" textAlignment="CENTER">
          <graphic>
             <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
@@ -64,6 +67,9 @@
             <Font size="22.0" />
          </font>
       </Text>
-      <Button fx:id="generateNewTip" layoutX="218.0" layoutY="501.0" mnemonicParsing="false" onAction="#changeRecommendationText" style="-fx-background-color: #678c66;" text="Give me a tip" />
+      <Button fx:id="generateNewTip" layoutX="186.0" layoutY="491.0" mnemonicParsing="false" onAction="#changeRecommendationText" prefHeight="62.0" prefWidth="121.0" style="-fx-background-color: #678c66;" text="Generate new tip">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
    </children>
 </AnchorPane>
