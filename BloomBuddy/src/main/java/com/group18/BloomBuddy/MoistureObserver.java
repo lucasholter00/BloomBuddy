@@ -20,7 +20,7 @@ public class MoistureObserver implements MyObserver {
 
     
     public void updateDatabase(Profile profile, String arg) throws MqttException{
-        if (arg.equals("moistureThresholdHigh") == true || arg.equals("moistureThresholdHigh") == true) {
+        if (arg.equals("moistureThresholdHigh") == true || arg.equals("moistureThresholdLow") == true) {
             DataBaseConnection db = new DataBaseConnection();
             float value = 0;
             if (arg.equals("moistureThresholdLow")) {
