@@ -1,6 +1,9 @@
 package com.group18.BloomBuddy;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class CurrentUser implements MyObservable{
 
@@ -11,6 +14,9 @@ public class CurrentUser implements MyObservable{
     public CurrentUser(String username, List<Profile> profiles) {
         this.username = username;
         this.profiles = profiles;
+        this.observers = new ArrayList<MyObserver>();
+        MyObserver observer = new ProfileObserver();
+        observers.add(observer);
     }
 
     //add observers for name and if profile is added
@@ -21,6 +27,11 @@ public class CurrentUser implements MyObservable{
 
     public List<Profile> getProfiles() {
         return profiles;
+    }
+
+    public void newProfile(Profile profile) throws MqttException{
+        profiles.add(profile);
+        notifyObservers(profile);
     }
 
     public void addProfile(Profile profile) {
@@ -49,9 +60,9 @@ public class CurrentUser implements MyObservable{
         }
     }
 
-    public void notifyObservers(Object arg){
+    public void notifyObservers(Object arg) throws MqttException{
         for(MyObserver observer : observers){
-            this.notifyObservers(arg);
+            observer.update((MyObservable)this, arg);
         }
     }
 
