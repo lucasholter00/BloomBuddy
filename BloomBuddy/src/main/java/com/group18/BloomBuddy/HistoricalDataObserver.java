@@ -19,7 +19,9 @@ public class HistoricalDataObserver implements MyObserver{
             DataBaseConnection db = new DataBaseConnection();
             HistoricalData value = (HistoricalData) arg;
             db.insertHistoricalData(value, profile.getId());
+            db.close();
         }
     }
+    
     
 }
