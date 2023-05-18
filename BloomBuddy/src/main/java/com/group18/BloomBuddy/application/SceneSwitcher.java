@@ -13,6 +13,11 @@ public class SceneSwitcher {
         new LoginController().show(stage);
     }
 
+    public void setAccountCreateScene(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        new CreateAccountController().show(stage);
+    }
+
     public void setHomeScene(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         new HomeController().show(stage);
