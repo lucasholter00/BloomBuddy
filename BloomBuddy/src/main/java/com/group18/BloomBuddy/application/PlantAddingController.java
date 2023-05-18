@@ -44,6 +44,7 @@ public class PlantAddingController extends SceneSwitcher {
     }
 
     public void createPlantProfile(ActionEvent actionEvent) throws MqttException, IOException {
+        accountCreationLabel.setWrapText(true);
         try {
             if (validateProfile()) {
                 float lightLower = 0;

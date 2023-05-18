@@ -65,6 +65,7 @@ public class PlantEditingController extends SceneSwitcher {
     //It first validates the input bounds, then tries to update the sensor settings of the profile.
     @FXML
     private void saveSettings(ActionEvent event, Profile profile) {
+        editingLabel.setWrapText(true);
             try {
                 if(validateBounds()) {
                     SensorSettings settings = profile.getSensorSettings();
