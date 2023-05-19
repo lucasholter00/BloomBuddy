@@ -1,9 +1,6 @@
 package com.group18.BloomBuddy.application;
 
-import com.group18.BloomBuddy.MQTTHandler;
-import com.group18.BloomBuddy.SensorData;
-import com.group18.BloomBuddy.SensorInteractor;
-import com.group18.BloomBuddy.SensorSettings;
+import com.group18.BloomBuddy.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +12,15 @@ import javafx.stage.Stage;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javafx.scene.chart.XYChart.Data;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import static java.lang.Boolean.TRUE;
 
@@ -40,8 +39,22 @@ public class StatsController extends SceneSwitcher {
     private XYChart.Series<String, Number> moistSeries = new XYChart.Series<>();
     private XYChart.Series<String, Number> humSeries = new XYChart.Series<>();
     private XYChart.Series<String, Number> lightSeries = new XYChart.Series<>();
+
+    private XYChart.Series<String, Number> tempLowerSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> tempUpperSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> moistLowerSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> moistUpperSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> humLowerSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> humUpperSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> lightLowerSeries = new XYChart.Series<>();
+    private XYChart.Series<String, Number> lightUpperSeries = new XYChart.Series<>();
+    private Profile profile;
     @FXML
-    public void initialize() {
+    public void initialize() throws MqttException {
+        //TODO: make use of current user.
+        SensorSettings test = new SensorSettings(10,20,10,20,10,20,10,20);
+        profile = new Profile(test, "Hello");
+        updateSensorSettingsFromDatabase("15b1d93d-a4c8-46ae-b6b0-10059388d3d3");
         initializeChart(tempLineChart);
         initializeChart(moistLineChart);
         initializeChart(humLineChart);
@@ -50,7 +63,7 @@ public class StatsController extends SceneSwitcher {
         initializeSeries();
     }
 
-    public void show(Stage stage) throws IOException {
+    public void show(Stage stage) throws IOException, MqttException {
         URL fxmlResource = getClass().getResource("/statScene.fxml");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(fxmlResource);
@@ -92,12 +105,17 @@ public class StatsController extends SceneSwitcher {
                 }
                 while (true) {
                     Thread.sleep(1000);
+                    System.out.println(data.getData());
                     Platform.runLater(() -> {
-                        updateChart(data.getData(), LineChartDataType.LIGHT);
-                        updateChart(data.getData(), LineChartDataType.HUMIDITY);
-                        updateChart(data.getData(), LineChartDataType.TEMPERATURE);
-                        updateChart(data.getData(), LineChartDataType.MOISTURE);
+                        try {
+                            updateChart(data.getData(), LineChartDataType.LIGHT);
+                            updateChart(data.getData(), LineChartDataType.HUMIDITY);
+                            updateChart(data.getData(), LineChartDataType.TEMPERATURE);
+                            updateChart(data.getData(), LineChartDataType.MOISTURE);
+                        } catch (MqttException e) {
+                            throw new RuntimeException(e);
 
+                        }
                     });
                     newThresholdValues = sensorSettings.checkSensorReadings(data.getData());
                     System.out.println(data.getData());
@@ -153,6 +171,10 @@ public class StatsController extends SceneSwitcher {
         moistLineChart.getData().add(moistSeries);
         humLineChart.getData().add(humSeries);
         lightLineChart.getData().add(lightSeries);
+        tempLineChart.getData().addAll(tempLowerSeries, tempUpperSeries);
+        moistLineChart.getData().addAll(moistLowerSeries, moistUpperSeries);
+        humLineChart.getData().addAll(humLowerSeries, humUpperSeries);
+        lightLineChart.getData().addAll(lightLowerSeries, lightUpperSeries);
     }
     public void initializeChart(LineChart<String, Number> lineChart) {
         lineChart.setCreateSymbols(false);
@@ -191,7 +213,7 @@ public class StatsController extends SceneSwitcher {
     }
 
     //Updates the lineChart with sensorData based on the chartType.
-    public void updateChart(SensorData data, LineChartDataType chartType) {
+    public void updateChart(SensorData data, LineChartDataType chartType) throws MqttException {
         XYChart.Series<String, Number> series;
         //Determines which lineChart should receive the sensorData.
         switch (chartType) {
@@ -217,6 +239,48 @@ public class StatsController extends SceneSwitcher {
             if (series.getData().size() > 10) {
                 series.getData().remove(0);
             }
+        }
+        updateThresholdSeries();
+    }
+    public void updateThresholdSeries() throws MqttException {
+        // Get current time
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        // Update lower and upper threshold series for each sensor
+        updateSeriesWithThreshold(time, tempLowerSeries, profile.getTemperatureLowerBound());
+        updateSeriesWithThreshold(time, tempUpperSeries, profile.getTemperatureUpperBound());
+        updateSeriesWithThreshold(time, moistLowerSeries, profile.getMoistureLowerBound());
+        updateSeriesWithThreshold(time, moistUpperSeries, profile.getMoistureUpperBound());
+        updateSeriesWithThreshold(time, humLowerSeries, profile.getHumidityLowerBound());
+        updateSeriesWithThreshold(time, humUpperSeries, profile.getHumidityUpperBound());
+        updateSeriesWithThreshold(time, lightLowerSeries, profile.getLightLowerBound());
+        updateSeriesWithThreshold(time, lightUpperSeries, profile.getLightUpperBound());
+
+    }
+
+    private void updateSeriesWithThreshold(String time, XYChart.Series<String, Number> series, float threshold) {
+            // If series has more than 36 data points, remove the oldest one
+            if (series.getData().size() > 36) {
+                series.getData().remove(0);
+            }
+        series.getData().add(new Data<>(time, threshold));
+        series.getNode().lookup(".chart-series-line").setStyle("-fx-stroke: #000000;");
+
+
+    }
+    public void updateSensorSettingsFromDatabase(String profileId) throws MqttException {
+        //TODO: Make use of current user.
+        DataBaseConnection db = new DataBaseConnection();
+        CurrentUser user = new CurrentUser("Felix", db.getProfiles("Felix"));
+        List<Profile> profiles = user.getProfiles();
+
+        for(Profile profile : profiles){
+            System.out.println(profile.getId());
+        }
+
+        SensorSettings settings = user.getProfile("15b1d93d-a4c8-46ae-b6b0-10059388d3d3").getSensorSettings();
+        if (settings != null) {
+            profile.setSensorSettings(settings);
         }
     }
 }

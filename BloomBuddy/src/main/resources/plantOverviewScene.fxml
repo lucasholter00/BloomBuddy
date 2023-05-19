@@ -46,15 +46,6 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="settingsButton" contentDisplay="TOP" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#setSettingsScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="Settings" textAlignment="CENTER">
-         <graphic>
-            <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@settingsIcon.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <Button fx:id="logOutButton" contentDisplay="TOP" layoutX="50.0" layoutY="450.0" mnemonicParsing="false" onAction="#setLoginScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="Log out" textAlignment="CENTER">
          <graphic>
             <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
@@ -64,19 +55,5 @@
             </ImageView>
          </graphic>
       </Button>
-      <ImageView fitHeight="81.0" fitWidth="98.0" layoutX="711.0" layoutY="474.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@plusIcon.png" />
-         </image>
-      </ImageView>
-      <ScrollPane fx:id="scrollpane" layoutX="173.0" layoutY="-1.0" prefHeight="610.0" prefWidth="536.0">
-         <content>
-            <GridPane fx:id="gridPane" prefHeight="3.0" prefWidth="2.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-            </GridPane>
-         </content>
-      </ScrollPane>
    </children>
 </AnchorPane>

@@ -33,10 +33,37 @@ public class Profile implements MyObservable {
         MyObserver temperatureObserver = new TemperatureObserver();
         MyObserver humidityObserver = new HumidityObserver();
         MyObserver lightObserver = new LightObserver();
+        MyObserver moistureObserver= new MoistureObserver();
         MyObserver historicalDataObserver = new HistoricalDataObserver();
         addObserver(wateredObserver);
+        addObserver(moistureObserver);
         addObserver(needsWaterObserver);
         addObserver(temperatureObserver); 
+        addObserver(humidityObserver);
+        addObserver(lightObserver);
+        addObserver(historicalDataObserver);
+
+    }
+
+    public Profile(SensorSettings sensorSettings, String name, String id) throws MqttException {
+        this.sensorSettings = sensorSettings;
+        this.name = name;
+        this.id = id;
+        this.historicalData = new ArrayList<HistoricalData>();
+        this.lastWatered = null; //Initialize as null, could be better ways to initialize this
+        this.waterFrequency = 0; //Initialize as 0, i.e. no interval to water have been chosen yet by the user
+        observers = new ArrayList<>();
+        MyObserver wateredObserver = new LastWateredObserver();
+        MyObserver needsWaterObserver = new NeedsWaterObserver();
+        MyObserver temperatureObserver = new TemperatureObserver();
+        MyObserver humidityObserver = new HumidityObserver();
+        MyObserver lightObserver = new LightObserver();
+        MyObserver moistureObserver = new MoistureObserver();
+        MyObserver historicalDataObserver = new HistoricalDataObserver();
+        addObserver(moistureObserver);
+        addObserver(wateredObserver);
+        addObserver(needsWaterObserver);
+        addObserver(temperatureObserver);
         addObserver(humidityObserver);
         addObserver(lightObserver);
         addObserver(historicalDataObserver);
