@@ -5,6 +5,9 @@ import com.group18.BloomBuddy.SensorData;
 import com.group18.BloomBuddy.SensorInteractor;
 import com.group18.BloomBuddy.SensorSettings;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Service;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,6 +30,9 @@ import static java.lang.Boolean.TRUE;
 
 public class StatsController extends SceneSwitcher {
 
+
+    private Service<Void> sensorService = new SensorService();
+
     @FXML
     private LineChart<String, Number> tempLineChart;
     @FXML
@@ -46,18 +52,53 @@ public class StatsController extends SceneSwitcher {
         initializeChart(moistLineChart);
         initializeChart(humLineChart);
         initializeChart(lightLineChart);
-        startSensorThread();
+        //startSensorThread();
         initializeSeries();
     }
 
-    public void show(Stage stage) throws IOException {
+    public void startService(){
+        sensorService.start();
+    }
+
+    public void stopService(){
+        sensorService.cancel();
+    }
+
+    public Scene createScene(Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/statScene.fxml");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(fxmlResource);
         Parent root = loader.load();
-        Scene statScene = new Scene(root, 800, 600);
+        final Scene statScene = new Scene(root, 800, 600);
+
+
+        // Retrieve the controller from the FXMLLoader
+        final StatsController controller = loader.getController();
+
+        // Set the listener for scene changes
+        stage.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null && newScene == statScene) {
+                // Start the service for the specific scene
+                controller.startService();
+                System.out.println("Service started");
+            } else {
+                // Stop the service for the previous scene (if running)
+                controller.stopService();
+                System.out.println("Service stopped");
+            }
+            });
+
+        return statScene;
+
+    }
+
+
+    public void show(Stage stage) throws IOException {
+        Scene statScene = createScene(stage);
         stage.setScene(statScene);
-        loader.getController();
+        FXMLLoader loader = new FXMLLoader();
+
+
 
         stage.setTitle("BloomBuddy");
         stage.setScene(statScene);
@@ -66,7 +107,7 @@ public class StatsController extends SceneSwitcher {
         stage.show();
     }
 
-    public void startSensorThread() {
+    /*public void startSensorThread() {
         Thread sensorThread = new Thread(() -> {
             try {
                 SensorInteractor data = new SensorInteractor();
@@ -117,7 +158,7 @@ public class StatsController extends SceneSwitcher {
         });
         sensorThread.setDaemon(true);
         sensorThread.start();
-    }
+    }*/
     public void checkThresholdValues(List<Boolean> thresholdValues, MQTTHandler mqttHandler, int sensor) throws MqttException{ // only sens messages for one sensor at a time specified by int sensor
         if(sensor == 0) {
             if(thresholdValues.get(sensor) == TRUE) {
