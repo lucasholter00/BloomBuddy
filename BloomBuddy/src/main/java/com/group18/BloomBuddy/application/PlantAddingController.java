@@ -1,5 +1,7 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.CurrentUser;
+import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorSettings;
 import javafx.event.ActionEvent;
@@ -35,15 +37,13 @@ public class PlantAddingController extends SceneSwitcher {
         Scene statScene = new Scene(root, 800, 600);
         stage.setScene(statScene);
         loader.getController();
-
         stage.setTitle("BloomBuddy");
         stage.setScene(statScene);
         stage.setResizable(false);
         stage.setFullScreen(false);
         stage.show();
     }
-
-    public void createPlantProfile(ActionEvent actionEvent) throws MqttException, IOException {
+    public void buttonCreatePlantProfile() throws MqttException {
         accountCreationLabel.setWrapText(true);
         try {
             if (validateProfile()) {
@@ -68,6 +68,8 @@ public class PlantAddingController extends SceneSwitcher {
                 );
                 accountCreationLabel.setText("Profile was successfully created.");
                 Profile profile = new Profile(sensorSettings, plantName.getText());
+                CurrentUser currentUser = Mediator.getInstance().getCurrentUser();
+                currentUser.newProfile(profile);
             }
         } catch (NumberFormatException e){
             accountCreationLabel.setText("Please enter valid numbers.");
@@ -107,5 +109,4 @@ public class PlantAddingController extends SceneSwitcher {
         }
         return valid;
     }
-
 }

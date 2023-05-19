@@ -1,9 +1,6 @@
 package com.group18.BloomBuddy.application;
 
-import com.group18.BloomBuddy.MQTTHandler;
-import com.group18.BloomBuddy.SensorData;
-import com.group18.BloomBuddy.SensorInteractor;
-import com.group18.BloomBuddy.SensorSettings;
+import com.group18.BloomBuddy.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,6 +1,8 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.CurrentUser;
 import com.group18.BloomBuddy.DataBaseConnection;
+import com.group18.BloomBuddy.Mediator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,18 +12,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
+
 public class LoginController extends SceneSwitcher{
-
-
     public Button loginButton;
     public PasswordField passwordPasswordField;
     public TextField usernameTextField;
     public Label loginLabel;
     public Button registerAccountButton;
-
     public void show (Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/loginScene.fxml");
         FXMLLoader loader = new FXMLLoader();
@@ -38,18 +40,24 @@ public class LoginController extends SceneSwitcher{
         stage.show();
     }
 
-    public void loginButtonOnAction(ActionEvent actionEvent) throws IOException {
+    public void loginButtonOnAction(ActionEvent actionEvent) throws IOException, MqttException {
+        CurrentUser currentUser = validateLogin();
         if(usernameTextField.getText().isBlank() || passwordPasswordField.getText().isBlank()){
             loginLabel.setText("Please enter username and password");
-        } else if(!validateLogin()) {
+        } if(currentUser == null) {
             loginLabel.setText("Please enter a valid username or password");
         } else {
             setHomeScene(actionEvent);
+            Mediator.getInstance().setCurrentUser((currentUser));
         }
     }
 
-    public boolean validateLogin(){
+    public CurrentUser validateLogin() throws MqttException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        return dataBaseConnection.verifyLogin(usernameTextField.getText(),passwordPasswordField.getText());
+        CurrentUser currentUser = new CurrentUser(usernameTextField.getText(),dataBaseConnection.getProfiles(usernameTextField.getText()));
+        if (!dataBaseConnection.verifyLogin(usernameTextField.getText(), passwordPasswordField.getText())){
+            currentUser = null;
+        }
+        return currentUser;
     }
 }
