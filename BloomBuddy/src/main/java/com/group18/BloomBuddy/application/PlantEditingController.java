@@ -1,5 +1,7 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.CurrentUser;
+import com.group18.BloomBuddy.DataBaseConnection;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorSettings;
 import javafx.event.ActionEvent;
@@ -58,26 +60,33 @@ public class PlantEditingController extends SceneSwitcher {
     //This method is responsible for saving the sensor settings for a given profile.
     //It first validates the input bounds, then tries to update the sensor settings of the profile.
     @FXML
-    private void saveSettings(ActionEvent event, Profile profile) {
-        editingLabel.setWrapText(true);
+    private void saveSettings(ActionEvent event, Profile profile1) throws MqttException {
+        //TODO: Make use of currentUser.
+            DataBaseConnection db = new DataBaseConnection();
+            //db.addProfile(profile1, "Felix");
+            CurrentUser user = new CurrentUser("Felix", db.getProfiles("Felix"));
+            Profile profile = user.getProfile("15b1d93d-a4c8-46ae-b6b0-10059388d3d3");
+            editingLabel.setWrapText(true);
             try {
                 if(validateBounds()) {
                     SensorSettings settings = profile.getSensorSettings();
-                    settings.setTemperatureLowerBound(Float.parseFloat(TempLowBound.getText()));
-                    settings.setTemperatureUpperBound(Float.parseFloat(TempUpBound.getText()));
-                    settings.setHumidityLowerBound(Float.parseFloat(HumLowBound.getText()));
-                    settings.setHumidityUpperBound(Float.parseFloat(HumUpBound.getText()));
-                    settings.setMoistureLowerBound(Float.parseFloat(MoistLowBound.getText()));
-                    settings.setMoistureUpperBound(Float.parseFloat(MoistUpBound.getText()));
+                    profile.setTemperatureLowerBound(Float.parseFloat(TempLowBound.getText()));
+                    profile.setTemperatureUpperBound(Float.parseFloat(TempUpBound.getText()));
+                    profile.setHumidityLowerBound(Float.parseFloat(HumLowBound.getText()));
+                    profile.setHumidityUpperBound(Float.parseFloat(HumUpBound.getText()));
+                    profile.setMoistureLowerBound(Float.parseFloat(MoistLowBound.getText()));
+                    profile.setMoistureUpperBound(Float.parseFloat(MoistUpBound.getText()));
                     if (LightLow.isSelected()) {
-                        settings.setLightLowerBound(0);
-                        settings.setLightUpperBound(512);
+                        profile.setLightLowerBound(0);
+                        profile.setLightUpperBound(512);
                     } else if (LightHigh.isSelected()) {
-                        settings.setLightLowerBound(512);
-                        settings.setLightUpperBound(2000);
+                        profile.setLightLowerBound(512);
+                        profile.setLightUpperBound(2000);
                     }
                     editingLabel.setText("Settings were successfully saved.");
                 }
+
+
             } catch (NumberFormatException e) {
                 editingLabel.setText("Please enter valid numbers.");
             }

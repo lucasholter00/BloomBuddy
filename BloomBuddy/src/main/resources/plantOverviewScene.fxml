@@ -50,15 +50,6 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="settingsButton" contentDisplay="TOP" layoutX="50.0" layoutY="350.0" mnemonicParsing="false" onAction="#setSettingsScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="Settings" textAlignment="CENTER">
-         <graphic>
-            <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@settingsIcon.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
       <Button fx:id="logOutButton" contentDisplay="TOP" layoutX="50.0" layoutY="450.0" mnemonicParsing="false" onAction="#setLoginScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="Log out" textAlignment="CENTER">
          <graphic>
             <ImageView fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">

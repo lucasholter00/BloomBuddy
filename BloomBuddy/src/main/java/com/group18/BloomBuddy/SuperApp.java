@@ -14,6 +14,7 @@ public class SuperApp {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
     public static void main(String[] args) throws MqttException {
+
         App.launch(App.class, args);
     }
 
