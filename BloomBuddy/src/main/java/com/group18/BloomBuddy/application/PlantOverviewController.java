@@ -3,16 +3,14 @@ package com.group18.BloomBuddy.application;
 import com.group18.BloomBuddy.CurrentUser;
 import com.group18.BloomBuddy.DataBaseConnection;
 import com.group18.BloomBuddy.Profile;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -28,6 +26,8 @@ public class PlantOverviewController extends SceneSwitcher {
     private GridPane gridPane;
     @FXML
     private AnchorPane anchor;
+    @FXML
+    private Button refreshPlant;
 
 
     private DataBaseConnection dbConn = new DataBaseConnection();
@@ -42,14 +42,12 @@ public class PlantOverviewController extends SceneSwitcher {
     }
 
     //private List<Profile> profiles = currentUser.getProfiles();
-
-    @FXML
-    private VBox boxPane;
-
     @FXML
     public void initialize() {
         List<Profile> profiles = currentUser.getProfiles();
         generateProfiles(profiles);
+
+
     }
 
 
@@ -70,33 +68,38 @@ public class PlantOverviewController extends SceneSwitcher {
         stage.show();
 
     }
+@FXML
+    private void regenerateProfiles(){
+    System.out.println("ja det är rätt");
+        generateProfiles(currentUser.getProfiles());
+    }
 
 
     private void generateProfiles(List<Profile> profileList) {
-            int columns = 0;
-            int rows = 1;
+        int columns = 0;
+        int rows = 1;
 
-            try {
-                FXMLLoader fxmlLoader;
-                for (int i = 0; i<profileList.size();i++) {
-                    fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(getClass().getResource("/plantCard.fxml"));
+        try {
+            FXMLLoader fxmlLoader;
+            for (int i = 0; i < profileList.size(); i++) {
+                fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/plantCard.fxml"));
 
-                    VBox profileBox = fxmlLoader.load();
-                    PlantCardController plantCardController = fxmlLoader.getController();
-                    plantCardController.setData(profileList.get(i));
+                VBox profileBox = fxmlLoader.load();
+                PlantCardController plantCardController = fxmlLoader.getController();
+                plantCardController.setData(profileList.get(i));
 
-                    if (columns == 2) {
-                        columns = 0;
-                        rows++;
-                    }
-
-                    gridPane.add(profileBox, columns++, rows++);
-                    GridPane.setMargin(profileBox, new Insets(10));
+                if (columns == 2) {
+                    columns = 0;
+                    rows++;
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+                gridPane.add(profileBox, columns++, rows++);
+                GridPane.setMargin(profileBox, new Insets(10));
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

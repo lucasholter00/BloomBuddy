@@ -10,14 +10,14 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor"  prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.PlantOverviewController">
+<AnchorPane fx:id="anchor" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.PlantOverviewController">
    <children>
       <Button fx:id="AddPlant" alignment="CENTER" cache="true" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="594.0" layoutY="464.0" mnemonicParsing="false" onAction="#setPlantAddingScene" prefHeight="128.0" prefWidth="148.0" style="-fx-background-color: TRANSPARENT;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
          <font>
             <Font name="System Italic" size="62.0" />
          </font>
       </Button>
-      <Button fx:id="editPlant" layoutX="727.0" layoutY="57.0" mnemonicParsing="false" onAction="#setEditingAddingScene" text="Edit" />
+      <Button fx:id="refreshPlant" layoutX="727.0" layoutY="23.0" mnemonicParsing="false" onAction="#regenerateProfiles" text="Refresh" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ddfbdb" height="610.0" stroke="#ddfbdb" strokeType="INSIDE" width="174.0" />
       <Button fx:id="myPlantButton" contentDisplay="TOP" layoutX="50.0" layoutY="150.0" mnemonicParsing="false" onAction="#setPlantOverviewScene" prefHeight="62.0" prefWidth="72.0" style="-fx-background-color: Transparent;" text="My plants" textAlignment="CENTER">
          <graphic>
