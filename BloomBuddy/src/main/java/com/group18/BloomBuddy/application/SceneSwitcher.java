@@ -30,10 +30,6 @@ public class SceneSwitcher {
         new StatsController().show(stage);
     }
 
-    public void setSettingsScene(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        new AccountSettingsController().show(stage);
-    }
     public void setPlantOverviewScene(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         new PlantOverviewController().show(stage);
