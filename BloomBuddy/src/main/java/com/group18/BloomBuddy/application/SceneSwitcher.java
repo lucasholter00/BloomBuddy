@@ -1,5 +1,7 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.Mediator;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 
@@ -13,6 +15,7 @@ public class SceneSwitcher {
     public void setLoginScene(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         new LoginController().show(stage);
+        Mediator.getInstance().setCurrentUser(null);
     }
 
     public void setAccountCreateScene(ActionEvent event) throws IOException {
@@ -38,7 +41,7 @@ public class SceneSwitcher {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         new PlantAddingController().show(stage);
     }
-    public void setEditingAddingScene(ActionEvent event) throws IOException {
+    public void setPlantEditingScene(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         new PlantEditingController().show(stage);
     }

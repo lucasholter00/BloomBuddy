@@ -14,19 +14,17 @@ import java.util.Objects;
 
 public class App extends Application {
 
-    private Stage stage;
-
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        stage = primaryStage;
+        Mediator.getInstance().setStage(primaryStage);
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/loginScene.fxml")));
         Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
 }

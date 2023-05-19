@@ -1,17 +1,17 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.CurrentUser;
+import com.group18.BloomBuddy.Mediator;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -24,25 +24,23 @@ public class HomeController extends SceneSwitcher {
     public Label recommendationText;
     public Label seasonText;
     public ImageView recommendationImage;
+    public Button settingsButton;
+    public Button homeButton;
+    public Button myPlantButton;
 
     public void show (Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/homeScene.fxml");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(fxmlResource);
-
-
         Parent root = loader.load();
         Scene homeScene = new Scene(root, 800, 600);
         stage.setScene(homeScene);
-
         stage.setTitle("BloomBuddy");
         stage.setScene(homeScene);
         stage.setResizable(false);
         stage.setFullScreen(false);
         stage.show();
     }
-
-
     public void changeRecommendationText(javafx.event.ActionEvent actionEvent) {
         seasonText.setText("Summer");
         recommendationText.setText("funkakakakaka");
