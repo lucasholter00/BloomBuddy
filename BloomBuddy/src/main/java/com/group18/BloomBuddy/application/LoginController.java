@@ -73,10 +73,12 @@ public class LoginController extends SceneSwitcher{
         return currentUser;
     }
     private void generateProfiles(){
-        List<Profile> profiles = Mediator.getInstance().getCurrentUser().getProfiles();
 
-        if(profiles.get(0)!=null) {
-            Mediator.getInstance().getCurrentUser().setCurrentProfile(profiles.get(0));
+
+        CurrentUser user = Mediator.getInstance().getCurrentUser();
+
+        if(user.getProfiles().size() > 0) {
+            user.setCurrentProfile(user.getProfiles().get(0));
         }
     }
 
