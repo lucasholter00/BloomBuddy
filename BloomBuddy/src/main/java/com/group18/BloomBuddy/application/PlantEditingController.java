@@ -41,8 +41,6 @@ public class PlantEditingController extends SceneSwitcher {
     @FXML
     public void initialize() {
         this.profile = Mediator.getInstance().getEditProfile();
-        System.out.println("Hej");
-        System.out.println(profile);
     }
 
     public void show(Stage stage) throws IOException {
@@ -65,7 +63,6 @@ public class PlantEditingController extends SceneSwitcher {
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) throws Exception {
      //TODO Specify what profile to edit. It should be an already existing profile!
-        System.out.println(profile);
         saveSettings(event, profile);
     }
 
@@ -91,8 +88,6 @@ public class PlantEditingController extends SceneSwitcher {
                         profile.setLightUpperBound(2000);
                     }
                     editingLabel.setText("Settings were successfully saved.");
-                    System.out.println("Temperature lower bound: " + profile.getSensorSettings().getTemperatureLowerBound());
-                    System.out.println("Temperature upper bound: " + profile.getSensorSettings().getTemperatureUpperBound());
                 }
             } catch (NumberFormatException e) {
                 editingLabel.setText("Please enter valid numbers.");
