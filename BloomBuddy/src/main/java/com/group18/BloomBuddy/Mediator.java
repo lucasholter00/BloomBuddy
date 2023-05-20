@@ -7,6 +7,7 @@ public class Mediator {
 
     private Stage stage;
     private CurrentUser currentUser;
+    private Profile editProfile;
 
     public static Mediator getInstance() {
         if(INSTANCE == null) {
@@ -32,5 +33,13 @@ public class Mediator {
 
     public void setCurrentUser(CurrentUser currentUser) {
         this.currentUser = currentUser;
+    }
+    
+    public Profile getEditProfile() {
+        return editProfile;
+    }
+
+    public void setEditProfile(Profile editProfile) {
+        this.editProfile = editProfile;
     }
 }

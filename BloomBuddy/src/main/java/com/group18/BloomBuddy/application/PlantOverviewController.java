@@ -1,12 +1,15 @@
 package com.group18.BloomBuddy.application;
 
 import com.group18.BloomBuddy.CurrentUser;
-import com.group18.BloomBuddy.DataBaseConnection;
-import com.group18.BloomBuddy.Profile;
-import javafx.fxml.FXML;
-import com.group18.BloomBuddy.CurrentUser;
+<<<<<<<<< Temporary merge branch 1
 import com.group18.BloomBuddy.Mediator;
 import javafx.event.ActionEvent;
+=========
+import com.group18.BloomBuddy.DataBaseConnection;
+import com.group18.BloomBuddy.Mediator;
+import com.group18.BloomBuddy.Profile;
+import javafx.fxml.FXML;
+>>>>>>>>> Temporary merge branch 2
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -36,17 +39,11 @@ public class PlantOverviewController extends SceneSwitcher {
     private DataBaseConnection dbConn = new DataBaseConnection();
     private CurrentUser currentUser;
 
-    {
-        try {
-            currentUser = new CurrentUser("Felix", dbConn.getProfiles("Felix"));
-        } catch (MqttException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     //private List<Profile> profiles = currentUser.getProfiles();
     @FXML
     public void initialize() {
+        currentUser = Mediator.getInstance().getCurrentUser();
         List<Profile> profiles = currentUser.getProfiles();
         generateProfiles(profiles);
 
@@ -104,6 +101,7 @@ public class PlantOverviewController extends SceneSwitcher {
             throw new RuntimeException(e);
         }
     }
+
 }
 
 
