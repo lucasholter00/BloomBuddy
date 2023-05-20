@@ -1,8 +1,5 @@
 package com.group18.BloomBuddy.application;
 
-import com.group18.BloomBuddy.CurrentUser;
-import com.group18.BloomBuddy.Mediator;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -41,9 +38,11 @@ public class HomeController extends SceneSwitcher {
         stage.setFullScreen(false);
         stage.show();
     }
+
+    //Based on the season, print out a crop tip from the corresponding season.
     public void changeRecommendationText(javafx.event.ActionEvent actionEvent) {
         seasonText.setText("Summer");
-        recommendationText.setText("funkakakakaka");
+        recommendationText.setText("");
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime springStart = LocalDateTime.of(now.getYear(), Month.MARCH, 1, 0, 0);
         LocalDateTime summerStart = LocalDateTime.of(now.getYear(), Month.JUNE, 1, 0, 0);
@@ -63,7 +62,7 @@ public class HomeController extends SceneSwitcher {
             recommendationText.setWrapText(true);
             switch (randomNumber){
                 case 0:
-                    recommendationText.setText("Grow a cauliflower.Cauliflower is rich in vitamin C which is good for skin, healing, and gum health");
+                    recommendationText.setText("Grow a cauliflower. Cauliflower is rich in vitamin C which is good for skin, healing, and gum health");
                     recommendationImage.setImage(cauliflower);
                     break;
                 case 1:
@@ -87,16 +86,16 @@ public class HomeController extends SceneSwitcher {
                     recommendationImage.setImage(cabbage);
                     break;
             }
-
+            // Since the project is not going to last during the other seasons, the crop-tips are limited to only spring.
         } else if(now.isAfter(summerStart) && now.isBefore(autumnStart)) {
             seasonText.setText("Summer");
-            recommendationText.setText("Grow a jordgubbe");
+            recommendationText.setText("Grow a strawberry");
         } else if(now.isAfter(autumnStart) && now.isBefore(winterStart)) {
             seasonText.setText("Autumn");
-            recommendationText.setText("Grow a pumpa");
+            recommendationText.setText("Grow a pumpkin");
         } else {
             seasonText.setText("Winter");
-            recommendationText.setText("Grow a istapp");
+            recommendationText.setText("Grow a snowball");
         }
     }
 }

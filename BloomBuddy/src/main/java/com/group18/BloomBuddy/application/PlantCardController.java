@@ -1,11 +1,5 @@
 package com.group18.BloomBuddy.application;
 
-import java.io.IOException;
-
-import com.group18.BloomBuddy.Mediator;
-import com.group18.BloomBuddy.CurrentUser;
-import javafx.event.ActionEvent;
-
 import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorData;
@@ -19,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -56,10 +51,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
     @FXML
     private Button editPlantButton;
-
-
     private ToggleGroup toggleGroup;
-
     @FXML
     private Label plantName;
 
@@ -76,8 +68,6 @@ public class PlantCardController extends SceneSwitcher { //unsure
         imageList.add("broccoli.png");
         imageList.add("fire flower.png");
 
-
-        //TODO make togglebutton work
         toggleGroup = new ToggleGroup();
         toggleButton.setToggleGroup(toggleGroup);
 
@@ -116,11 +106,11 @@ public class PlantCardController extends SceneSwitcher { //unsure
         this.profile = profile;
         // Populate the UI with data from the profile
 
-        //Change the values of setText when Currentuser is not null
+        //Change the values of setText when currentUser is not null
         //These values need to be edited to display the correct values, or the FXML need to be edited
         plantName.setText(profile.getName());
         lastWatered.setText(String.valueOf(profile.getLastWatered()));
-        humLabel.setText(tresholdToString(profile.getHumidityLowerBound(),profile.getHumidityUpperBound()));
+        humLabel.setText(thresholdToString(profile.getHumidityLowerBound(),profile.getHumidityUpperBound()));
         //humLabel.setText(String.valueOf(sensorData.getHumidity()));
         if (profile.getLightLowerBound()==0){
             lightLabel.setText("Low");
@@ -129,9 +119,9 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
         }
         //lightLabel.setText(String.valueOf(sensorData.getLightIntensity()));
-        tempLabel.setText(tresholdToString(profile.getTemperatureLowerBound(), profile.getTemperatureUpperBound()));
+        tempLabel.setText(thresholdToString(profile.getTemperatureLowerBound(), profile.getTemperatureUpperBound()));
         //tempLabel.setText(String.valueOf(sensorData.getTemperature()));
-        moistLabel.setText(tresholdToString(profile.getMoistureLowerBound(),profile.getMoistureUpperBound()));
+        moistLabel.setText(thresholdToString(profile.getMoistureLowerBound(),profile.getMoistureUpperBound()));
         //moistLabel.setText(String.valueOf(sensorData.getMoistureLevel()));
 
         toggleButton.setSelected(Mediator.getInstance().getCurrentUser().isActive(profile));
@@ -156,7 +146,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
     }
 
-    private String tresholdToString(float low, float high){
+    private String thresholdToString(float low, float high){
         return low+" - "+high;
     }
 
