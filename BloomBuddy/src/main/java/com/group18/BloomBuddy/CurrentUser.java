@@ -8,6 +8,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 public class CurrentUser implements MyObservable{
 
     private final String username;
+
+    private Profile currentProfile;
     private List<MyObserver> observers;
     private List<Profile> profiles;
 
@@ -45,6 +47,21 @@ public class CurrentUser implements MyObservable{
             }
         }
         return null;
+    }
+
+
+
+    public Profile getCurrentProfile() {
+        return currentProfile;
+    }
+
+    // Setter for currentProfile
+    public void setCurrentProfile(Profile currentProfile) {
+        this.currentProfile = currentProfile;
+    }
+
+    public boolean isActive(Profile profile) {
+        return profile == currentProfile;
     }
     
     @Override
