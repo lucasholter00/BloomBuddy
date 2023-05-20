@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -40,7 +41,7 @@ public class HomeController extends SceneSwitcher {
     private CurrentUser currentUser;
 
     @FXML
-    public void initialize() throws InterruptedException {
+    public void initialize() {
         currentUser = Mediator.getInstance().getCurrentUser();
         List<Profile> profiles = currentUser.getProfiles();
         generateProfiles(profiles);
@@ -136,6 +137,8 @@ public class HomeController extends SceneSwitcher {
 
                 VBox profileBox = fxmlLoader.load();
                 PlantHomePageCardController plantCardController = fxmlLoader.getController();
+                profile.setImageFilename(profile.getImageFilename());
+
                 plantCardController.setData(profile);
 
                 hbox.getChildren().add(profileBox);
@@ -146,6 +149,9 @@ public class HomeController extends SceneSwitcher {
             throw new RuntimeException(e);
         }
     }
+
+
+
 }
 
 

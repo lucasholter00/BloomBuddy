@@ -7,14 +7,15 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
 public class Profile implements MyObservable {
     private SensorSettings sensorSettings;
     private String name;
     private String id;
     private ArrayList<HistoricalData> historicalData;
+    private String imageFilename;
+
     //Date of when the plant was last watered
     private LocalDateTime lastWatered;
     private int waterFrequency; //How often the water should be watered, in terms of days
@@ -28,6 +29,7 @@ public class Profile implements MyObservable {
         this.lastWatered = null; //Initialize as null, could be better ways to initialize this
         this.waterFrequency = 0; //Initialize as 0, i.e. no interval to water have been chosen yet by the user
         observers = new ArrayList<>();
+        imageFilename = randomizeImage();
         MyObserver wateredObserver = new LastWateredObserver();
         MyObserver needsWaterObserver = new NeedsWaterObserver();
         MyObserver temperatureObserver = new TemperatureObserver();
@@ -53,6 +55,7 @@ public class Profile implements MyObservable {
         this.lastWatered = null; //Initialize as null, could be better ways to initialize this
         this.waterFrequency = 0; //Initialize as 0, i.e. no interval to water have been chosen yet by the user
         observers = new ArrayList<>();
+        imageFilename = randomizeImage();
         MyObserver wateredObserver = new LastWateredObserver();
         MyObserver needsWaterObserver = new NeedsWaterObserver();
         MyObserver temperatureObserver = new TemperatureObserver();
@@ -102,7 +105,6 @@ public class Profile implements MyObservable {
     public HistoricalData getHistoricalData(int index) {
         return this.historicalData.get(index);
     }
-
     
 
     public void recieveWatered(){
@@ -138,6 +140,10 @@ public class Profile implements MyObservable {
         public void setLastWatered (LocalDateTime lastWatered) throws MqttException {
             this.lastWatered = lastWatered;
             notifyObservers("lastWatered");
+        }
+        
+        public void importLastWatered (LocalDateTime lastWatered) throws MqttException {
+            this.lastWatered = lastWatered;
         }
 
 
@@ -267,6 +273,14 @@ public class Profile implements MyObservable {
         return sensorSettings.getMoistureLowerBound();
     }
 
+    public String getImageFilename() {
+        return imageFilename;
+    }
+
+    public void setImageFilename(String imageFilename) {
+        this.imageFilename = imageFilename;
+    }
+
     public String toString() {
         return "Plant{" +
                 "name='" + name + '\'' +
@@ -277,6 +291,21 @@ public class Profile implements MyObservable {
                 ", historicalData=" + historicalData +
                 '}';
     }
+    private String randomizeImage() {
+        int lastIndex = imageList.size() - 1;
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(lastIndex + 1);
+
+        return imageList.get(randomNumber);
+    }
+
+    private List<String> imageList = Arrays.asList(
+            "plantPot.png",
+            "longPlant.png",
+            "springCrop.png"
+            // Add more image filenames here
+    );
 
 
 

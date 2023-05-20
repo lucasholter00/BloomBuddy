@@ -3,6 +3,7 @@ package com.group18.BloomBuddy.application;
 import com.group18.BloomBuddy.CurrentUser;
 import com.group18.BloomBuddy.DataBaseConnection;
 import com.group18.BloomBuddy.Mediator;
+import com.group18.BloomBuddy.Profile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,11 +17,17 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class LoginController extends SceneSwitcher{
     public Button loginButton;
     public PasswordField passwordPasswordField;
     public TextField usernameTextField;
+
+
+
     public Label loginLabel;
     public Button registerAccountButton;
     public void show (Stage stage) throws IOException {
@@ -46,7 +53,9 @@ public class LoginController extends SceneSwitcher{
         } if(currentUser == null) {
             loginLabel.setText("Please enter a valid username or password");
         } else {
+
             Mediator.getInstance().setCurrentUser((currentUser));
+            generateProfiles();
             setHomeScene(actionEvent);
 
         }
@@ -60,4 +69,12 @@ public class LoginController extends SceneSwitcher{
         }
         return currentUser;
     }
+    private void generateProfiles(){
+        List<Profile> profiles = Mediator.getInstance().getCurrentUser().getProfiles();
+
+        if(profiles.get(0)!=null) {
+            Mediator.getInstance().getCurrentUser().setCurrentProfile(profiles.get(0));
+        }
+    }
+
 }
