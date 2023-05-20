@@ -2,31 +2,51 @@ package com.group18.BloomBuddy.application;
 
 import com.group18.BloomBuddy.CurrentUser;
 import com.group18.BloomBuddy.Mediator;
-import javafx.event.ActionEvent;
+import com.group18.BloomBuddy.Profile;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 import java.util.Random;
 
 public class HomeController extends SceneSwitcher {
 
     public Button statisticsButton;
+
+    @FXML
+    private ScrollPane scrollPane;
     public Label recommendationText;
     public Label seasonText;
     public ImageView recommendationImage;
     public Button settingsButton;
     public Button homeButton;
     public Button myPlantButton;
+
+    private CurrentUser currentUser;
+
+    @FXML
+    public void initialize() throws InterruptedException {
+        currentUser = Mediator.getInstance().getCurrentUser();
+        List<Profile> profiles = currentUser.getProfiles();
+        generateProfiles(profiles);
+
+
+    }
 
     public void show (Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/homeScene.fxml");
@@ -41,7 +61,8 @@ public class HomeController extends SceneSwitcher {
         stage.setFullScreen(false);
         stage.show();
     }
-    public void changeRecommendationText(javafx.event.ActionEvent actionEvent) {
+    @FXML
+    public void changeRecommendationText() {
         seasonText.setText("Summer");
         recommendationText.setText("funkakakakaka");
         LocalDateTime now = LocalDateTime.now();
@@ -79,7 +100,7 @@ public class HomeController extends SceneSwitcher {
                     recommendationImage.setImage(lettuce);
                     break;
                 case 4:
-                    recommendationText.setText("Grow a onions. Onions are part of the allium family with scallions and leeks.  When onions are cut, a compound is released  and turns to sulfuric acid in the air. This is what makes people cry when they cook with onions.");
+                    recommendationText.setText("Grow a onions. Onions are part of the alluvium family with scallions and leeks.  When onions are cut, a compound is released  and turns to sulfuric acid in the air. This is what makes people cry when they cook with onions.");
                     recommendationImage.setImage(onions);
                     break;
                 default:
@@ -90,13 +111,39 @@ public class HomeController extends SceneSwitcher {
 
         } else if(now.isAfter(summerStart) && now.isBefore(autumnStart)) {
             seasonText.setText("Summer");
-            recommendationText.setText("Grow a jordgubbe");
+            recommendationText.setText("Grow a strawberry");
         } else if(now.isAfter(autumnStart) && now.isBefore(winterStart)) {
             seasonText.setText("Autumn");
-            recommendationText.setText("Grow a pumpa");
+            recommendationText.setText("Grow a pumpkin");
         } else {
             seasonText.setText("Winter");
-            recommendationText.setText("Grow a istapp");
+            recommendationText.setText("Grow a ice bear");
+        }
+    }
+    private void generateProfiles(List<Profile> profileList) {
+        if (currentUser == null) {
+            currentUser = Mediator.getInstance().getCurrentUser();
+        }
+
+        try {
+            HBox hbox = new HBox();
+            hbox.setSpacing(10);
+            hbox.setPadding(new Insets(10));
+
+            for (Profile profile : profileList) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/homePagePlantCard.fxml"));
+
+                VBox profileBox = fxmlLoader.load();
+                PlantHomePageCardController plantCardController = fxmlLoader.getController();
+                plantCardController.setData(profile);
+
+                hbox.getChildren().add(profileBox);
+            }
+
+            scrollPane.setContent(hbox);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
