@@ -2,6 +2,7 @@ package com.group18.BloomBuddy.application;
 
 import com.group18.BloomBuddy.CurrentUser;
 import com.group18.BloomBuddy.DataBaseConnection;
+import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,17 +34,11 @@ public class PlantOverviewController extends SceneSwitcher {
     private DataBaseConnection dbConn = new DataBaseConnection();
     private CurrentUser currentUser;
 
-    {
-        try {
-            currentUser = new CurrentUser("Felix", dbConn.getProfiles("Felix"));
-        } catch (MqttException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     //private List<Profile> profiles = currentUser.getProfiles();
     @FXML
     public void initialize() {
+        currentUser = Mediator.getInstance().getCurrentUser();
         List<Profile> profiles = currentUser.getProfiles();
         generateProfiles(profiles);
 
@@ -101,6 +96,7 @@ public class PlantOverviewController extends SceneSwitcher {
             throw new RuntimeException(e);
         }
     }
+
 }
 
 

@@ -2,6 +2,7 @@ package com.group18.BloomBuddy.application;
 
 import com.group18.BloomBuddy.CurrentUser;
 import com.group18.BloomBuddy.DataBaseConnection;
+import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorSettings;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class PlantEditingController extends SceneSwitcher {
+    private Profile profile;
     public RadioButton LightLow;
     public RadioButton LightHigh;
     public Label editingLabel;
@@ -34,6 +37,13 @@ public class PlantEditingController extends SceneSwitcher {
     private TextField MoistUpBound;
     @FXML
     private Button saveSettingsButton;
+
+    @FXML
+    public void initialize() {
+        this.profile = Mediator.getInstance().getEditProfile();
+        System.out.println("Hej");
+        System.out.println(profile);
+    }
 
     public void show(Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/plantEditingScene.fxml");
@@ -55,19 +65,15 @@ public class PlantEditingController extends SceneSwitcher {
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) throws Exception {
      //TODO Specify what profile to edit. It should be an already existing profile!
-        saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Test"));
+        System.out.println(profile);
+        saveSettings(event, profile);
     }
 
     //This method is responsible for saving the sensor settings for a given profile.
     //It first validates the input bounds, then tries to update the sensor settings of the profile.
     @FXML
-    private void saveSettings(ActionEvent event, Profile profile1) throws MqttException {
-        //TODO: Make use of currentUser.
-            DataBaseConnection db = new DataBaseConnection();
-            //db.addProfile(profile1, "Felix");
-            CurrentUser user = new CurrentUser("Felix", db.getProfiles("Felix"));
-            Profile profile = user.getProfile("15b1d93d-a4c8-46ae-b6b0-10059388d3d3");
-            editingLabel.setWrapText(true);
+    private void saveSettings(ActionEvent event, Profile profile) {
+        editingLabel.setWrapText(true);
             try {
                 if(validateBounds()) {
                     SensorSettings settings = profile.getSensorSettings();
@@ -85,9 +91,9 @@ public class PlantEditingController extends SceneSwitcher {
                         profile.setLightUpperBound(2000);
                     }
                     editingLabel.setText("Settings were successfully saved.");
+                    System.out.println("Temperature lower bound: " + profile.getSensorSettings().getTemperatureLowerBound());
+                    System.out.println("Temperature upper bound: " + profile.getSensorSettings().getTemperatureUpperBound());
                 }
-
-
             } catch (NumberFormatException e) {
                 editingLabel.setText("Please enter valid numbers.");
             }

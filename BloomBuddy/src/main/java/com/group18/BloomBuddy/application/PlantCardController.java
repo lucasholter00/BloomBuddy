@@ -1,5 +1,8 @@
 package com.group18.BloomBuddy.application;
 
+import java.io.IOException;
+
+import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.CurrentUser;
 import javafx.event.ActionEvent;
 
@@ -20,6 +23,8 @@ import java.util.List;
 import java.util.Random;
 
 public class PlantCardController extends SceneSwitcher { //unsure
+    private Profile profile;
+
     @FXML
     private Label humLabel;
 
@@ -45,8 +50,6 @@ public class PlantCardController extends SceneSwitcher { //unsure
     @FXML
     private ToggleButton toggleButton;
 
-    private Profile lastEdited;
-
     @FXML
     private RadioButton radioButton;
 
@@ -63,14 +66,6 @@ public class PlantCardController extends SceneSwitcher { //unsure
     private Label tempLabel;
 
     private static List<String> imageList = new ArrayList<>();
-
-
-    private Profile profile;
-
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
 
 
 
@@ -104,18 +99,21 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
     }
 
+
     public void setData(Profile profile) {
         image.setFitWidth(132); // Set the desired width
         image.setFitHeight(115); // Set the desired height
+        SensorData sensorData = new SensorData();
+        this.profile = profile;
         // Populate the UI with data from the profile
 
-        // Set the plant name, last watered, and sensor data
-        plantName.setText(profile.getName());
-        lastWatered.setText(String.valueOf(profile.getLastWatered()));
-        humLabel.setText(String.valueOf("profile.getHumidity()"));
-        lightLabel.setText(String.valueOf("profile.getLightIntensity()"));
-        tempLabel.setText(String.valueOf("profile.getTemperature()"));
-        moistLabel.setText(String.valueOf("profile.getMoistureLevel()"));
+        //Change the values of setText when Currentuser is not null
+        plantName.setText("profile.getName()");
+        lastWatered.setText(String.valueOf("profile.getLastWatered())"));
+        humLabel.setText(String.valueOf("sensorData.getHumidity())"));
+        lightLabel.setText(String.valueOf("sensorData.getLightIntensity())"));
+        tempLabel.setText(String.valueOf("sensorData.getTemperature())"));
+        moistLabel.setText(String.valueOf("sensorData.getMoistureLevel())"));
 
         // Load and set the image
         Image plantPic = new Image(randomizeImage());
@@ -135,7 +133,16 @@ public class PlantCardController extends SceneSwitcher { //unsure
         VBox.setMargin(tempLabel, new Insets(0, 0, 0, 10));
         VBox.setMargin(moistLabel, new Insets(0, 0, 0, 10));
 
-        // Set the active state of the ToggleButton
-        toggleButton.setSelected(Mediator.getInstance().getCurrentUser().isActive(profile));    }
+    }
 
+    @FXML
+    public void passProfile(ActionEvent event){
+       Mediator.getInstance().setEditProfile(profile);
+    }
+
+    @FXML
+    public void handleEvent(ActionEvent event) throws IOException {
+        passProfile(event);
+        setPlantAddingScene(event);
+    }
 }
