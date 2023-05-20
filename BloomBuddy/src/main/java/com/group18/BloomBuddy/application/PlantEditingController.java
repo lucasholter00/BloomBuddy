@@ -1,8 +1,6 @@
 package com.group18.BloomBuddy.application;
 
-import com.group18.BloomBuddy.Mediator;
-import com.group18.BloomBuddy.Profile;
-import com.group18.BloomBuddy.SensorSettings;
+import com.group18.BloomBuddy.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,8 +66,11 @@ public class PlantEditingController extends SceneSwitcher {
     //This method is responsible for saving the sensor settings for a given profile.
     //It first validates the input bounds, then tries to update the sensor settings of the profile.
     @FXML
-    private void saveSettings(ActionEvent event, Profile profile) throws MqttException {
-        editingLabel.setWrapText(true);
+    private void saveSettings(ActionEvent event, Profile p) throws MqttException {
+            DataBaseConnection db = new DataBaseConnection();
+            CurrentUser user = Mediator.getInstance().getCurrentUser();
+            Profile profile = user.getProfile(p.getId());
+            editingLabel.setWrapText(true);
             try {
                 if(validateBounds()) {
                     SensorSettings settings = profile.getSensorSettings();

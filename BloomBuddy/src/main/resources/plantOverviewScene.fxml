@@ -12,12 +12,12 @@
 
 <AnchorPane fx:id="anchor" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.PlantOverviewController">
    <children>
-      <Button fx:id="AddPlant" alignment="CENTER" cache="true" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="670.0" layoutY="463.0" mnemonicParsing="false" onAction="#setPlantAddingScene" prefHeight="115.0" prefWidth="86.0" style="-fx-background-color: TRANSPARENT;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
+      <Button fx:id="AddPlant" alignment="CENTER" cache="true" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="670.0" layoutY="450.0" mnemonicParsing="false" onAction="#setPlantAddingScene" prefHeight="115.0" prefWidth="86.0" style="-fx-background-color: TRANSPARENT;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
          <font>
             <Font name="System Italic" size="62.0" />
          </font>
          <graphic>
-            <ImageView fitHeight="81.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="81.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@plusIcon.png" />
                </image>
