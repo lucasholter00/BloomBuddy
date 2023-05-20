@@ -27,30 +27,33 @@
                      </font>
                   </Label>
                   <Label fx:id="lastWatered" text="Last Watered: Fix toString" />
-                  <Label prefHeight="40.0" prefWidth="146.0" />
+                  <Label fx:id="tresholdLabel" prefHeight="40.0" prefWidth="146.0" text="Treshholds:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
                   <HBox fx:id="textHbox" prefHeight="24.0" prefWidth="315.0">
                      <children>
                         <Text stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="Humidity" textAlignment="CENTER" wrappingWidth="59.21630859375">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font size="14.0" />
                            </font>
                         </Text>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Light" textAlignment="CENTER" wrappingWidth="37.55517578125" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Light" textAlignment="CENTER" wrappingWidth="72.55517578125" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Moisture" textAlignment="CENTER" wrappingWidth="65.861328125" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature" textAlignment="CENTER" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature" textAlignment="CENTER" wrappingWidth="94.41455078125" />
                      </children>
                   </HBox>
                   <HBox fx:id="labelHbox" prefHeight="37.0" prefWidth="315.0">
                      <children>
                         <Label fx:id="humLabel" alignment="CENTER" prefHeight="17.0" prefWidth="64.0" text="hum%" textAlignment="CENTER" />
-                        <Label fx:id="lightLabel" alignment="CENTER" prefHeight="17.0" prefWidth="42.0" text="light%" textAlignment="CENTER" />
-                        <Label fx:id="moistLabel" alignment="CENTER" prefHeight="17.0" prefWidth="69.0" text="moist%" textAlignment="CENTER" />
-                        <Label fx:id="tempLabel" alignment="CENTER" text="temp%" textAlignment="CENTER" />
+                        <Label fx:id="lightLabel" alignment="CENTER" prefHeight="17.0" prefWidth="66.0" text="light%" textAlignment="CENTER" />
+                        <Label fx:id="moistLabel" alignment="CENTER" prefHeight="17.0" prefWidth="75.0" text="moist%" textAlignment="CENTER" />
+                        <Label fx:id="tempLabel" alignment="CENTER" prefHeight="17.0" prefWidth="80.0" text="temp%" textAlignment="CENTER" />
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="150.0" prefWidth="67.0">
                <children>
                   <ToggleButton fx:id="toggleButton" mnemonicParsing="false" onAction="#activateProfile" text="Activate/deactivate" />
                   <Button fx:id="editPlant" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setPlantEditingScene" prefHeight="5.0" prefWidth="60.0" text="Edit">

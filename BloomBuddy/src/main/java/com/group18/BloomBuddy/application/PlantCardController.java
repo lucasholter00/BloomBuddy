@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
     }
 
 
-    public void setData(Profile profile) {
+    public void setData(Profile profile) throws MqttException {
 
         image.setFitWidth(132); // Set the desired width
         image.setFitHeight(115); // Set the desired height
@@ -119,15 +120,24 @@ public class PlantCardController extends SceneSwitcher { //unsure
         //These values need to be edited to display the correct values, or the FXML need to be edited
         plantName.setText(profile.getName());
         lastWatered.setText(String.valueOf(profile.getLastWatered()));
-        humLabel.setText(String.valueOf(sensorData.getHumidity()));
-        lightLabel.setText(String.valueOf(sensorData.getLightIntensity()));
-        tempLabel.setText(String.valueOf(sensorData.getTemperature()));
-        moistLabel.setText(String.valueOf(sensorData.getMoistureLevel()));
+        humLabel.setText(tresholdToString(profile.getHumidityLowerBound(),profile.getHumidityUpperBound()));
+        //humLabel.setText(String.valueOf(sensorData.getHumidity()));
+        if (profile.getLightLowerBound()==0){
+            lightLabel.setText("Low");
+        }else {
+            lightLabel.setText("High");
+
+        }
+        //lightLabel.setText(String.valueOf(sensorData.getLightIntensity()));
+        tempLabel.setText(tresholdToString(profile.getTemperatureLowerBound(), profile.getTemperatureUpperBound()));
+        //tempLabel.setText(String.valueOf(sensorData.getTemperature()));
+        moistLabel.setText(tresholdToString(profile.getMoistureLowerBound(),profile.getMoistureUpperBound()));
+        //moistLabel.setText(String.valueOf(sensorData.getMoistureLevel()));
 
         toggleButton.setSelected(Mediator.getInstance().getCurrentUser().isActive(profile));
 
         // Load and set the image
-        Image plantPic = new Image(randomizeImage());
+        final Image plantPic = new Image(randomizeImage());
         image.setImage(plantPic);
 
         image.setPreserveRatio(true);
@@ -144,6 +154,10 @@ public class PlantCardController extends SceneSwitcher { //unsure
         VBox.setMargin(tempLabel, new Insets(0, 0, 0, 10));
         VBox.setMargin(moistLabel, new Insets(0, 0, 0, 10));
 
+    }
+
+    private String tresholdToString(float low, float high){
+        return low+" - "+high;
     }
 
     @FXML
