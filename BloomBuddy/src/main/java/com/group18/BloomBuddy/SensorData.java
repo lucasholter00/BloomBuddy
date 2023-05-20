@@ -1,7 +1,5 @@
 package com.group18.BloomBuddy;
 
-import java.util.Random;
-
 public class SensorData {
     private float moistureLevel;
     private float temperature;

@@ -2,6 +2,8 @@ package com.group18.BloomBuddy;
 
 import javafx.stage.Stage;
 
+// The mediator is used to make the currentUser and the profiles wanted to be edited
+// accessible for all controllers.
 public class Mediator {
     private static Mediator INSTANCE;
 
@@ -26,7 +28,6 @@ public class Mediator {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
     public CurrentUser getCurrentUser() {
         return currentUser;
     }

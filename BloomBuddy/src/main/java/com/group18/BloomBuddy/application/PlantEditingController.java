@@ -60,7 +60,6 @@ public class PlantEditingController extends SceneSwitcher {
     //This method is called when the 'Save Settings' button is clicked.
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) throws Exception {
-     //TODO Specify what profile to edit. It should be an already existing profile!
         saveSettings(event, profile);
     }
 
@@ -114,7 +113,7 @@ public class PlantEditingController extends SceneSwitcher {
             valid = false;
         }
         if (moistureLowerBound >= moistureUpperBound) {
-            editingLabel.setText("moisture lower bound must be less than upper bound.");
+            editingLabel.setText("Moisture lower bound must be less than upper bound.");
             valid = false;
         }
         return valid;

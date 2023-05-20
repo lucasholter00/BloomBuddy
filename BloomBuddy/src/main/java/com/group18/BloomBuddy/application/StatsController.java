@@ -2,6 +2,7 @@ package com.group18.BloomBuddy.application;
 
 import com.group18.BloomBuddy.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -49,6 +50,8 @@ public class StatsController extends SceneSwitcher {
     private XYChart.Series<String, Number> lightLowerSeries = new XYChart.Series<>();
     private XYChart.Series<String, Number> lightUpperSeries = new XYChart.Series<>();
     private Profile profile;
+    private Stage stage;
+    Thread sensorThread;
     @FXML
     public void initialize() throws MqttException {
         profile = Mediator.getInstance().getCurrentUser().getCurrentProfile();
@@ -60,27 +63,47 @@ public class StatsController extends SceneSwitcher {
         initializeSeries();
     }
 
-    public void show(Stage stage) throws IOException, MqttException {
+    public Scene createScene() throws IOException, MqttException {
         URL fxmlResource = getClass().getResource("/statScene.fxml");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(fxmlResource);
         Parent root = loader.load();
         Scene statScene = new Scene(root, 800, 600);
-        stage.setScene(statScene);
-        loader.getController();
 
+       return statScene;
+
+    }
+
+    public void show(final Stage stage) throws IOException, MqttException{
+        this.stage = stage;
+        final Scene statScene = createScene();
+        stage.setScene(statScene);
         stage.setTitle("BloomBuddy");
         stage.setScene(statScene);
         stage.setResizable(false);
         stage.setFullScreen(false);
         stage.show();
+
+        ChangeListener<Parent> rootChangeListener = (observable, oldRoot, newRoot) -> {
+            if (oldRoot != null) {
+        // Stop the thread associated with the previous scene
+            sensorThread.interrupt();
+            }
+        };
+
+        statScene.rootProperty().addListener(rootChangeListener);
+
+    }
+
+    public void stopSensorThread() {
+        sensorThread.interrupt();
     }
 
     public void startSensorThread() {
-        Thread sensorThread = new Thread(() -> {
+        sensorThread = new Thread(() -> {
             try {
                 SensorInteractor data = new SensorInteractor();
-                SensorSettings sensorSettings = new SensorSettings(10,20, 0,100,500,2000,10,20);
+                SensorSettings sensorSettings = profile.getSensorSettings();
                 List<Boolean> previousThresholdValues = sensorSettings.checkSensorReadings(data.getData());//is used to check if sensor values have changed beyond the threshold values
                 List<Boolean> newThresholdValues; //is used to check if sensor values have changed beyond the threshold values
                 MqttCallback mqttCallback = new MqttCallback() {
@@ -134,6 +157,7 @@ public class StatsController extends SceneSwitcher {
         sensorThread.start();
     }
     public void checkThresholdValues(List<Boolean> thresholdValues, MQTTHandler mqttHandler, int sensor) throws MqttException{ // only sens messages for one sensor at a time specified by int sensor
+        System.out.println(thresholdValues);
         if(sensor == 0) {
             if(thresholdValues.get(sensor) == TRUE) {
                 mqttHandler.publish("BloomBuddy/Threshold/Color/Temperature", "red" );

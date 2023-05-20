@@ -1,26 +1,19 @@
 package com.group18.BloomBuddy;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoException;
-import com.mongodb.ServerApi;
-import com.mongodb.ServerApiVersion;
+import com.mongodb.*;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.*;
+import org.bson.Document;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import org.bson.Document;
-import org.eclipse.paho.client.mqttv3.MqttException;
 
 //This class will be responsible for communication with the database
 public class DataBaseConnection {
@@ -260,7 +253,15 @@ public class DataBaseConnection {
             for(Document profile : profiles){
                 String name = (String) profile.get("name"); 
                 String id = (String) profile.get("id");
-                String lastWatered = (String) profile.get("lastWatered");
+                Object lastWatered = profile.get("lastWatered");
+
+                Date lastWateredDate = null;
+                LocalDateTime timeWatered = null;
+                ZoneId zoneId = ZoneId.of("GMT");
+                if(lastWatered instanceof Date){
+                    lastWateredDate = (Date)lastWatered;
+                    timeWatered = LocalDateTime.ofInstant(lastWateredDate.toInstant(), zoneId);
+                }
 
                 Document sensorSettings = (Document) profile.get("sensorSettings");
                 double temperatureLowerBound = sensorSettings.getDouble("tempratureThresholdLow");
@@ -274,6 +275,8 @@ public class DataBaseConnection {
 
                 SensorSettings settings = new SensorSettings((float)temperatureLowerBound, (float)temperatureUpperBound,  (float)moistureLowerBound, (float)moistureUpperBound, (float)lightLowerBound, (float)lightUpperBound, (float)humidityLowerBound, (float)humidityUpperBound);
                 Profile dbProfile = new Profile(settings, name, id);
+                if(lastWateredDate != null)
+                    dbProfile.importLastWatered(timeWatered);
 
                 List<Document> historicalData = (List<Document>)profile.get("HistoricalData");
                 if(historicalData != null){
@@ -284,7 +287,7 @@ public class DataBaseConnection {
                         double light = (double)data.get("light");
                         Date date = (Date)data.get("time");
 
-                        LocalDateTime time = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+                        LocalDateTime time = LocalDateTime.ofInstant(date.toInstant(), zoneId);
 
                         HistoricalData dbHisData = new HistoricalData((float)moisture, (float)temperature, (float)humidity, (float)light, time);
 
@@ -293,11 +296,6 @@ public class DataBaseConnection {
 
                     }
                 }
-
-                System.out.println("Name: " + name);
-                System.out.println("ID: " + id);
-                System.out.println("Temperature lower bound: " + temperatureLowerBound);
-
                 profileList.add(dbProfile);
             }
 

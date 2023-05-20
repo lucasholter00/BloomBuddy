@@ -18,24 +18,16 @@ import java.net.URL;
 import java.util.List;
 
 public class PlantOverviewController extends SceneSwitcher {
-
-
     @FXML
     private GridPane gridPane;
 
-
-    //private List<Profile> profiles = currentUser.getProfiles();
     @FXML
     public void initialize() {
         CurrentUser currentUser = Mediator.getInstance().getCurrentUser();
         List<Profile> profiles = currentUser.getProfiles();
         generateProfiles(profiles);
     }
-
-
     public void show(Stage stage) throws IOException {
-
-
         URL fxmlResource = getClass().getResource("/plantOverviewScene.fxml");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(fxmlResource);
@@ -50,7 +42,7 @@ public class PlantOverviewController extends SceneSwitcher {
         stage.show();
 
     }
-
+    //Generates all the profiles connected to the currentUser.
     private void generateProfiles(List<Profile> profileList) {
         int columns = 0;
         int rows = 1;

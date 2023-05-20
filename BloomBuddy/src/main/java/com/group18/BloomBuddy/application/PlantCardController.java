@@ -13,8 +13,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -42,7 +45,6 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
 
     private ToggleGroup toggleGroup;
-
     @FXML
     private Label plantName;
 
@@ -79,14 +81,17 @@ public class PlantCardController extends SceneSwitcher { //unsure
         });
     }
 
-    private String randomizeImage(){
-        int lastIndex = imageList.size() - 1;
 
-        Random random = new Random();
-        int randomNumber = random.nextInt(lastIndex + 1);
+    private String formatter(LocalDateTime localDateTime){
+        String formattedDateTime = "";
 
-       return imageList.get(randomNumber);
-
+        if (localDateTime!=null){
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+            formattedDateTime = localDateTime.format(dateTimeFormatter);
+        }else {
+            formattedDateTime = "Not watered";
+        }
+        return formattedDateTime;
     }
 
 
@@ -98,21 +103,26 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
         //Change the values of setText when Currentuser is not null
         plantName.setText(profile.getName());
-        lastWatered.setText(String.valueOf(profile.getLastWatered()));
-        humLabel.setText(tresholdToString(profile.getHumidityLowerBound(),profile.getHumidityUpperBound()));
+
+        String lastWaterdString = formatter(profile.getLastWatered());
+
+        lastWatered.setText(lastWaterdString);
+
+
+        humLabel.setText(thresholdToString(profile.getHumidityLowerBound(),profile.getHumidityUpperBound()));
         if (profile.getLightLowerBound()==0){
             lightLabel.setText("Low");
         }else {
             lightLabel.setText("High");
 
         }
-        tempLabel.setText(tresholdToString(profile.getTemperatureLowerBound(), profile.getTemperatureUpperBound()));
-        moistLabel.setText(tresholdToString(profile.getMoistureLowerBound(),profile.getMoistureUpperBound()));
+        tempLabel.setText(thresholdToString(profile.getTemperatureLowerBound(), profile.getTemperatureUpperBound()));
+        moistLabel.setText(thresholdToString(profile.getMoistureLowerBound(),profile.getMoistureUpperBound()));
 
         toggleButton.setSelected(Mediator.getInstance().getCurrentUser().isActive(profile));
 
         // Load and set the image
-        final Image plantPic = new Image(randomizeImage());
+        final Image plantPic = new Image(profile.getImageFilename());
         image.setImage(plantPic);
 
         image.setPreserveRatio(true);
@@ -131,7 +141,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
     }
 
-    private String tresholdToString(float low, float high){
+    private String thresholdToString(float low, float high){
         return low+" - "+high;
     }
 
@@ -149,5 +159,11 @@ public class PlantCardController extends SceneSwitcher { //unsure
     public void handleEvent(ActionEvent event) throws IOException {
         passProfile();
         setPlantEditingScene(event);
+    }
+    @FXML
+    public void handleWaterEvent() throws MqttException {
+        profile.setLastWatered(LocalDateTime.now());
+        lastWatered.setText(formatter(profile.getLastWatered()));
+
     }
 }

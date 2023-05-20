@@ -4,8 +4,6 @@ import com.group18.BloomBuddy.Mediator;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-
-import javafx.event.ActionEvent;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.io.IOException;

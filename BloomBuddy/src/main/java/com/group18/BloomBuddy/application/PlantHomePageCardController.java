@@ -12,6 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -64,16 +66,6 @@ public class PlantHomePageCardController extends SceneSwitcher {
         });
     }
 
-    private String randomizeImage(){
-        int lastIndex = imageList.size() - 1;
-
-        Random random = new Random();
-        int randomNumber = random.nextInt(lastIndex + 1);
-
-        return imageList.get(randomNumber);
-
-    }
-
     public void setData(Profile profile) {
         image.setFitWidth(132); // Set the desired width
         image.setFitHeight(115); // Set the desired height
@@ -83,13 +75,13 @@ public class PlantHomePageCardController extends SceneSwitcher {
         //Change the values of setText when Currentuser is not null
         //These values need to be edited to display the correct values, or the FXML need to be edited
         plantName.setText(profile.getName());
-        lastWatered.setText(String.valueOf(profile.getLastWatered()));
+        lastWatered.setText(formatter(profile.getLastWatered()));
 
 
         toggleButton.setSelected(Mediator.getInstance().getCurrentUser().isActive(profile));
 
         // Load and set the image
-        final Image plantPic = new Image(randomizeImage());
+        final Image plantPic = new Image(profile.getImageFilename());
         image.setImage(plantPic);
 
         image.setPreserveRatio(true);
@@ -110,5 +102,18 @@ public class PlantHomePageCardController extends SceneSwitcher {
     private void activateProfile(ActionEvent actionEvent) throws IOException {
         Mediator.getInstance().getCurrentUser().setCurrentProfile(profile);
         setHomeScene(actionEvent);
+    }
+
+    private String formatter(LocalDateTime localDateTime){
+
+        String formattedDateTime = "";
+
+        if (localDateTime!=null){
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+            formattedDateTime = localDateTime.format(dateTimeFormatter);
+        }else {
+            formattedDateTime = "Not watered";
+        }
+        return formattedDateTime;
     }
 }
