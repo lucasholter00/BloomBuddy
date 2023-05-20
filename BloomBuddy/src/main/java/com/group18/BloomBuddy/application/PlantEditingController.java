@@ -41,8 +41,6 @@ public class PlantEditingController extends SceneSwitcher {
     @FXML
     public void initialize() {
         this.profile = Mediator.getInstance().getEditProfile();
-        System.out.println("Hej");
-        System.out.println(profile);
     }
 
     public void show(Stage stage) throws IOException {
@@ -65,14 +63,13 @@ public class PlantEditingController extends SceneSwitcher {
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) throws Exception {
      //TODO Specify what profile to edit. It should be an already existing profile!
-        System.out.println(profile);
         saveSettings(event, profile);
     }
 
     //This method is responsible for saving the sensor settings for a given profile.
     //It first validates the input bounds, then tries to update the sensor settings of the profile.
     @FXML
-    private void saveSettings(ActionEvent event, Profile profile) {
+    private void saveSettings(ActionEvent event, Profile profile) throws MqttException {
         editingLabel.setWrapText(true);
             try {
                 if(validateBounds()) {
@@ -91,8 +88,6 @@ public class PlantEditingController extends SceneSwitcher {
                         profile.setLightUpperBound(2000);
                     }
                     editingLabel.setText("Settings were successfully saved.");
-                    System.out.println("Temperature lower bound: " + profile.getSensorSettings().getTemperatureLowerBound());
-                    System.out.println("Temperature upper bound: " + profile.getSensorSettings().getTemperatureUpperBound());
                 }
             } catch (NumberFormatException e) {
                 editingLabel.setText("Please enter valid numbers.");

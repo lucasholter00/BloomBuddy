@@ -70,7 +70,6 @@ public class PlantOverviewController extends SceneSwitcher {
     }
 @FXML
     private void regenerateProfiles(){
-    System.out.println("ja det är rätt");
         generateProfiles(currentUser.getProfiles());
     }
 
@@ -97,7 +96,7 @@ public class PlantOverviewController extends SceneSwitcher {
                 gridPane.add(profileBox, columns++, rows++);
                 GridPane.setMargin(profileBox, new Insets(10));
             }
-        } catch (IOException e) {
+        } catch (IOException | MqttException e) {
             throw new RuntimeException(e);
         }
     }
