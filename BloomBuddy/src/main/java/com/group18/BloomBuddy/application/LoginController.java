@@ -47,8 +47,9 @@ public class LoginController extends SceneSwitcher{
         } if(currentUser == null) {
             loginLabel.setText("Please enter a valid username or password");
         } else {
-            setHomeScene(actionEvent);
             Mediator.getInstance().setCurrentUser((currentUser));
+            setHomeScene(actionEvent);
+
         }
     }
 
