@@ -273,7 +273,7 @@ public class DataBaseConnection {
                 double lightUpperBound = sensorSettings.getDouble("lightThresholdHigh");
 
                 SensorSettings settings = new SensorSettings((float)temperatureLowerBound, (float)temperatureUpperBound,  (float)moistureLowerBound, (float)moistureUpperBound, (float)lightLowerBound, (float)lightUpperBound, (float)humidityLowerBound, (float)humidityUpperBound);
-                Profile dbProfile = new Profile(settings, username);
+                Profile dbProfile = new Profile(settings, username, id);
 
                 List<Document> historicalData = (List<Document>)profile.get("HistoricalData");
                 if(historicalData != null){

@@ -1,5 +1,7 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.CurrentUser;
+import com.group18.BloomBuddy.DataBaseConnection;
 import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorSettings;
@@ -11,14 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.io.IOException;
 import java.net.URL;
-
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class PlantEditingController extends SceneSwitcher {
     private Profile profile;
@@ -79,18 +77,18 @@ public class PlantEditingController extends SceneSwitcher {
             try {
                 if(validateBounds()) {
                     SensorSettings settings = profile.getSensorSettings();
-                    settings.setTemperatureLowerBound(Float.parseFloat(TempLowBound.getText()));
-                    settings.setTemperatureUpperBound(Float.parseFloat(TempUpBound.getText()));
-                    settings.setHumidityLowerBound(Float.parseFloat(HumLowBound.getText()));
-                    settings.setHumidityUpperBound(Float.parseFloat(HumUpBound.getText()));
-                    settings.setMoistureLowerBound(Float.parseFloat(MoistLowBound.getText()));
-                    settings.setMoistureUpperBound(Float.parseFloat(MoistUpBound.getText()));
+                    profile.setTemperatureLowerBound(Float.parseFloat(TempLowBound.getText()));
+                    profile.setTemperatureUpperBound(Float.parseFloat(TempUpBound.getText()));
+                    profile.setHumidityLowerBound(Float.parseFloat(HumLowBound.getText()));
+                    profile.setHumidityUpperBound(Float.parseFloat(HumUpBound.getText()));
+                    profile.setMoistureLowerBound(Float.parseFloat(MoistLowBound.getText()));
+                    profile.setMoistureUpperBound(Float.parseFloat(MoistUpBound.getText()));
                     if (LightLow.isSelected()) {
-                        settings.setLightLowerBound(0);
-                        settings.setLightUpperBound(512);
+                        profile.setLightLowerBound(0);
+                        profile.setLightUpperBound(512);
                     } else if (LightHigh.isSelected()) {
-                        settings.setLightLowerBound(512);
-                        settings.setLightUpperBound(2000);
+                        profile.setLightLowerBound(512);
+                        profile.setLightUpperBound(2000);
                     }
                     editingLabel.setText("Settings were successfully saved.");
                     System.out.println("Temperature lower bound: " + profile.getSensorSettings().getTemperatureLowerBound());
@@ -99,7 +97,6 @@ public class PlantEditingController extends SceneSwitcher {
             } catch (NumberFormatException e) {
                 editingLabel.setText("Please enter valid numbers.");
             }
-            
         }
 
     //This method checks if the sensor settings bounds are valid.

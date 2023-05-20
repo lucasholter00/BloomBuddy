@@ -3,16 +3,18 @@ package com.group18.BloomBuddy.application;
 import java.io.IOException;
 
 import com.group18.BloomBuddy.Mediator;
+import com.group18.BloomBuddy.CurrentUser;
+import javafx.event.ActionEvent;
+
+import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorData;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -47,6 +49,10 @@ public class PlantCardController extends SceneSwitcher { //unsure
     @FXML
     private RadioButton radioButton;
 
+    @FXML
+    private Button editPlantButton;
+
+
     private ToggleGroup toggleGroup;
 
     @FXML
@@ -58,12 +64,24 @@ public class PlantCardController extends SceneSwitcher { //unsure
     @FXML
     public void initialize() {
 
+        //TODO make togglebutton work
+        toggleGroup = new ToggleGroup();
+        toggleButton.setToggleGroup(toggleGroup);
+
+        // Add an event listener to handle selection events
+        toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                // No ToggleButton is selected
+                toggleButton.setSelected(false);
+            }
+        });
     }
 
 
     public void setData(Profile profile) {
         SensorData sensorData = new SensorData();
         this.profile = profile;
+        // Populate the UI with data from the profile
 
         //Change the values of setText when Currentuser is not null
         plantName.setText("profile.getName()");
@@ -77,6 +95,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
         Image plantPic = new Image("cabbage.png");
         image.setImage(plantPic);
 
+        // Customize the spacing and margins
         outer.setSpacing(30);
         VBox.setMargin(humLabel, new Insets(0, 0, 0, 10));
         VBox.setMargin(lightLabel, new Insets(0, 0, 0, 10));
