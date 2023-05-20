@@ -19,7 +19,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -106,6 +109,11 @@ public class PlantCardController extends SceneSwitcher { //unsure
        return imageList.get(randomNumber);
 
     }
+    private String formatter(LocalDateTime localDateTime){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+        String formattedDateTime = localDateTime.format(dateTimeFormatter);
+        return formattedDateTime;
+    }
 
 
     public void setData(Profile profile) throws MqttException {
@@ -119,7 +127,16 @@ public class PlantCardController extends SceneSwitcher { //unsure
         //Change the values of setText when Currentuser is not null
         //These values need to be edited to display the correct values, or the FXML need to be edited
         plantName.setText(profile.getName());
-        lastWatered.setText(String.valueOf(profile.getLastWatered()));
+
+        String lastWaterdString = formatter(profile.getLastWatered());
+
+        if (lastWaterdString == null){
+            lastWatered.setText("Not watered");
+        }else {
+            lastWatered.setText(lastWaterdString);
+
+        }
+
         humLabel.setText(tresholdToString(profile.getHumidityLowerBound(),profile.getHumidityUpperBound()));
         //humLabel.setText(String.valueOf(sensorData.getHumidity()));
         if (profile.getLightLowerBound()==0){
@@ -174,5 +191,11 @@ public class PlantCardController extends SceneSwitcher { //unsure
     public void handleEvent(ActionEvent event) throws IOException {
         passProfile(event);
         setPlantEditingScene(event);
+    }
+    @FXML
+    public void handleWaterEvent(ActionEvent event) throws MqttException {
+        profile.setLastWatered(LocalDateTime.now());
+        lastWatered.setText(formatter(profile.getLastWatered()));
+
     }
 }
