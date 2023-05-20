@@ -12,8 +12,7 @@
 
 <AnchorPane fx:id="anchor" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group18.BloomBuddy.application.PlantOverviewController">
    <children>
-      <Button fx:id="refresh" layoutX="721.0" layoutY="36.0" mnemonicParsing="false" onAction="#regenerateProfiles" text="Refresh" />
-      <Button fx:id="AddPlant" alignment="CENTER" cache="true" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="594.0" layoutY="464.0" mnemonicParsing="false" onAction="#setPlantAddingScene" prefHeight="128.0" prefWidth="148.0" style="-fx-background-color: TRANSPARENT;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
+      <Button fx:id="AddPlant" alignment="CENTER" cache="true" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="710.0" layoutY="456.0" mnemonicParsing="false" onAction="#setPlantAddingScene" prefHeight="115.0" prefWidth="86.0" style="-fx-background-color: TRANSPARENT;" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
          <font>
             <Font name="System Italic" size="62.0" />
          </font>

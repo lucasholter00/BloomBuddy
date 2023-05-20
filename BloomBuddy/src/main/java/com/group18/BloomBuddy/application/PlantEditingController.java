@@ -72,7 +72,7 @@ public class PlantEditingController extends SceneSwitcher {
     //This method is responsible for saving the sensor settings for a given profile.
     //It first validates the input bounds, then tries to update the sensor settings of the profile.
     @FXML
-    private void saveSettings(ActionEvent event, Profile profile) {
+    private void saveSettings(ActionEvent event, Profile profile) throws MqttException {
         editingLabel.setWrapText(true);
             try {
                 if(validateBounds()) {

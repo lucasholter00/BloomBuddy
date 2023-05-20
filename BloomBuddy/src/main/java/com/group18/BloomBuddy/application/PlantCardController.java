@@ -85,6 +85,13 @@ public class PlantCardController extends SceneSwitcher { //unsure
             if (newValue == null) {
                 // No ToggleButton is selected
                 toggleButton.setSelected(false);
+            } else {
+                // Only allow one ToggleButton to be selected
+                toggleGroup.getToggles().forEach(toggle -> {
+                    if (toggle != newValue) {
+                        ((ToggleButton) toggle).setSelected(false);
+                    }
+                });
             }
         });
     }
@@ -101,6 +108,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
 
     public void setData(Profile profile) {
+
         image.setFitWidth(132); // Set the desired width
         image.setFitHeight(115); // Set the desired height
         SensorData sensorData = new SensorData();
@@ -108,12 +116,15 @@ public class PlantCardController extends SceneSwitcher { //unsure
         // Populate the UI with data from the profile
 
         //Change the values of setText when Currentuser is not null
-        plantName.setText("profile.getName()");
-        lastWatered.setText(String.valueOf("profile.getLastWatered())"));
-        humLabel.setText(String.valueOf("sensorData.getHumidity())"));
-        lightLabel.setText(String.valueOf("sensorData.getLightIntensity())"));
-        tempLabel.setText(String.valueOf("sensorData.getTemperature())"));
-        moistLabel.setText(String.valueOf("sensorData.getMoistureLevel())"));
+        //These values need to be edited to display the correct values, or the FXML need to be edited
+        plantName.setText(profile.getName());
+        lastWatered.setText(String.valueOf(profile.getLastWatered()));
+        humLabel.setText(String.valueOf(sensorData.getHumidity()));
+        lightLabel.setText(String.valueOf(sensorData.getLightIntensity()));
+        tempLabel.setText(String.valueOf(sensorData.getTemperature()));
+        moistLabel.setText(String.valueOf(sensorData.getMoistureLevel()));
+
+        toggleButton.setSelected(Mediator.getInstance().getCurrentUser().isActive(profile));
 
         // Load and set the image
         Image plantPic = new Image(randomizeImage());
@@ -136,8 +147,13 @@ public class PlantCardController extends SceneSwitcher { //unsure
     }
 
     @FXML
+    private void activateProfile(ActionEvent actionEvent) throws IOException {
+        Mediator.getInstance().getCurrentUser().setCurrentProfile(profile);
+        setPlantOverviewScene(actionEvent);
+    }
+    @FXML
     public void passProfile(ActionEvent event){
-       //Mediator.getInstance().setE(profile);
+       Mediator.getInstance().setEditProfile(profile);
     }
 
     @FXML
