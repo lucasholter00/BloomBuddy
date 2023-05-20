@@ -16,7 +16,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 
 public class LoginController extends SceneSwitcher{
     public Button loginButton;
@@ -47,8 +46,9 @@ public class LoginController extends SceneSwitcher{
         } if(currentUser == null) {
             loginLabel.setText("Please enter a valid username or password");
         } else {
-            setHomeScene(actionEvent);
             Mediator.getInstance().setCurrentUser((currentUser));
+            setHomeScene(actionEvent);
+
         }
     }
 
