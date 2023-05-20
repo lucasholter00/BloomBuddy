@@ -53,6 +53,7 @@ public class LoginController extends SceneSwitcher{
         } if(currentUser == null) {
             loginLabel.setText("Please enter a valid username or password");
         } else {
+
             Mediator.getInstance().setCurrentUser((currentUser));
             generateProfiles();
             setHomeScene(actionEvent);
@@ -70,24 +71,10 @@ public class LoginController extends SceneSwitcher{
     }
     private void generateProfiles(){
         List<Profile> profiles = Mediator.getInstance().getCurrentUser().getProfiles();
-        for(Profile profile: profiles){
-            profile.setImageFilename(randomizeImage());
 
+        if(profiles.get(0)!=null) {
+            Mediator.getInstance().getCurrentUser().setCurrentProfile(profiles.get(0));
         }
     }
-    private String randomizeImage() {
-        int lastIndex = imageList.size() - 1;
 
-        Random random = new Random();
-        int randomNumber = random.nextInt(lastIndex + 1);
-
-        return imageList.get(randomNumber);
-    }
-
-    private List<String> imageList = Arrays.asList(
-            "plantPot.png",
-            "longPlant.png",
-            "springCrop.png"
-            // Add more image filenames here
-    );
 }
