@@ -257,9 +257,10 @@ public class DataBaseConnection {
 
                 Date lastWateredDate = null;
                 LocalDateTime timeWatered = null;
+                ZoneId zoneId = ZoneId.of("GMT");
                 if(lastWatered instanceof Date){
                     lastWateredDate = (Date)lastWatered;
-                    timeWatered = LocalDateTime.ofInstant(lastWateredDate.toInstant(), ZoneId.systemDefault());
+                    timeWatered = LocalDateTime.ofInstant(lastWateredDate.toInstant(), zoneId);
                 }
 
                 Document sensorSettings = (Document) profile.get("sensorSettings");
@@ -286,7 +287,7 @@ public class DataBaseConnection {
                         double light = (double)data.get("light");
                         Date date = (Date)data.get("time");
 
-                        LocalDateTime time = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+                        LocalDateTime time = LocalDateTime.ofInstant(date.toInstant(), zoneId);
 
                         HistoricalData dbHisData = new HistoricalData((float)moisture, (float)temperature, (float)humidity, (float)light, time);
 
