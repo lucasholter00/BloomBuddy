@@ -1,5 +1,6 @@
 package com.group18.BloomBuddy.application;
 
+import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorSettings;
 import javafx.event.ActionEvent;
@@ -20,6 +21,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class PlantEditingController extends SceneSwitcher {
+    private Profile profile;
     public RadioButton LightLow;
     public RadioButton LightHigh;
     public Label editingLabel;
@@ -37,6 +39,13 @@ public class PlantEditingController extends SceneSwitcher {
     private TextField MoistUpBound;
     @FXML
     private Button saveSettingsButton;
+
+    @FXML
+    public void initialize() {
+        this.profile = Mediator.getInstance().getEditProfile();
+        System.out.println("Hej");
+        System.out.println(profile);
+    }
 
     public void show(Stage stage) throws IOException {
         URL fxmlResource = getClass().getResource("/plantEditingScene.fxml");
@@ -58,7 +67,8 @@ public class PlantEditingController extends SceneSwitcher {
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) throws Exception {
      //TODO Specify what profile to edit. It should be an already existing profile!
-        saveSettings(event, new Profile(new SensorSettings(10, 20, 10, 20, 10,20,10,20), "Test"));
+        System.out.println(profile);
+        saveSettings(event, profile);
     }
 
     //This method is responsible for saving the sensor settings for a given profile.
@@ -83,10 +93,13 @@ public class PlantEditingController extends SceneSwitcher {
                         settings.setLightUpperBound(2000);
                     }
                     editingLabel.setText("Settings were successfully saved.");
+                    System.out.println("Temperature lower bound: " + profile.getSensorSettings().getTemperatureLowerBound());
+                    System.out.println("Temperature upper bound: " + profile.getSensorSettings().getTemperatureUpperBound());
                 }
             } catch (NumberFormatException e) {
                 editingLabel.setText("Please enter valid numbers.");
             }
+            
         }
 
     //This method checks if the sensor settings bounds are valid.
