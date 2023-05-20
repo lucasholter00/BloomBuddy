@@ -137,7 +137,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
     @FXML
     public void passProfile(ActionEvent event){
-       Mediator.getInstance().setEditProfile(profile);
+       //Mediator.getInstance().setE(profile);
     }
 
     @FXML
