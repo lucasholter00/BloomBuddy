@@ -143,6 +143,6 @@ public class PlantCardController extends SceneSwitcher { //unsure
     @FXML
     public void handleEvent(ActionEvent event) throws IOException {
         passProfile(event);
-        setPlantAddingScene(event);
+        setPlantEditingScene(event);
     }
 }
