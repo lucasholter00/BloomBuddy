@@ -137,7 +137,7 @@ public class HomeController extends SceneSwitcher {
 
                 VBox profileBox = fxmlLoader.load();
                 PlantHomePageCardController plantCardController = fxmlLoader.getController();
-                profile.setImageFilename(randomizeImage());
+                profile.setImageFilename(profile.getImageFilename());
 
                 plantCardController.setData(profile);
 
@@ -150,20 +150,8 @@ public class HomeController extends SceneSwitcher {
         }
     }
 
-    private String randomizeImage() {
-        int lastIndex = imageList.size() - 1;
 
-        Random random = new Random();
-        int randomNumber = random.nextInt(lastIndex + 1);
 
-        return imageList.get(randomNumber);
-    }
-    private List<String> imageList = Arrays.asList(
-            "plantPot.png",
-            "longPlant.png",
-            "springCrop.png"
-            // Add more image filenames here
-    );
 }
 
 
