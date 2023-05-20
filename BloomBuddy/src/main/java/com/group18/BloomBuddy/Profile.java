@@ -139,6 +139,10 @@ public class Profile implements MyObservable {
             this.lastWatered = lastWatered;
             notifyObservers("lastWatered");
         }
+        
+        public void importLastWatered (LocalDateTime lastWatered) throws MqttException {
+            this.lastWatered = lastWatered;
+        }
 
 
         public int getWaterFrequency () {
