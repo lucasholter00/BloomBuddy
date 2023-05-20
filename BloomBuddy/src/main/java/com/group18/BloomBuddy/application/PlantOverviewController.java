@@ -1,15 +1,10 @@
 package com.group18.BloomBuddy.application;
 
 import com.group18.BloomBuddy.CurrentUser;
-<<<<<<<<< Temporary merge branch 1
-import com.group18.BloomBuddy.Mediator;
-import javafx.event.ActionEvent;
-=========
 import com.group18.BloomBuddy.DataBaseConnection;
 import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import javafx.fxml.FXML;
->>>>>>>>> Temporary merge branch 2
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -34,20 +29,11 @@ public class PlantOverviewController extends SceneSwitcher {
     private AnchorPane anchor;
     @FXML
     private Button refreshPlant;
-
-
-    private DataBaseConnection dbConn = new DataBaseConnection();
-    private CurrentUser currentUser;
-
-
-    //private List<Profile> profiles = currentUser.getProfiles();
     @FXML
     public void initialize() {
-        currentUser = Mediator.getInstance().getCurrentUser();
+        CurrentUser currentUser = Mediator.getInstance().getCurrentUser();
         List<Profile> profiles = currentUser.getProfiles();
         generateProfiles(profiles);
-
-
     }
 
 
@@ -68,12 +54,6 @@ public class PlantOverviewController extends SceneSwitcher {
         stage.show();
 
     }
-@FXML
-    private void regenerateProfiles(){
-        generateProfiles(currentUser.getProfiles());
-    }
-
-
     private void generateProfiles(List<Profile> profileList) {
         int columns = 0;
         int rows = 1;
