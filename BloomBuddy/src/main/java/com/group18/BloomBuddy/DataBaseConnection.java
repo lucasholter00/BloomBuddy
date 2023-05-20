@@ -253,7 +253,14 @@ public class DataBaseConnection {
             for(Document profile : profiles){
                 String name = (String) profile.get("name"); 
                 String id = (String) profile.get("id");
-                String lastWatered = (String) profile.get("lastWatered");
+                Object lastWatered = profile.get("lastWatered");
+
+                Date lastWateredDate = null;
+                LocalDateTime timeWatered = null;
+                if(lastWatered instanceof Date){
+                    lastWateredDate = (Date)lastWatered;
+                    timeWatered = LocalDateTime.ofInstant(lastWateredDate.toInstant(), ZoneId.systemDefault());
+                }
 
                 Document sensorSettings = (Document) profile.get("sensorSettings");
                 double temperatureLowerBound = sensorSettings.getDouble("tempratureThresholdLow");
@@ -267,6 +274,8 @@ public class DataBaseConnection {
 
                 SensorSettings settings = new SensorSettings((float)temperatureLowerBound, (float)temperatureUpperBound,  (float)moistureLowerBound, (float)moistureUpperBound, (float)lightLowerBound, (float)lightUpperBound, (float)humidityLowerBound, (float)humidityUpperBound);
                 Profile dbProfile = new Profile(settings, name, id);
+                if(lastWateredDate != null)
+                    dbProfile.importLastWatered(timeWatered);
 
                 List<Document> historicalData = (List<Document>)profile.get("HistoricalData");
                 if(historicalData != null){
