@@ -1,7 +1,6 @@
 package com.group18.BloomBuddy.application;
 
 import com.group18.BloomBuddy.CurrentUser;
-import com.group18.BloomBuddy.DataBaseConnection;
 import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import javafx.fxml.FXML;
@@ -9,8 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -25,20 +22,12 @@ public class PlantOverviewController extends SceneSwitcher {
 
     @FXML
     private GridPane gridPane;
-    @FXML
-    private AnchorPane anchor;
-    @FXML
-    private Button refreshPlant;
-
-
-    private DataBaseConnection dbConn = new DataBaseConnection();
-    private CurrentUser currentUser;
 
 
     //private List<Profile> profiles = currentUser.getProfiles();
     @FXML
     public void initialize() {
-        currentUser = Mediator.getInstance().getCurrentUser();
+        CurrentUser currentUser = Mediator.getInstance().getCurrentUser();
         List<Profile> profiles = currentUser.getProfiles();
         generateProfiles(profiles);
 
@@ -63,12 +52,6 @@ public class PlantOverviewController extends SceneSwitcher {
         stage.show();
 
     }
-@FXML
-    private void regenerateProfiles(){
-    System.out.println("ja det är rätt");
-        generateProfiles(currentUser.getProfiles());
-    }
-
 
     private void generateProfiles(List<Profile> profileList) {
         int columns = 0;
@@ -76,13 +59,13 @@ public class PlantOverviewController extends SceneSwitcher {
 
         try {
             FXMLLoader fxmlLoader;
-            for (int i = 0; i < profileList.size(); i++) {
+            for (Profile profile : profileList) {
                 fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("/plantCard.fxml"));
 
                 VBox profileBox = fxmlLoader.load();
                 PlantCardController plantCardController = fxmlLoader.getController();
-                plantCardController.setData(profileList.get(i));
+                plantCardController.setData(profile);
 
                 if (columns == 2) {
                     columns = 0;
