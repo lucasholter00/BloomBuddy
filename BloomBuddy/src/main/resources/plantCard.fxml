@@ -26,7 +26,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Button fx:id="wateringButton" mnemonicParsing="false" onAction="#handleWaterEvent" text="Watered" />
+                  <Button fx:id="wateringButton" mnemonicParsing="false" onAction="#handleWaterEvent" text="Water" />
                   <Label fx:id="lastWatered" text="Last Watered: Fix toString" />
                   <Label fx:id="tresholdLabel" prefHeight="40.0" prefWidth="146.0" text="Treshholds:">
                      <font>
@@ -56,7 +56,7 @@
             </VBox>
             <VBox prefHeight="150.0" prefWidth="67.0">
                <children>
-                  <ToggleButton fx:id="toggleButton" mnemonicParsing="false" onAction="#activateProfile" text="Activate/deactivate" />
+                  <ToggleButton fx:id="toggleButton" mnemonicParsing="false" onAction="#activateProfile" text="Activate" />
                   <Button fx:id="editPlant" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleEvent" prefHeight="5.0" prefWidth="60.0" text="Edit">
                      <padding>
                         <Insets bottom="1.0" top="1.0" />

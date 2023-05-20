@@ -15,6 +15,8 @@ public class Profile implements MyObservable {
     private String name;
     private String id;
     private ArrayList<HistoricalData> historicalData;
+    private String imageFilename;
+
     //Date of when the plant was last watered
     private LocalDateTime lastWatered;
     private int waterFrequency; //How often the water should be watered, in terms of days
@@ -102,7 +104,6 @@ public class Profile implements MyObservable {
     public HistoricalData getHistoricalData(int index) {
         return this.historicalData.get(index);
     }
-
     
 
     public void recieveWatered(){
@@ -269,6 +270,14 @@ public class Profile implements MyObservable {
 
     public float getMoistureLowerBound() throws MqttException{
         return sensorSettings.getMoistureLowerBound();
+    }
+
+    public String getImageFilename() {
+        return imageFilename;
+    }
+
+    public void setImageFilename(String imageFilename) {
+        this.imageFilename = imageFilename;
     }
 
     public String toString() {

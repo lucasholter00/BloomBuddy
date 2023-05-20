@@ -64,16 +64,6 @@ public class PlantHomePageCardController extends SceneSwitcher {
         });
     }
 
-    private String randomizeImage(){
-        int lastIndex = imageList.size() - 1;
-
-        Random random = new Random();
-        int randomNumber = random.nextInt(lastIndex + 1);
-
-        return imageList.get(randomNumber);
-
-    }
-
     public void setData(Profile profile) {
         image.setFitWidth(132); // Set the desired width
         image.setFitHeight(115); // Set the desired height
@@ -89,7 +79,7 @@ public class PlantHomePageCardController extends SceneSwitcher {
         toggleButton.setSelected(Mediator.getInstance().getCurrentUser().isActive(profile));
 
         // Load and set the image
-        final Image plantPic = new Image(randomizeImage());
+        final Image plantPic = new Image(profile.getImageFilename());
         image.setImage(plantPic);
 
         image.setPreserveRatio(true);

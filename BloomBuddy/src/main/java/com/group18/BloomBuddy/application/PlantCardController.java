@@ -82,15 +82,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
         });
     }
 
-    private String randomizeImage(){
-        int lastIndex = imageList.size() - 1;
 
-        Random random = new Random();
-        int randomNumber = random.nextInt(lastIndex + 1);
-
-       return imageList.get(randomNumber);
-
-    }
     private String formatter(LocalDateTime localDateTime){
         String formattedDateTime = "";
 
@@ -131,7 +123,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
         toggleButton.setSelected(Mediator.getInstance().getCurrentUser().isActive(profile));
 
         // Load and set the image
-        final Image plantPic = new Image(randomizeImage());
+        final Image plantPic = new Image(profile.getImageFilename());
         image.setImage(plantPic);
 
         image.setPreserveRatio(true);
