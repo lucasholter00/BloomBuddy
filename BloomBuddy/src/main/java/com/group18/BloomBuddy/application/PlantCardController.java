@@ -1,16 +1,24 @@
 package com.group18.BloomBuddy.application;
 
+import java.io.IOException;
+
+import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorData;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class PlantCardController extends SceneSwitcher { //unsure
+    private Profile profile;
+
     @FXML
     private Label humLabel;
 
@@ -55,6 +63,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
     public void setData(Profile profile) {
         SensorData sensorData = new SensorData();
+        this.profile = profile;
 
         //Change the values of setText when Currentuser is not null
         plantName.setText("profile.getName()");
@@ -74,5 +83,16 @@ public class PlantCardController extends SceneSwitcher { //unsure
         VBox.setMargin(tempLabel, new Insets(0, 0, 0, 10));
         VBox.setMargin(moistLabel, new Insets(0, 0, 0, 10));
 
+    }
+
+    @FXML
+    public void passProfile(ActionEvent event){
+       Mediator.getInstance().setEditProfile(profile);
+    }
+
+    @FXML
+    public void handleEvent(ActionEvent event) throws IOException {
+        passProfile(event);
+        setPlantAddingScene(event);
     }
 }
