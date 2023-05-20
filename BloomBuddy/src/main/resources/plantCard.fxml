@@ -56,7 +56,7 @@
             <VBox prefHeight="150.0" prefWidth="67.0">
                <children>
                   <ToggleButton fx:id="toggleButton" mnemonicParsing="false" onAction="#activateProfile" text="Activate/deactivate" />
-                  <Button fx:id="editPlant" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setPlantEditingScene" prefHeight="5.0" prefWidth="60.0" text="Edit">
+                  <Button fx:id="editPlant" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleEvent" prefHeight="5.0" prefWidth="60.0" text="Edit">
                      <padding>
                         <Insets bottom="1.0" top="1.0" />
                      </padding>
