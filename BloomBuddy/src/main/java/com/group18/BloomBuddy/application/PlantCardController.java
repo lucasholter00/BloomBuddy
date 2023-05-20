@@ -15,6 +15,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class PlantCardController extends SceneSwitcher { //unsure
     @FXML
     private Label humLabel;
@@ -58,6 +62,9 @@ public class PlantCardController extends SceneSwitcher { //unsure
     @FXML
     private Label tempLabel;
 
+    private static List<String> imageList = new ArrayList<>();
+
+
     private Profile profile;
 
 
@@ -69,6 +76,10 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
     @FXML
     public void initialize() {
+        imageList.add("cabbage.png");
+        imageList.add("broccoli.png");
+        imageList.add("fire flower.png");
+
 
         //TODO make togglebutton work
         toggleGroup = new ToggleGroup();
@@ -83,7 +94,19 @@ public class PlantCardController extends SceneSwitcher { //unsure
         });
     }
 
+    private String randomizeImage(){
+        int lastIndex = imageList.size() - 1;
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(lastIndex + 1);
+
+       return imageList.get(randomNumber);
+
+    }
+
     public void setData(Profile profile) {
+        image.setFitWidth(132); // Set the desired width
+        image.setFitHeight(115); // Set the desired height
         // Populate the UI with data from the profile
 
         // Set the plant name, last watered, and sensor data
@@ -95,8 +118,15 @@ public class PlantCardController extends SceneSwitcher { //unsure
         moistLabel.setText(String.valueOf("profile.getMoistureLevel()"));
 
         // Load and set the image
-        Image plantPic = new Image("cabbage.png");
+        Image plantPic = new Image(randomizeImage());
         image.setImage(plantPic);
+
+        image.setPreserveRatio(true);
+        image.setFitWidth(image.getBoundsInLocal().getWidth());
+        image.setFitHeight(image.getBoundsInLocal().getHeight());
+        image.setPreserveRatio(true);
+        image.setFitWidth(image.getBoundsInLocal().getWidth());
+        image.setFitHeight(image.getBoundsInLocal().getHeight());
 
         // Customize the spacing and margins
         outer.setSpacing(30);
