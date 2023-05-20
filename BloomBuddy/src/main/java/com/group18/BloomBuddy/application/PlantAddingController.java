@@ -4,7 +4,6 @@ import com.group18.BloomBuddy.CurrentUser;
 import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorSettings;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -43,6 +42,8 @@ public class PlantAddingController extends SceneSwitcher {
         stage.setFullScreen(false);
         stage.show();
     }
+
+    //Method to handle the information given by the user and create a plant profile based on that information.
     public void buttonCreatePlantProfile() throws MqttException {
         accountCreationLabel.setWrapText(true);
         try {
@@ -75,6 +76,8 @@ public class PlantAddingController extends SceneSwitcher {
             accountCreationLabel.setText("Please enter valid numbers.");
         }
     }
+
+    //Validates if the information given by the user is correctly formatted.
     public boolean validateProfile() {
         boolean valid = true;
         if (plantName.getText().isBlank()) {

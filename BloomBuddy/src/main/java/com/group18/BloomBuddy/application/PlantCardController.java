@@ -45,7 +45,6 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
 
     private ToggleGroup toggleGroup;
-
     @FXML
     private Label plantName;
 
@@ -110,15 +109,15 @@ public class PlantCardController extends SceneSwitcher { //unsure
         lastWatered.setText(lastWaterdString);
 
 
-        humLabel.setText(tresholdToString(profile.getHumidityLowerBound(),profile.getHumidityUpperBound()));
+        humLabel.setText(thresholdToString(profile.getHumidityLowerBound(),profile.getHumidityUpperBound()));
         if (profile.getLightLowerBound()==0){
             lightLabel.setText("Low");
         }else {
             lightLabel.setText("High");
 
         }
-        tempLabel.setText(tresholdToString(profile.getTemperatureLowerBound(), profile.getTemperatureUpperBound()));
-        moistLabel.setText(tresholdToString(profile.getMoistureLowerBound(),profile.getMoistureUpperBound()));
+        tempLabel.setText(thresholdToString(profile.getTemperatureLowerBound(), profile.getTemperatureUpperBound()));
+        moistLabel.setText(thresholdToString(profile.getMoistureLowerBound(),profile.getMoistureUpperBound()));
 
         toggleButton.setSelected(Mediator.getInstance().getCurrentUser().isActive(profile));
 
@@ -142,7 +141,7 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
     }
 
-    private String tresholdToString(float low, float high){
+    private String thresholdToString(float low, float high){
         return low+" - "+high;
     }
 

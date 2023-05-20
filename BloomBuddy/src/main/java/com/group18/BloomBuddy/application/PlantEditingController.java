@@ -1,7 +1,5 @@
 package com.group18.BloomBuddy.application;
 
-import com.group18.BloomBuddy.CurrentUser;
-import com.group18.BloomBuddy.DataBaseConnection;
 import com.group18.BloomBuddy.Mediator;
 import com.group18.BloomBuddy.Profile;
 import com.group18.BloomBuddy.SensorSettings;
@@ -10,8 +8,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
@@ -62,7 +62,6 @@ public class PlantEditingController extends SceneSwitcher {
     //This method is called when the 'Save Settings' button is clicked.
     @FXML
     private void handleSaveSettingsButton(ActionEvent event) throws Exception {
-     //TODO Specify what profile to edit. It should be an already existing profile!
         saveSettings(event, profile);
     }
 
@@ -113,7 +112,7 @@ public class PlantEditingController extends SceneSwitcher {
             valid = false;
         }
         if (moistureLowerBound >= moistureUpperBound) {
-            editingLabel.setText("moisture lower bound must be less than upper bound.");
+            editingLabel.setText("Moisture lower bound must be less than upper bound.");
             valid = false;
         }
         return valid;

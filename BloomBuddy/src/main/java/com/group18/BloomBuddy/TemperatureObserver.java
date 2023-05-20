@@ -5,9 +5,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 public class TemperatureObserver implements MyObserver {
 
     public TemperatureObserver(){
-        
     }
-
     @Override
     public void update(MyObservable subject, Object arg) throws MqttException{
         if(subject instanceof Profile && arg instanceof String){
@@ -20,13 +18,13 @@ public class TemperatureObserver implements MyObserver {
 
     
     public void updateDatabase(Profile profile, String arg) throws MqttException{
-        if(arg.equals("tempratureThresholdLow") == true || arg.equals("tempratureThresholdHigh") == true){
+        if(arg.equals("tempratureThresholdLow") || arg.equals("tempratureThresholdHigh")){
             DataBaseConnection db = new DataBaseConnection();
             float value = 0;
             if(arg.equals("tempratureThresholdLow")){
                 value = profile.getTemperatureLowerBound();
             }
-            else if(arg.equals("tempratureThresholdHigh")){
+            else {
                 value = profile.getTemperatureUpperBound();
             }
 

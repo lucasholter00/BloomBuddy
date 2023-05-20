@@ -46,6 +46,7 @@ public class LoginController extends SceneSwitcher{
         stage.show();
     }
 
+    //Checks if the fields are correctly prompted.
     public void loginButtonOnAction(ActionEvent actionEvent) throws IOException, MqttException {
         CurrentUser currentUser = validateLogin();
         if(usernameTextField.getText().isBlank() || passwordPasswordField.getText().isBlank()){
@@ -61,6 +62,8 @@ public class LoginController extends SceneSwitcher{
         }
     }
 
+    //Checks if the login details are valid and then passes the valid user to be stored as the currentUser, while the
+    // app is running or until the user logs out.
     public CurrentUser validateLogin() throws MqttException {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         CurrentUser currentUser = new CurrentUser(usernameTextField.getText(),dataBaseConnection.getProfiles(usernameTextField.getText()));
