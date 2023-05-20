@@ -110,8 +110,14 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
     }
     private String formatter(LocalDateTime localDateTime){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
-        String formattedDateTime = localDateTime.format(dateTimeFormatter);
+        String formattedDateTime = "";
+
+        if (localDateTime!=null){
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+            formattedDateTime = localDateTime.format(dateTimeFormatter);
+        }else {
+            formattedDateTime = "Not watered";
+        }
         return formattedDateTime;
     }
 
@@ -130,12 +136,8 @@ public class PlantCardController extends SceneSwitcher { //unsure
 
         String lastWaterdString = formatter(profile.getLastWatered());
 
-        if (lastWaterdString == null){
-            lastWatered.setText("Not watered");
-        }else {
-            lastWatered.setText(lastWaterdString);
+        lastWatered.setText(lastWaterdString);
 
-        }
 
         humLabel.setText(tresholdToString(profile.getHumidityLowerBound(),profile.getHumidityUpperBound()));
         //humLabel.setText(String.valueOf(sensorData.getHumidity()));
@@ -183,17 +185,17 @@ public class PlantCardController extends SceneSwitcher { //unsure
         setPlantOverviewScene(actionEvent);
     }
     @FXML
-    public void passProfile(ActionEvent event){
+    public void passProfile(){
        Mediator.getInstance().setEditProfile(profile);
     }
 
     @FXML
     public void handleEvent(ActionEvent event) throws IOException {
-        passProfile(event);
+        passProfile();
         setPlantEditingScene(event);
     }
     @FXML
-    public void handleWaterEvent(ActionEvent event) throws MqttException {
+    public void handleWaterEvent() throws MqttException {
         profile.setLastWatered(LocalDateTime.now());
         lastWatered.setText(formatter(profile.getLastWatered()));
 
