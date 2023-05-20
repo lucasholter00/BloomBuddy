@@ -41,7 +41,6 @@ public class HomeController extends SceneSwitcher {
 
     @FXML
     public void initialize() throws InterruptedException {
-        Thread.sleep(1000);
         currentUser = Mediator.getInstance().getCurrentUser();
         List<Profile> profiles = currentUser.getProfiles();
         generateProfiles(profiles);
