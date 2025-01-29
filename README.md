@@ -56,8 +56,8 @@ For any issues contact:
 ## Authors and acknowledgment
 - Felix Humleby
 - Vilmer Hedin
-- Cornelia Olofsson Larsson
-- Lucas Carlsson Holter
+- Cornelia Olofsson Larsson <!-- x -->
+- Lucas Carlsson Holter <!-- x -->
 - Rasmus Nygren
 
 ## Main contributions per team member
@@ -90,7 +90,7 @@ Our plant monitoring app holds potential for the future, more specifically withi
 2. Press log in.
 
 ### 2. Home
-#### 2.1 Season tips
+#### 2.1 Season tips 
 1. To receive suggestions on suitable crops to plant in the current season, press the “Generate new tip” button.
 2. Each crop displayed in the window comes with information about its nutrient content.
 
