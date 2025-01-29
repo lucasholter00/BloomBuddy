@@ -53,7 +53,7 @@ For any issues contact:
 - guscornol@student.gu.se
 - guscarlslu@student.gu.se
 
-## Authors and acknowledgment
+## Authors
 - Felix Humleby
 - Vilmer Hedin
 - Cornelia Olofsson Larsson <!-- x -->
