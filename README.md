@@ -1,4 +1,4 @@
-BloomBuddy
+# BloomBuddy
 
 ## Description
 BloomBuddy serves as your own plant guardian, providing diverse monitoring solutions for your green companions. It offers real time tracking and display of crucial environmental factors, including temperature, humidity, light levels and soil moisture. With BloomBuddy, maintaining optimal growing conditions for your plants becomes easier and more precise, contributing to their health and vitality.
