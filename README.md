@@ -125,3 +125,11 @@ Our plant monitoring app holds potential for the future, more specifically withi
 #### 5. Log-out
 1. To log out of your account, locate and press the “Log-out” button. This button can be found in the bottom left corner of almost every screen within the application.
 
+## Keywords
+<!-- Keywords -->
+- Wio Terminal
+- Java
+- MQTT
+- IoT
+<!-- /Keywords -->
+
