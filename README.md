@@ -56,12 +56,11 @@ For any issues contact:
 - guscarlslu@student.gu.se
 
 ## Authors
-- Felix Humleby
-- Vilmer Hedin
 <!-- Authors -->
 - Cornelia Olofsson Larsson
-- Lucas Carlsson Holter
-<!-- /Authors -->
+- Lucas Carlsson Holter <!-- /Authors -->
+- Felix Humleby
+- Vilmer Hedin
 - Rasmus Nygren
 
 ## Main contributions per team member
