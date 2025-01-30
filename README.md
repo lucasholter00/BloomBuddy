@@ -1,7 +1,9 @@
-# BloomBuddy
+# <!-- Title --> BloomBuddy <!-- /Title -->
 
 ## Description
+<!-- Description -->
 BloomBuddy serves as your own plant guardian, providing diverse monitoring solutions for your green companions. It offers real time tracking and display of crucial environmental factors, including temperature, humidity, light levels and soil moisture. With BloomBuddy, maintaining optimal growing conditions for your plants becomes easier and more precise, contributing to their health and vitality.
+<!-- /Description -->
 
 ## Software and hardware architecture
 ![Component structure diagram](https://git.chalmers.se/courses/dit113/2023/group-18/bloombuddy/-/wikis/uploads/b7beed9cabeb0ae21395a0c9a4dfd3d8/Projekt_diagram_-_Page_1.png)
@@ -56,8 +58,10 @@ For any issues contact:
 ## Authors
 - Felix Humleby
 - Vilmer Hedin
-- Cornelia Olofsson Larsson <!-- x -->
-- Lucas Carlsson Holter <!-- x -->
+<!-- Authors -->
+- Cornelia Olofsson Larsson
+- Lucas Carlsson Holter
+<!-- /Authors -->
 - Rasmus Nygren
 
 ## Main contributions per team member
